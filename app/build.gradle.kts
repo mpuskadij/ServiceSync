@@ -40,7 +40,11 @@ android {
 }
 
 dependencies {
+    //FIREBASE
+    implementation(platform(libs.firebase.bom))
+    implementation(libs.firebase.analytics)
 
+    //DEFAULT IMPLEMENTATIONS
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)

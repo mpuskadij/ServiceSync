@@ -6,7 +6,7 @@ plugins {
 
 android {
     namespace = "hr.foi.air.servicesync"
-    compileSdk = 34
+    compileSdk = 35
 
     defaultConfig {
         applicationId = "hr.foi.air.servicesync"

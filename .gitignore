@@ -22,13 +22,6 @@ misc.xml
 deploymentTargetDropDown.xml
 render.experimental.xml
 
-# External
-.DS_Store
-/build
-/captures
-.externalNativeBuild
-.cxx
-
 # Keystore files
 *.jks
 *.keystore

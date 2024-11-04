@@ -36,7 +36,7 @@ import hr.foi.air.servicesync.ui.components.isDark
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ProfileScreen() {
+fun ProfileScreen(modifier: Modifier = Modifier) {
     Scaffold(
         topBar = {
             TopAppBar(
@@ -50,7 +50,8 @@ fun ProfileScreen() {
                     }
                 }
             )
-        }
+        },
+        modifier = modifier
     ) { innerPadding ->
         ProfileContent(modifier = Modifier.padding(innerPadding))
     }

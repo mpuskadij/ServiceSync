@@ -39,7 +39,7 @@ fun ProfileScreen(modifier: Modifier = Modifier) {
             TopAppBar(
                 title = { Text(text = "Profil", style = MaterialTheme.typography.titleLarge) },
                 actions = {
-                    TextButton(onClick = { /* TODO */ }) {
+                    TextButton(onClick = { /* TODO TODO */ }) {
                         Text(
                             text = "Uredi",
                             color = MaterialTheme.colorScheme.primary  // Koristiti primarnu boju iz ServiceSyncTheme

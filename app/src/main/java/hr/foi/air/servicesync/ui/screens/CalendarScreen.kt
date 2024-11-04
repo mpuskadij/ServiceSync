@@ -1,28 +1,23 @@
 package hr.foi.air.servicesync.ui.screens
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.example.compose.onPrimaryDark
 import com.example.compose.onPrimaryLight
 import com.example.compose.primaryDark
-import com.example.compose.primaryDarkHighContrast
 import com.example.compose.primaryLight
-import com.example.compose.primaryLightHighContrast
 import hr.foi.air.servicesync.ui.components.isDark
 
 @Composable
-fun SearchScreen(modifier: Modifier = Modifier) {
+fun CalendarScreen(modifier: Modifier = Modifier) {
     Column(
         modifier = modifier
             .fillMaxSize()
@@ -32,7 +27,7 @@ fun SearchScreen(modifier: Modifier = Modifier) {
         verticalArrangement = Arrangement.Center
     ) {
         Text(
-            text = "Search screen",
+            text = "Calendar Screen",
             color = isDark(primaryDark, primaryLight)
         )
     }

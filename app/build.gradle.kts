@@ -41,8 +41,8 @@ android {
 
 dependencies {
     //NAV
-    val nav_version = "2.8.3"
-    implementation("androidx.navigation:navigation-compose:$nav_version")
+    implementation(libs.androidx.navigation.runtime.ktx)
+    implementation(libs.androidx.navigation.compose)
 
     //FIREBASE
     implementation(platform(libs.firebase.bom))

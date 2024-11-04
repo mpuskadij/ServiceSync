@@ -33,6 +33,7 @@ import com.example.compose.secondaryDark
 import com.example.compose.secondaryLight
 import hr.foi.air.servicesync.R
 import hr.foi.air.servicesync.ui.components.isDark
+import hr.foi.air.servicesync.ui.contents.ProfileContent
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -57,37 +58,6 @@ fun ProfileScreen(modifier: Modifier = Modifier) {
     }
 }
 
-@Composable
-fun ProfileContent(modifier: Modifier = Modifier) {
-    Column(
-        modifier = modifier
-            .fillMaxSize()
-            .padding(16.dp),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Top
-    ) {
-        Image(
-            painter = painterResource(id = R.drawable.profile_icon),  // Placeholder slika
-            contentDescription = "Profilna slika",
-            modifier = Modifier
-                .size(120.dp)
-                .padding(8.dp)
-                .clip(CircleShape),
-            contentScale = ContentScale.Crop
-        )
-
-        Spacer(modifier = Modifier.height(16.dp))
-
-        // Ime i Prezime
-        ProfileInfoBox(label = "Ime i Prezime", value = "Ivan Ivić")
-
-        // Email
-        ProfileInfoBox(label = "Email", value = "ivan.ivic@example.com")
-
-        // Lozinka
-        ProfileInfoBox(label = "Lozinka", value = "********")
-    }
-}
 
 @Composable
 fun ProfileInfoBox(label: String, value: String) {

@@ -31,7 +31,7 @@ fun LoginScreen(onRegisterClick: () -> Unit) {
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .heightIn(min = 200.dp, max = 500.dp),
+                    .heightIn(min = 96.dp, max = 500.dp),
                 verticalArrangement = Arrangement.Center,
                 horizontalAlignment = Alignment.CenterHorizontally
             ){
@@ -44,7 +44,12 @@ fun LoginScreen(onRegisterClick: () -> Unit) {
 
                 )
             }
-
+            Spacer(modifier = Modifier.height(48.dp))
+            Text(
+                modifier = Modifier.padding(16.dp),
+                text = "Prijava",
+                style = MaterialTheme.typography.titleLarge,
+            )
             OutlinedTextField(
                 value = email,
                 onValueChange = { email = it },
@@ -73,6 +78,7 @@ fun LoginScreen(onRegisterClick: () -> Unit) {
                 textAlign = TextAlign.Center,
                 color = MaterialTheme.colorScheme.primary
             )
+            Spacer(modifier = Modifier.height(120.dp))
         }
     }
 }

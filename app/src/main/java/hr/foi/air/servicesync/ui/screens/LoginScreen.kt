@@ -1,11 +1,13 @@
 package hr.foi.air.servicesync.ui.screens
 
+import android.widget.Toast
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.text.style.TextAlign
@@ -13,8 +15,12 @@ import androidx.compose.ui.tooling.preview.Preview
 
 @Composable
 fun LoginScreen(
-    onLoginClick: () -> Unit
+    onLoginClickSuccesfull: () -> Unit,
+    onRegistrationClick: () -> Unit,
 ) {
+    val context = LocalContext.current
+    val emailMock = "megica08"
+    val passwordMock = "123456"
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
 
@@ -74,7 +80,17 @@ fun LoginScreen(
                 Spacer(modifier = Modifier.height(24.dp))
 
                 Button(
-                    onClick =  { },
+                    onClick =  {
+                        if(email == emailMock && password == passwordMock){
+                            onLoginClickSuccesfull()
+                        }else{
+                            Toast.makeText(
+                                context,
+                                "Prijava nije uspjesna.",
+                                Toast.LENGTH_LONG
+                            ).show()
+                        }
+                    },
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(horizontal = 64.dp)
@@ -87,7 +103,7 @@ fun LoginScreen(
                 Text(
                     text = "Nemate račun? Registrirajte se",
                     style = MaterialTheme.typography.bodyMedium,
-                    modifier = Modifier.clickable { onLoginClick() },
+                    modifier = Modifier.clickable { onRegistrationClick()},
                     textAlign = TextAlign.Center,
                     color = MaterialTheme.colorScheme.primary
                 )
@@ -100,5 +116,5 @@ fun LoginScreen(
 @Preview(showBackground = true)
 @Composable
 fun PreviewLoginScreen() {
-    LoginScreen(onLoginClick = { /* Logika za registraciju */ })
+//    LoginScreen()
 }

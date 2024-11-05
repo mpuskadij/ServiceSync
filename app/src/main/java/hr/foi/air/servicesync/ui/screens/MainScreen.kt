@@ -105,7 +105,7 @@ private fun navItems(): List<NavItem> {
             "Profil",
             Icons.Default.AccountCircle,
             isDark(primaryDarkHighContrast, primaryLightHighContrast),
-            badgeCount = 5
+            badgeCount = 0
         ),
     )
     return navItemList

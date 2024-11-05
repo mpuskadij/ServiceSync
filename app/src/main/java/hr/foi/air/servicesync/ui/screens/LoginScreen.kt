@@ -7,14 +7,14 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.PasswordVisualTransformation
-import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
-import kotlin.math.min
 
 @Composable
-fun LoginScreen(onRegisterClick: () -> Unit) {
+fun LoginScreen(
+    onLoginClick: () -> Unit
+) {
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
 
@@ -69,12 +69,23 @@ fun LoginScreen(onRegisterClick: () -> Unit) {
                 modifier = Modifier.fillMaxWidth()
             )
 
+            Spacer(modifier = Modifier.height(24.dp))
+
+            Button(
+                onClick =  { },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 64.dp)
+            ) {
+                Text(text = "Prijava")
+            }
+
             Spacer(modifier = Modifier.height(16.dp))
 
             Text(
                 text = "Nemate račun? Registrirajte se",
                 style = MaterialTheme.typography.bodyMedium,
-                modifier = Modifier.clickable { onRegisterClick() },
+                modifier = Modifier.clickable { onLoginClick() },
                 textAlign = TextAlign.Center,
                 color = MaterialTheme.colorScheme.primary
             )
@@ -86,5 +97,5 @@ fun LoginScreen(onRegisterClick: () -> Unit) {
 @Preview(showBackground = true)
 @Composable
 fun PreviewLoginScreen() {
-    LoginScreen(onRegisterClick = { /* Logika za registraciju */ })
+    LoginScreen(onLoginClick = { /* Logika za registraciju */ })
 }

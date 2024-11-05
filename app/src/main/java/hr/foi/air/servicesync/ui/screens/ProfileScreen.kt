@@ -46,7 +46,7 @@ fun ProfileScreen(modifier: Modifier = Modifier) {
                     TextButton(onClick = { /* TODO TODO */ }) {
                         Text(
                             text = "Uredi",
-                            color = isDark(onPrimaryDark, onPrimaryLight)
+                            color = isDark(primaryDark, primaryLight)
                         )
                     }
                 }

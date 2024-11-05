@@ -19,7 +19,9 @@ import com.example.compose.onPrimaryLight
 import com.example.compose.primaryDark
 import com.example.compose.primaryLight
 import hr.foi.air.servicesync.ui.components.isDark
+import hr.foi.air.servicesync.ui.contents.CompanyDetailsContent
 import hr.foi.air.servicesync.ui.contents.FavoriteContent
+import hr.foi.air.servicesync.ui.contents.SearchContent
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -32,7 +34,7 @@ fun SearchScreen(modifier: Modifier = Modifier) {
         },
         modifier = modifier
     ) { innerPadding ->
-        FavoriteContent(modifier = Modifier.padding(innerPadding))
+        SearchContent(modifier = Modifier.padding(innerPadding))
     }
     Text(
         text = "",

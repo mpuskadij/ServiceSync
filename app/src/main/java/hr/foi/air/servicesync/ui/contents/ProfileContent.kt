@@ -55,7 +55,7 @@ fun ProfileContent(modifier: Modifier = Modifier) {
         verticalArrangement = Arrangement.Top
     ) {
         Image(
-            painter = painterResource(id = R.drawable.profile_icon),  // Placeholder slika
+            painter = painterResource(id = R.drawable.profile_image_default),  // Placeholder slika
             contentDescription = "Profilna slika",
             modifier = Modifier
                 .size(120.dp)

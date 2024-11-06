@@ -7,6 +7,7 @@ import androidx.activity.enableEdgeToEdge
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
 import com.example.compose.AppTheme
+import hr.foi.air.servicesync.navigation.AppNavHost
 import hr.foi.air.servicesync.ui.components.Greeting
 import hr.foi.air.servicesync.ui.screens.MainScreen
 
@@ -16,7 +17,7 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             AppTheme {
-                MainScreen()
+                AppNavHost()
             }
         }
     }

@@ -29,7 +29,7 @@ import androidx.compose.ui.unit.dp
 
 @Composable
 fun RegistrationScreen(
-    onRegistrationClick: () -> Unit
+    onLoginClick: () -> Unit
 ) {
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
@@ -103,7 +103,7 @@ fun RegistrationScreen(
                 Text(
                     text = "Već imate račun? Prijavite se",
                     style = MaterialTheme.typography.bodyMedium,
-                    modifier = Modifier.clickable { onRegistrationClick() },
+                    modifier = Modifier.clickable { onLoginClick() },
                     textAlign = TextAlign.Center,
                     color = MaterialTheme.colorScheme.primary
                 )
@@ -116,5 +116,5 @@ fun RegistrationScreen(
 @Preview(showBackground = true)
 @Composable
 fun PreviewRegistrationScreen() {
-    RegistrationScreen(onRegistrationClick = { /* Logika za registraciju */ })
+//    RegistrationScreen()
 }

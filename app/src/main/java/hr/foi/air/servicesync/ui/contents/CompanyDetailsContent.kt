@@ -1,12 +1,16 @@
 package hr.foi.air.servicesync.ui.contents
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
@@ -18,22 +22,37 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.res.vectorResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import hr.foi.air.servicesync.R
 import hr.foi.air.servicesync.ui.items.ProvidedServicesListItem
 
 @Composable
-fun CompanyDetailsContent(modifier: Modifier, id: Number) {
+fun CompanyDetailsContent(id: Number) {
     Column(
         horizontalAlignment = Alignment.Start,
         verticalArrangement = Arrangement.Top,
-        modifier = modifier.fillMaxWidth().padding(8.dp).verticalScroll(rememberScrollState())
+        modifier = Modifier.fillMaxWidth().padding(WindowInsets.navigationBars.asPaddingValues()).verticalScroll(rememberScrollState())
     ) {
         val headlineModifier = Modifier.fillMaxWidth().padding(8.dp)
         val headlineTextStyle =  MaterialTheme.typography.headlineMedium
 
-        Text(text = "Tvrtka A", color = MaterialTheme.colorScheme.primary, style = MaterialTheme.typography.displayMedium)
+        Box(modifier= Modifier.fillMaxWidth().height(200.dp), contentAlignment = Alignment.BottomStart)
+        {
+            Image(
+                imageVector =  ImageVector.vectorResource(R.drawable.ic_launcher_background),
+                "Company image",
+                modifier  = Modifier.matchParentSize(),
+                contentScale = ContentScale.Crop,
+                colorFilter = ColorFilter.tint(Color.Black)
+                )
+            Text(text = "Tvrtka A", color = MaterialTheme.colorScheme.inverseOnSurface, style = MaterialTheme.typography.displayMedium)
+        }
 
         Spacer(modifier = Modifier.size(50.dp))
 
@@ -51,8 +70,8 @@ fun CompanyDetailsContent(modifier: Modifier, id: Number) {
         }, supportingContent = {
             Column {
                 //TODO new feature will require these list items to open a new screen when the icon > is clicked
-                ProvidedServicesListItem("Service A")
-                ProvidedServicesListItem("Service B")
+                ProvidedServicesListItem("Servis A")
+                ProvidedServicesListItem("Servis B")
             }
         },
         )
@@ -73,11 +92,14 @@ fun CompanyDetailsContent(modifier: Modifier, id: Number) {
         Text(text = stringResource(R.string.location), modifier = headlineModifier, style = headlineTextStyle)
 
         //TODO remove this box and add GoogleMaps map
-        Box(modifier = Modifier.fillMaxWidth().height(200.dp).background(Color.Gray))
+        Box(modifier = Modifier.fillMaxWidth().height(200.dp).background(Color.Black))
 
-
-
-
+        Text(text = stringResource(R.string.reviews), style = headlineTextStyle,modifier  =headlineModifier)
 
     }
+}
+@Preview
+@Composable
+fun PreviewCompanyDetails(){
+    CompanyDetailsContent(2)
 }

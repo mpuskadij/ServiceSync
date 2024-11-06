@@ -6,5 +6,5 @@ import androidx.compose.ui.Modifier
 @Composable
 fun SearchContent(modifier: Modifier = Modifier)
 {
-    CompanyDetailsContent(modifier,1)
+
 }

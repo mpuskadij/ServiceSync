@@ -35,14 +35,21 @@ fun CompanyDetailsContent(modifier: Modifier, id: Number) {
 
         }, supportingContent = {
             Column {
+                //TODO new feature will require these list items to open a new screen when the icon > is clicked
                 ProvidedServicesListItem("Service A")
                 ProvidedServicesListItem("Service B")
             }
         },
         )
         Text(
-            text = "Radno vrijeme",
+            text = stringResource(id = R.string.working_hours),
+            color = MaterialTheme.colorScheme.onSurface,
+            style = MaterialTheme.typography.headlineMedium,
+            modifier = Modifier.fillMaxWidth().padding(8.dp)
+            )
+        Text("Pon-Pet:",modifier = Modifier.fillMaxWidth().padding(horizontal = 8.dp))
+        Text("Subota:",modifier = Modifier.fillMaxWidth().padding(horizontal = 8.dp))
 
-        )
+
     }
 }

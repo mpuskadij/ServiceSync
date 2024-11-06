@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">ServiceSync</string>
     <string name="services">Usluge</string>
+    <string name="working_hours">Radno vrijeme</string>
 </resources>

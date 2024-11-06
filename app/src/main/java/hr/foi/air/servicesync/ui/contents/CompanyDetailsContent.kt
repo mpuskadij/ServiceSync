@@ -30,6 +30,10 @@ import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import hr.foi.air.servicesync.R
+import hr.foi.air.servicesync.ui.components.CompanyDescription
+import hr.foi.air.servicesync.ui.components.CompanyLocation
+import hr.foi.air.servicesync.ui.components.CompanyNameAndImage
+import hr.foi.air.servicesync.ui.components.CompanyWorkingHours
 import hr.foi.air.servicesync.ui.items.ProvidedServicesListItem
 
 @Composable
@@ -42,23 +46,14 @@ fun CompanyDetailsContent(id: Number) {
         val headlineModifier = Modifier.fillMaxWidth().padding(8.dp)
         val headlineTextStyle =  MaterialTheme.typography.headlineMedium
 
-        Box(modifier= Modifier.fillMaxWidth().height(200.dp), contentAlignment = Alignment.BottomStart)
-        {
-            Image(
-                imageVector =  ImageVector.vectorResource(R.drawable.ic_launcher_background),
-                "Company image",
-                modifier  = Modifier.matchParentSize(),
-                contentScale = ContentScale.Crop,
-                colorFilter = ColorFilter.tint(Color.Black)
-                )
-            Text(text = "Tvrtka A", color = MaterialTheme.colorScheme.inverseOnSurface, style = MaterialTheme.typography.displayMedium)
-        }
+        CompanyNameAndImage("Tvrtka A",R.drawable.ic_launcher_background)
 
         Spacer(modifier = Modifier.size(50.dp))
 
-        Text(text = "Opis tvrtke A" , color = MaterialTheme.colorScheme.onSurface, style = MaterialTheme.typography.bodyLarge)
+        CompanyDescription("Opis vrtke A")
 
         Spacer(modifier = Modifier.size(25.dp))
+
 
         ListItem(headlineContent =  {
                 Text(text = stringResource(id = R.string.services),
@@ -76,23 +71,11 @@ fun CompanyDetailsContent(id: Number) {
         },
         )
 
-        Text(
-            text = stringResource(id = R.string.working_hours),
-            color = MaterialTheme.colorScheme.onSurface,
-            style =headlineTextStyle,
-            modifier = headlineModifier
-            )
-
-        Text("Pon-Pet:",modifier = Modifier.fillMaxWidth().padding(horizontal = 8.dp))
-
-        Text("Subota:",modifier = Modifier.fillMaxWidth().padding(horizontal = 8.dp))
+        CompanyWorkingHours()
 
         Spacer(Modifier.size(25.dp))
 
-        Text(text = stringResource(R.string.location), modifier = headlineModifier, style = headlineTextStyle)
-
-        //TODO remove this box and add GoogleMaps map
-        Box(modifier = Modifier.fillMaxWidth().height(200.dp).background(Color.Black))
+        CompanyLocation()
 
         Text(text = stringResource(R.string.reviews), style = headlineTextStyle,modifier  =headlineModifier)
 

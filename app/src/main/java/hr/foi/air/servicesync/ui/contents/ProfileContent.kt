@@ -34,14 +34,16 @@ import hr.foi.air.servicesync.ui.screens.ProfileInfoBox
 fun ProfileContent(modifier: Modifier = Modifier) {
     val firestore = FirebaseFirestore.getInstance()
     var userData by remember { mutableStateOf<Map<String, String>?>(null) }
+    var isLoading by remember { mutableStateOf(true) }
 
-    LaunchedEffect(UserSession.username) {
+    LaunchedEffect(Unit) {
         firestore.collection("users")
             .document(UserSession.username)
             .get()
             .addOnSuccessListener { document ->
                 if (document != null) {
                     userData = document.data?.mapValues { it.value as? String ?: "" }
+                    isLoading = false
                 }
             }
     }
@@ -65,14 +67,18 @@ fun ProfileContent(modifier: Modifier = Modifier) {
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        userData?.let { data ->
-            ProfileInfoBox(
-                label = "Ime i Prezime",
-                value = "${data["name"] ?: "N/A"} ${data["surname"] ?: "N/A"}"
-            )
-            ProfileInfoBox(label = "Email", value = data["email"] ?: "N/A")
-            ProfileInfoBox(label = "Lozinka", value = "********")
-        } ?: run {
+        val name = userData?.get("name") ?: "N/A"
+        val surname = userData?.get("surname") ?: "N/A"
+        val email = userData?.get("email") ?: "N/A"
+
+        ProfileInfoBox(
+            label = "Ime i Prezime",
+            value = "$name $surname"
+        )
+        ProfileInfoBox(label = "Email", value = email)
+        ProfileInfoBox(label = "Lozinka", value = "********")
+
+        if (isLoading) {
             Column(
                 modifier = Modifier.fillMaxSize().padding(top = 32.dp),
                 horizontalAlignment = Alignment.CenterHorizontally,
@@ -85,6 +91,5 @@ fun ProfileContent(modifier: Modifier = Modifier) {
                 Spacer(modifier = Modifier.height(16.dp))
             }
         }
-
     }
 }

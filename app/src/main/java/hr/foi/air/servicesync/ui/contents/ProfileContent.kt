@@ -74,9 +74,9 @@ fun ProfileContent(modifier: Modifier = Modifier) {
             ProfileInfoBox(label = "Lozinka", value = "********")
         } ?: run {
             Column(
-                modifier = Modifier.fillMaxSize(),
+                modifier = Modifier.fillMaxSize().padding(top = 32.dp),
                 horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.Center
+                verticalArrangement = Arrangement.Top
             ) {
                 CircularProgressIndicator(
                     color = MaterialTheme.colorScheme.primary,

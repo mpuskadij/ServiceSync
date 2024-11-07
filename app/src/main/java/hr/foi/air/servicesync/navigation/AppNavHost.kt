@@ -18,7 +18,9 @@ fun AppNavHost() {
         composable("login"){
             LoginScreen(
                 onLoginClickSuccesfull = {
-                    navController.navigate("main")
+                    navController.navigate("main") {
+                        popUpTo("login") { inclusive = true }
+                    }
                 },
                 onRegistrationClick = {
                     navController.navigate("registration")
@@ -27,6 +29,11 @@ fun AppNavHost() {
         }
         composable("registration"){
             RegistrationScreen(
+                onRegisterClickSuccesfull = {
+                    navController.navigate("main") {
+                        popUpTo("login") { inclusive = true }
+                    }
+                },
                 onLoginClick = {
                     navController.navigate("login")
                 }

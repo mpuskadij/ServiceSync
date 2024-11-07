@@ -12,6 +12,7 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
+import hr.foi.air.servicesync.business.loginRegisterHandler
 
 @Composable
 fun LoginScreen(
@@ -81,14 +82,21 @@ fun LoginScreen(
 
                 Button(
                     onClick =  {
-                        if(email == emailMock && password == passwordMock){
-                            onLoginClickSuccesfull()
-                        }else{
-                            Toast.makeText(
-                                context,
-                                "Prijava nije uspjesna.",
-                                Toast.LENGTH_LONG
-                            ).show()
+                        loginRegisterHandler().loginUser(email, password) { isLoggedIn ->
+                            if (isLoggedIn) {
+                                Toast.makeText(
+                                    context,
+                                    "Prijava je uspjesna.",
+                                    Toast.LENGTH_LONG
+                                ).show()
+                                onLoginClickSuccesfull()
+                            } else {
+                                Toast.makeText(
+                                    context,
+                                    "Prijava nije uspjesna.",
+                                    Toast.LENGTH_LONG
+                                ).show()
+                            }
                         }
                     },
                     modifier = Modifier

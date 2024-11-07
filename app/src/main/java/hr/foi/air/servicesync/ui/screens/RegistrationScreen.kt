@@ -1,5 +1,6 @@
 package hr.foi.air.servicesync.ui.screens
 
+import android.widget.Toast
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -22,17 +23,21 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import hr.foi.air.servicesync.business.loginRegisterHandler
 
 @Composable
 fun RegistrationScreen(
+    onRegisterClickSuccesfull: () -> Unit,
     onLoginClick: () -> Unit
 ) {
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
+    val context = LocalContext.current
 
     Scaffold {innerPading ->
         Box(
@@ -90,7 +95,24 @@ fun RegistrationScreen(
                 Spacer(modifier = Modifier.height(24.dp))
 
                 Button(
-                    onClick =  { },
+                    onClick =  {
+                        loginRegisterHandler().registerUser(email, password) { isRegistered ->
+                            if (isRegistered) {
+                                Toast.makeText(
+                                    context,
+                                    "Registracija nije uspjesna.",
+                                    Toast.LENGTH_LONG
+                                ).show()
+                                onRegisterClickSuccesfull()
+                            } else {
+                                Toast.makeText(
+                                    context,
+                                    "Registracija nije uspjesna.",
+                                    Toast.LENGTH_LONG
+                                ).show()
+                            }
+                        }
+                    },
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(horizontal = 64.dp)

@@ -13,19 +13,16 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
-import com.example.compose.onPrimaryDark
-import com.example.compose.onPrimaryLight
-import com.example.compose.primaryDark
-import com.example.compose.primaryLight
-import hr.foi.air.servicesync.ui.components.isDark
+import androidx.compose.ui.platform.LocalContext
+import hr.foi.air.servicesync.backend.FirestoreCompanyDetails
 import hr.foi.air.servicesync.ui.contents.CompanyDetailsContent
-import hr.foi.air.servicesync.ui.contents.FavoriteContent
-import hr.foi.air.servicesync.ui.contents.SearchContent
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SearchScreen(modifier: Modifier = Modifier) {
+    val context = LocalContext.current
+    val firestoreCompanyDetails = FirestoreCompanyDetails()
+
     Scaffold(
         topBar = {
             TopAppBar(
@@ -34,10 +31,10 @@ fun SearchScreen(modifier: Modifier = Modifier) {
         },
         modifier = modifier
     ) { innerPadding ->
-        SearchContent(modifier = Modifier.padding(innerPadding))
+        CompanyDetailsContent(
+            modifier = Modifier.padding(innerPadding),
+            firestoreCompanyDetails = firestoreCompanyDetails,
+            context = context
+        )
     }
-    Text(
-        text = "",
-        color = isDark(primaryDark, primaryLight)
-    )
 }

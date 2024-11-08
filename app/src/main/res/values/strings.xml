@@ -1,5 +1,13 @@
 <resources>
     <string name="app_name">ServiceSync</string>
+
+    <!-- Profile Screen Strings -->
+    <string name="profile">Profile</string>
+    <string name="first_name">First name</string>
+    <string name="last_name">Last name</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="edit">Edit</string>
     <string name="services">Usluge</string>
     <string name="working_hours">Radno vrijeme</string>
     <string name="location">Lokacija</string>

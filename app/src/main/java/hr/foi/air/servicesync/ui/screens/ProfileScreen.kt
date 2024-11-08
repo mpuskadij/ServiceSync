@@ -2,6 +2,7 @@ package hr.foi.air.servicesync.ui.screens
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -37,17 +38,31 @@ import hr.foi.air.servicesync.ui.contents.ProfileContent
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ProfileScreen(modifier: Modifier = Modifier) {
+fun ProfileScreen(modifier: Modifier = Modifier, onLogoutClick: () -> Unit) {
     Scaffold(
         topBar = {
             TopAppBar(
                 title = { Text(text = "Profil", style = MaterialTheme.typography.titleLarge) },
                 actions = {
-                    TextButton(onClick = { /* TODO TODO */ }) {
-                        Text(
-                            text = "Uredi",
-                            color = isDark(primaryDark, primaryLight)
-                        )
+                    Box(modifier = Modifier.fillMaxWidth()) {
+                        TextButton(
+                            onClick = { onLogoutClick() },
+                            modifier = Modifier.align(Alignment.CenterEnd)
+                        ) {
+                            Text(
+                                text = "Logout",
+                                color = isDark(primaryDark, primaryLight)
+                            )
+                        }
+                        TextButton(
+                            onClick = { /* TODO("Add logic for edit profile") */ },
+                            modifier = Modifier.align(Alignment.Center)
+                        ) {
+                            Text(
+                                text = "Uredi",
+                                color = isDark(primaryDark, primaryLight)
+                            )
+                        }
                     }
                 }
             )

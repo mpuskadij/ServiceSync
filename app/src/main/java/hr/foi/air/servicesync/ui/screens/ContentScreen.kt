@@ -4,12 +4,16 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 
 @Composable
-fun ContentScreen(modifier: Modifier = Modifier, selectedIndex : Int) {
+fun ContentScreen(
+    modifier: Modifier = Modifier,
+    selectedIndex : Int,
+    onLogoutClick: () -> Unit
+) {
     when (selectedIndex)
     {
         0 -> SearchScreen()
         1 -> CalendarScreen()
         2 -> FavoriteScreen()
-        3 -> ProfileScreen()
+        3 -> ProfileScreen(onLogoutClick = onLogoutClick)
     }
 }

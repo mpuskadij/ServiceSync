@@ -32,7 +32,10 @@ import hr.foi.air.servicesync.ui.components.isDark
 import hr.foi.air.servicesync.ui.items.NavItem
 
 @Composable
-fun MainScreen(modifier: Modifier = Modifier) {
+fun MainScreen(
+    modifier: Modifier = Modifier,
+    onLogoutClick: () -> Unit
+) {
 
     val navItemList = navItems()
 
@@ -76,7 +79,18 @@ fun MainScreen(modifier: Modifier = Modifier) {
             }
         }
     ) { innerPadding ->
-        ContentScreen(modifier = Modifier.padding(innerPadding), selectedIndex)
+        if (selectedIndex == 3) {
+            ProfileScreen(
+                modifier = Modifier.padding(innerPadding),
+                onLogoutClick = onLogoutClick
+            )
+        } else {
+            ContentScreen(
+                modifier = Modifier.padding(innerPadding),
+                selectedIndex,
+                onLogoutClick = onLogoutClick
+            )
+        }
     }
 }
 

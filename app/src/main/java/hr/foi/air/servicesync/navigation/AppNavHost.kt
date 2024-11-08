@@ -7,14 +7,15 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.dialog
 import androidx.navigation.compose.navigation
 import androidx.navigation.compose.rememberNavController
+import hr.foi.air.servicesync.data.UserSession
 import hr.foi.air.servicesync.ui.screens.LoginScreen
 import hr.foi.air.servicesync.ui.screens.MainScreen
 import hr.foi.air.servicesync.ui.screens.RegistrationScreen
 
 @Composable
-fun AppNavHost() {
+fun AppNavHost(startDestination: String) {
     val navController = rememberNavController()
-    NavHost(navController = navController, startDestination = "login") {
+    NavHost(navController = navController, startDestination = startDestination) {
         composable("login"){
             LoginScreen(
                 onLoginClickSuccesfull = {
@@ -27,7 +28,7 @@ fun AppNavHost() {
                 }
             )
         }
-        composable("registration"){
+        composable("registration") {
             RegistrationScreen(
                 onRegisterClickSuccesfull = {
                     navController.navigate("main") {
@@ -40,7 +41,14 @@ fun AppNavHost() {
             )
         }
         composable("main") {
-            MainScreen()
+            MainScreen(
+                onLogoutClick = {
+                    UserSession.logout()
+                    navController.navigate("login") {
+                        popUpTo("main") { inclusive = true }
+                    }
+                }
+            )
         }
     }
 }

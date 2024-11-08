@@ -112,7 +112,7 @@ fun RegistrationScreen(
                             if (isRegistered) {
                                 Toast.makeText(
                                     context,
-                                    "Registracija nije uspjesna.",
+                                    "Registracija je uspjesna.",
                                     Toast.LENGTH_LONG
                                 ).show()
                                 onRegisterClickSuccesfull()

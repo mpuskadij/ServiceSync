@@ -79,18 +79,7 @@ fun MainScreen(
             }
         }
     ) { innerPadding ->
-        if (selectedIndex == 3) {
-            ProfileScreen(
-                modifier = Modifier.padding(innerPadding),
-                onLogoutClick = onLogoutClick
-            )
-        } else {
-            ContentScreen(
-                modifier = Modifier.padding(innerPadding),
-                selectedIndex,
-                onLogoutClick = onLogoutClick
-            )
-        }
+        ContentScreen(modifier = Modifier.padding(innerPadding), selectedIndex, onLogoutClick = onLogoutClick)
     }
 }
 

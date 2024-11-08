@@ -16,32 +16,21 @@ import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import com.example.compose.errorDark
-import com.example.compose.errorLight
-import com.example.compose.primaryDarkHighContrast
-import com.example.compose.primaryLightHighContrast
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
 import com.example.compose.surfaceContainerDark
 import com.example.compose.surfaceContainerLight
-import hr.foi.air.servicesync.ui.components.isDark
 import hr.foi.air.servicesync.ui.items.NavItem
 
 @Composable
 fun MainScreen(
-    modifier: Modifier = Modifier,
     onLogoutClick: () -> Unit
 ) {
-
+    val navController = rememberNavController()
     val navItemList = navItems()
-
-    var selectedIndex by remember {
-        mutableStateOf(0)
-    }
 
     Scaffold(
         containerColor = if (isSystemInDarkTheme()) surfaceContainerDark else surfaceContainerLight,
@@ -50,26 +39,15 @@ fun MainScreen(
             NavigationBar() {
                 navItemList.forEachIndexed { index, navItem ->
                     NavigationBarItem(
-                        selected = selectedIndex == index,
+                        selected = false,
                         onClick = {
-                            selectedIndex = index
+                            navController.navigate(navItem.route)
                         },
                         icon = {
-                            BadgedBox(badge = {
-                                if (navItem.badgeCount > 0)
-                                {
-                                    Badge(containerColor = isDark(errorDark, errorLight))
-                                    {
-                                        Text(text = navItem.badgeCount.toString(), color = Color.White)
-                                    }
-
-                                }
-                            }) {
-                                Icon(
-                                    imageVector = navItem.icon,
-                                    contentDescription = "${navItem.icon}"
-                                )
-                            }
+                            Icon(
+                                imageVector = navItem.icon,
+                                contentDescription = "${navItem.icon}"
+                            )
                         },
                         label = {
                             Text(text = navItem.label)
@@ -79,39 +57,32 @@ fun MainScreen(
             }
         }
     ) { innerPadding ->
-        ContentScreen(modifier = Modifier.padding(innerPadding), selectedIndex, onLogoutClick = onLogoutClick)
+        NavHost(navController = navController, startDestination = "search", modifier = Modifier.padding(innerPadding)) {
+            composable("search") {
+                SearchScreen()
+            }
+            composable("calendar") {
+                CalendarScreen()
+            }
+            composable("favorites") {
+                FavoriteScreen()
+            }
+            composable("profile") {
+                ProfileScreen(onLogoutClick = onLogoutClick)
+            }
+            composable("company_details") {
+
+            }
+        }
     }
 }
 
 @Composable
 private fun navItems(): List<NavItem> {
-    val navItemList = listOf(
-        NavItem(
-            "Pretraži",
-            Icons.Default.Search,
-            isDark(primaryDarkHighContrast, primaryLightHighContrast),
-            badgeCount = 0
-        ),
-        NavItem(
-            "Kalendar",
-            Icons.Default.DateRange,
-            isDark(primaryDarkHighContrast, primaryLightHighContrast),
-            badgeCount = 0
-        ),
-        NavItem(
-            "Favoriti",
-            Icons.Default.FavoriteBorder,
-            isDark(primaryDarkHighContrast, primaryLightHighContrast),
-            badgeCount = 0
-        ),
-        NavItem(
-            "Profil",
-            Icons.Default.AccountCircle,
-            isDark(primaryDarkHighContrast, primaryLightHighContrast),
-            badgeCount = 0
-        ),
+    return listOf(
+        NavItem("Pretraži", Icons.Default.Search, route = "search"),
+        NavItem("Kalendar", Icons.Default.DateRange, route = "calendar"),
+        NavItem("Favoriti", Icons.Default.FavoriteBorder, route = "favorites"),
+        NavItem("Profil", Icons.Default.AccountCircle, route = "profile")
     )
-    return navItemList
 }
-
-

@@ -24,6 +24,8 @@ fun CompanyDetailsContent(
     val companyName = remember { mutableStateOf("Loading...") }
     val companyDescription = remember { mutableStateOf("Loading...") }
     val companyCategory = remember { mutableStateOf("Loading...") }
+    val companyWorkingHours = remember { mutableStateOf("Loading...") }
+    val companyGeoPoint = remember { mutableStateOf("Loading...") }
 
     LaunchedEffect(Unit)
     {
@@ -35,6 +37,12 @@ fun CompanyDetailsContent(
         }
         firestoreCompanyDetails.loadCompanyCategory(context) { category ->
             companyCategory.value = category ?: "No category found!"
+        }
+        firestoreCompanyDetails.loadCompanyWorkingHours(context) { workingHours ->
+            companyWorkingHours.value = workingHours ?: "No working hours found!"
+        }
+        firestoreCompanyDetails.loadCompanyWorkingHours(context) { geopoint ->
+            companyWorkingHours.value = geopoint ?: "No location found!"
         }
     }
 
@@ -50,6 +58,14 @@ fun CompanyDetailsContent(
         )
         Text(
             text = "Category: ${companyCategory.value}",
+            style = MaterialTheme.typography.bodyLarge
+        )
+        Text(
+            text = "Category: ${companyWorkingHours.value}",
+            style = MaterialTheme.typography.bodyLarge
+        )
+        Text(
+            text = "Category: ${companyGeoPoint.value}",
             style = MaterialTheme.typography.bodyLarge
         )
     }

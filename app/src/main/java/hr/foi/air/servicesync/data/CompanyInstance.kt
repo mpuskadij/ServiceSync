@@ -50,5 +50,32 @@ object CompanyInstance
                 Toast.makeText(context, "No data found!", Toast.LENGTH_SHORT).show()
             }
     }
-
+    fun fetchCompanyWorkingHours(context: Context, onComplete: (String?) -> Unit)
+    {
+        firestore.collection("companies")
+            .document("company")
+            .get()
+            .addOnSuccessListener { document ->
+                val category = document?.getString("workingHours")
+                onComplete(category)
+            }
+            .addOnFailureListener {
+                onComplete(null)
+                Toast.makeText(context, "No data found!", Toast.LENGTH_SHORT).show()
+            }
+    }
+    fun fetchCompanyGeopoint(context: Context, onComplete: (String?) -> Unit)
+    {
+        firestore.collection("companies")
+            .document("company")
+            .get()
+            .addOnSuccessListener { document ->
+                val location = document?.getString("location")
+                onComplete(location)
+            }
+            .addOnFailureListener {
+                onComplete(null)
+                Toast.makeText(context, "No data found!", Toast.LENGTH_SHORT).show()
+            }
+    }
 }

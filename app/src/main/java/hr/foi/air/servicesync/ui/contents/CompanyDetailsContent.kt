@@ -22,16 +22,12 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.google.firebase.firestore.GeoPoint
 import hr.foi.air.servicesync.R
 import hr.foi.air.servicesync.backend.FirestoreCompanyDetails
 import hr.foi.air.servicesync.ui.components.CompanyDescription
-import hr.foi.air.servicesync.ui.components.CompanyLocation
 import hr.foi.air.servicesync.ui.components.CompanyNameAndImage
-import hr.foi.air.servicesync.ui.components.CompanyWorkingHours
 import hr.foi.air.servicesync.ui.items.ProvidedServicesListItem
 
 @Composable

@@ -47,9 +47,4 @@ class FirestoreCompanyDetails {
         }
     }
 
-    fun getCompanyName(): String = companyName
-    fun getCompanyDescription(): String = companyDescription
-    fun getCompanyCategory(): String = companyCategory
-    fun getCompanyWorkingHours(): Int = companyWorkingHours
-    fun getCompanyGeoPoint(): GeoPoint = companyGeoPoint
 }

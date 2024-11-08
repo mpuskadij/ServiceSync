@@ -96,7 +96,19 @@ fun RegistrationScreen(
 
                 Button(
                     onClick =  {
-                        loginRegisterHandler().registerUser(email, password) { isRegistered ->
+                        var checkedEmail:String
+                        var checkedPassword:String
+                        if(email==null||email==""){
+                            checkedEmail = " "
+                        }else{
+                            checkedEmail= email
+                        }
+                        if(password==null||password==""){
+                            checkedPassword = " "
+                        }else{
+                            checkedPassword= password
+                        }
+                        loginRegisterHandler().registerUser(checkedEmail, checkedPassword) { isRegistered ->
                             if (isRegistered) {
                                 Toast.makeText(
                                     context,

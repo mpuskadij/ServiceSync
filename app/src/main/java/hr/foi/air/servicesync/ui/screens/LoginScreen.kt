@@ -20,8 +20,6 @@ fun LoginScreen(
     onRegistrationClick: () -> Unit,
 ) {
     val context = LocalContext.current
-    val emailMock = "megica08"
-    val passwordMock = "123456"
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
 
@@ -82,7 +80,19 @@ fun LoginScreen(
 
                 Button(
                     onClick =  {
-                        loginRegisterHandler().loginUser(email, password) { isLoggedIn ->
+                        var checkedEmail:String
+                        var checkedPassword:String
+                        if(email==null||email==""){
+                            checkedEmail = " "
+                        }else{
+                            checkedEmail= email
+                        }
+                        if(password==null||password==""){
+                            checkedPassword = " "
+                        }else{
+                            checkedPassword= password
+                        }
+                        loginRegisterHandler().loginUser(checkedEmail, checkedPassword) { isLoggedIn ->
                             if (isLoggedIn) {
                                 Toast.makeText(
                                     context,

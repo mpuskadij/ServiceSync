@@ -1,53 +1,55 @@
 package hr.foi.air.servicesync.backend
 
 import android.content.Context
+import com.google.firebase.firestore.GeoPoint
 import hr.foi.air.servicesync.data.CompanyInstance
 
-class FirestoreCompanyDetails
-{
-    private var companyName: MutableMap<String, String> = mutableMapOf()
-    private var companyDescription: MutableMap<String, String> = mutableMapOf()
-    private var companyCategory: MutableMap<String, String> = mutableMapOf()
-    private var companyWorkingHours: MutableMap<String, String> = mutableMapOf()
-    private var companyGeoPoint: MutableMap<String, String> = mutableMapOf()
+class FirestoreCompanyDetails {
 
-    fun loadCompanyName(context: Context, onResult: (String?) -> Unit)
-    {
+    private var companyName: String = "No name found!"
+    private var companyDescription: String = "No description found!"
+    private var companyCategory: String = "No category found!"
+    private var companyWorkingHours: Int = 0
+    private var companyGeoPoint: GeoPoint = GeoPoint(0.0, 0.0)
+
+    fun loadCompanyName(context: Context, onResult: (String?) -> Unit) {
         CompanyInstance.fetchCompanyName(context) { name ->
-            companyName["name"] = name ?: "No name found!"
-            onResult(name)
+            companyName = name ?: "No name found!"
+            onResult(companyName)
         }
     }
 
-    fun loadCompanyDescription(context: Context, onResult: (String?) -> Unit)
-    {
+    fun loadCompanyDescription(context: Context, onResult: (String?) -> Unit) {
         CompanyInstance.fetchCompanyDescription(context) { description ->
-            companyDescription["description"] = description ?: "No description found!"
-            onResult(description)
+            companyDescription = description ?: "No description found!"
+            onResult(companyDescription)
         }
     }
 
-    fun loadCompanyCategory(context: Context, onResult: (String?) -> Unit)
-    {
+    fun loadCompanyCategory(context: Context, onResult: (String?) -> Unit) {
         CompanyInstance.fetchCompanyCategory(context) { category ->
-            companyCategory["category"] = category ?: "No category found!"
-            onResult(category)
+            companyCategory = category ?: "No category found!"
+            onResult(companyCategory)
         }
     }
 
-    fun loadCompanyWorkingHours(context: Context, onResult: (String?) -> Unit)
-    {
+    fun loadCompanyWorkingHours(context: Context, onResult: (Int?) -> Unit) {
         CompanyInstance.fetchCompanyWorkingHours(context) { workingHours ->
-            companyWorkingHours["workingHours"] = workingHours ?: "No working hours found!"
-            onResult(workingHours)
+            companyWorkingHours = workingHours ?: 0
+            onResult(companyWorkingHours)
         }
     }
 
-    fun loadCompanyGeopoint(context: Context, onResult: (String?) -> Unit)
-    {
+    fun loadCompanyGeopoint(context: Context, onResult: (GeoPoint?) -> Unit) {
         CompanyInstance.fetchCompanyGeopoint(context) { geopoint ->
-            companyWorkingHours["workingHours"] = geopoint ?: "No working hours found!"
-            onResult(geopoint)
+            companyGeoPoint = geopoint ?: GeoPoint(0.0, 0.0)
+            onResult(companyGeoPoint)
         }
     }
+
+    fun getCompanyName(): String = companyName
+    fun getCompanyDescription(): String = companyDescription
+    fun getCompanyCategory(): String = companyCategory
+    fun getCompanyWorkingHours(): Int = companyWorkingHours
+    fun getCompanyGeoPoint(): GeoPoint = companyGeoPoint
 }

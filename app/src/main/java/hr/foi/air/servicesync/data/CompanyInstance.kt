@@ -3,6 +3,7 @@ package hr.foi.air.servicesync.data
 import android.content.Context
 import android.widget.Toast
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.GeoPoint
 
 object CompanyInstance
 {
@@ -50,27 +51,26 @@ object CompanyInstance
                 Toast.makeText(context, "No data found!", Toast.LENGTH_SHORT).show()
             }
     }
-    fun fetchCompanyWorkingHours(context: Context, onComplete: (String?) -> Unit)
-    {
+    fun fetchCompanyWorkingHours(context: Context, onComplete: (Int?) -> Unit) {
         firestore.collection("companies")
             .document("company")
             .get()
             .addOnSuccessListener { document ->
-                val category = document?.getString("workingHours")
-                onComplete(category)
+                val workingHours = document?.getLong("workingHours")?.toInt()
+                onComplete(workingHours)
             }
             .addOnFailureListener {
                 onComplete(null)
                 Toast.makeText(context, "No data found!", Toast.LENGTH_SHORT).show()
             }
     }
-    fun fetchCompanyGeopoint(context: Context, onComplete: (String?) -> Unit)
-    {
+
+    fun fetchCompanyGeopoint(context: Context, onComplete: (GeoPoint?) -> Unit) {
         firestore.collection("companies")
             .document("company")
             .get()
             .addOnSuccessListener { document ->
-                val location = document?.getString("location")
+                val location = document?.getGeoPoint("location") // Use getGeoPoint for GeoPoint fields
                 onComplete(location)
             }
             .addOnFailureListener {

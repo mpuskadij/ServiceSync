@@ -16,7 +16,7 @@ class FirestoreUserDetails {
     var description: String = ""
 
     fun loadUserDetails(onResult: (Boolean) -> Unit) {
-        userId?.let { id ->
+        UserSession.username.let { id ->
             firestore.collection("users").document(UserSession.username).get()
                 .addOnSuccessListener { document ->
                     if (document != null) {
@@ -42,7 +42,7 @@ class FirestoreUserDetails {
         description: String,
         onResult: (Boolean) -> Unit
     ) {
-        userId?.let { id ->
+        UserSession.username.let { id ->
             val userDetails = mapOf(
                 "name" to name,
                 "surname" to surname,

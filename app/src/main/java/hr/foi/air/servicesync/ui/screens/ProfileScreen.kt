@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
@@ -14,6 +15,7 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.example.compose.primaryDark
@@ -31,7 +33,7 @@ fun ProfileScreen(modifier: Modifier = Modifier, onLogoutClick: () -> Unit) {
             TopAppBar(
                 title = { Text(text = "Profil", style = MaterialTheme.typography.titleLarge) },
                 actions = {
-                    Box(modifier = Modifier.fillMaxWidth()) {
+                    Box(modifier = Modifier.width(100.dp)) {
                         TextButton(
                             onClick = { onLogoutClick() },
                             modifier = Modifier.align(Alignment.CenterEnd)

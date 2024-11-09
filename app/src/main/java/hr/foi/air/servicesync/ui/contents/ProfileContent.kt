@@ -1,28 +1,22 @@
 package hr.foi.air.servicesync.ui.contents
 
-import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.text.BasicTextField
-import androidx.compose.foundation.text.KeyboardActions
-import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.PasswordVisualTransformation
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import hr.foi.air.servicesync.R
 import hr.foi.air.servicesync.business.UserDataHandler
+import hr.foi.air.servicesync.ui.screens.ProfileInfoBox
 
 @Composable
 fun ProfileContent(modifier: Modifier = Modifier) {
@@ -39,9 +33,9 @@ fun ProfileContent(modifier: Modifier = Modifier) {
     var showSuccessDialog by remember { mutableStateOf(false) }
     var showErrorDialog by remember { mutableStateOf(false) }
     var errorMessage by remember { mutableStateOf("") }
+    var newPasswordEmpty by remember { mutableStateOf(false) }
     val context = LocalContext.current
 
-    // Load user data
     LaunchedEffect(Unit) {
         userDataHandler.loadUserDetails { data ->
             userData = data
@@ -99,29 +93,50 @@ fun ProfileContent(modifier: Modifier = Modifier) {
 
                 Button(
                     onClick = {
-                        userDataHandler.saveUserDetails(
-                            name = name,
-                            surname = surname,
-                            username = username,
-                            description = description
-                        ) { success ->
-                            if (success) {
-                                showSuccessDialog = true
-                                isEditing = false
-                            } else {
-                                showErrorDialog = true
-                                errorMessage = "Greška pri spremanju podataka."
+                        if (newPassword.isEmpty()) {
+                            newPasswordEmpty = true
+
+                            userDataHandler.saveUserDetails(
+                                name = name,
+                                surname = surname,
+                                username = username,
+                                description = description
+                            ) { success ->
+                                if (success) {
+                                    showSuccessDialog = true
+                                    isEditing = false
+                                } else {
+                                    showErrorDialog = true
+                                    errorMessage = "Greška pri spremanju podataka."
+                                }
+                            }
+                        } else {
+                            userDataHandler.saveUserDetails(
+                                name = name,
+                                surname = surname,
+                                username = username,
+                                description = description
+                            ) { success ->
+                                if (success) {
+                                    showSuccessDialog = true
+                                    isEditing = false
+                                } else {
+                                    showErrorDialog = true
+                                    errorMessage = "Greška pri spremanju podataka."
+                                }
+                            }
+
+                            userDataHandler.updatePassword(newPassword) { success ->
+                                if (success) {
+                                    showSuccessDialog = true
+                                    isEditing = false
+                                } else {
+                                    showErrorDialog = true
+                                    errorMessage = "Greška pri promjeni lozinke. Ponovno se prijavite!"
+                                }
                             }
                         }
-                        userDataHandler.updatePassword(newPassword) { success ->
-                            if (success) {
-                                showSuccessDialog = true
-                                isEditing = false
-                            } else {
-                                showErrorDialog = true
-                                errorMessage = "Greška pri promjeni lozinke. Ponovno se prijavite!"
-                            }
-                        }
+                        newPasswordEmpty = false
                     },
                     modifier = Modifier.fillMaxWidth()
                 ) {
@@ -153,7 +168,6 @@ fun ProfileContent(modifier: Modifier = Modifier) {
         }
     }
 
-    // Success Dialog
     if (showSuccessDialog) {
         AlertDialog(
             onDismissRequest = { showSuccessDialog = false },
@@ -169,7 +183,6 @@ fun ProfileContent(modifier: Modifier = Modifier) {
         )
     }
 
-    // Error Dialog
     if (showErrorDialog) {
         AlertDialog(
             onDismissRequest = { showErrorDialog = false },
@@ -186,21 +199,4 @@ fun ProfileContent(modifier: Modifier = Modifier) {
     }
 }
 
-@Composable
-fun ProfileInfoBox(label: String, value: String) {
-    Column(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(vertical = 8.dp)
-    ) {
-        Text(
-            text = label,
-            style = MaterialTheme.typography.bodyLarge.copy(
-                color = MaterialTheme.colorScheme.secondary,
-                fontWeight = FontWeight.Bold
-            )
-        )
-        Spacer(modifier = Modifier.height(4.dp))
-        Text(text = value, style = MaterialTheme.typography.bodyMedium)
-    }
-}
+

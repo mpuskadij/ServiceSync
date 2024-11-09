@@ -4,6 +4,7 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -15,7 +16,6 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
-import hr.foi.air.servicesync.R
 
 @Composable
 fun CompanyNameAndImage(companyName: String, imageID: Int)
@@ -30,6 +30,6 @@ fun CompanyNameAndImage(companyName: String, imageID: Int)
             //TODO remove this filter when company images are implemented
             colorFilter = ColorFilter.tint(Color.Black)
         )
-        Text(text = companyName, color = MaterialTheme.colorScheme.inverseOnSurface, style = MaterialTheme.typography.displayMedium)
+        Text(modifier = Modifier.padding(10.dp), text = companyName, color = MaterialTheme.colorScheme.inverseOnSurface, style = MaterialTheme.typography.displayMedium)
     }
 }

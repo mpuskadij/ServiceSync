@@ -16,7 +16,6 @@ import hr.foi.air.servicesync.ui.screens.LoginScreen
 import hr.foi.air.servicesync.ui.screens.MainScreen
 import hr.foi.air.servicesync.ui.screens.ProfileScreen
 import hr.foi.air.servicesync.ui.screens.RegistrationScreen
-import hr.foi.air.servicesync.ui.screens.SearchScreen
 
 @Composable
 fun AppNavHost(startDestination: String) {
@@ -72,7 +71,7 @@ fun MainNavHost(
         modifier = Modifier.padding(innerPadding)
     ) {
         composable("search") {
-            SearchScreen()
+            CompanyDetailsContent(modifier = Modifier)
         }
         composable("calendar") {
             CalendarScreen()
@@ -82,9 +81,6 @@ fun MainNavHost(
         }
         composable("profile") {
             ProfileScreen(onLogoutClick = onLogoutClick)
-        }
-        composable("company_details") {
-            CompanyDetailsContent()
         }
     }
 }

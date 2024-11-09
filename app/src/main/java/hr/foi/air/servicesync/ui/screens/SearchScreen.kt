@@ -29,8 +29,7 @@ fun SearchScreen(modifier: Modifier = Modifier) {
         },
         modifier = modifier
     ) { innerPadding ->
-
-        CompanyDetailsContent(modifier = Modifier.padding(innerPadding))
+        CompanyDetailsContent(modifier.padding(innerPadding), context)
     }
     Text(
         text = "",

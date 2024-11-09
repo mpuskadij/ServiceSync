@@ -33,14 +33,35 @@ import hr.foi.air.servicesync.ui.items.ProvidedServicesListItem
 @Composable
 fun CompanyDetailsContent(
     modifier: Modifier = Modifier,
-    firestoreCompanyDetails: FirestoreCompanyDetails = FirestoreCompanyDetails(),
     context: Context? = null
 ) {
+    val firestoreCompanyDetails = FirestoreCompanyDetails()
+
     val companyName = remember { mutableStateOf("Loading...") }
     val companyDescription = remember { mutableStateOf("Loading...") }
     val companyCategory = remember { mutableStateOf("Loading...") }
     val companyWorkingHours = remember { mutableStateOf(0) }
     val companyGeoPoint = remember { mutableStateOf(GeoPoint(0.0, 0.0)) }
+
+    if (context != null) {
+        LaunchedEffect(Unit) {
+            firestoreCompanyDetails.loadCompanyName(context) { name ->
+                companyName.value = name ?: "No name found!"
+            }
+            firestoreCompanyDetails.loadCompanyDescription(context) { description ->
+                companyDescription.value = description ?: "No description found!"
+            }
+            firestoreCompanyDetails.loadCompanyCategory(context) { category ->
+                companyCategory.value = category ?: "No category found!"
+            }
+            firestoreCompanyDetails.loadCompanyWorkingHours(context) { workingHours ->
+                companyWorkingHours.value = workingHours ?: 0
+            }
+            firestoreCompanyDetails.loadCompanyGeopoint(context) { geopoint ->
+                companyGeoPoint.value = geopoint ?: GeoPoint(0.0, 0.0)
+            }
+        }
+    }
 
     Column(
         horizontalAlignment = Alignment.Start,
@@ -100,25 +121,5 @@ fun CompanyDetailsContent(
 
 
         Text(text = stringResource(R.string.reviews), style = headlineTextStyle, modifier = headlineModifier)
-
-        if (context != null) {
-            LaunchedEffect(Unit) {
-                firestoreCompanyDetails.loadCompanyName(context) { name ->
-                    companyName.value = name ?: "No name found!"
-                }
-                firestoreCompanyDetails.loadCompanyDescription(context) { description ->
-                    companyDescription.value = description ?: "No description found!"
-                }
-                firestoreCompanyDetails.loadCompanyCategory(context) { category ->
-                    companyCategory.value = category ?: "No category found!"
-                }
-                firestoreCompanyDetails.loadCompanyWorkingHours(context) { workingHours ->
-                    companyWorkingHours.value = workingHours ?: 0
-                }
-                firestoreCompanyDetails.loadCompanyGeopoint(context) { geopoint ->
-                    companyGeoPoint.value = geopoint ?: GeoPoint(0.0, 0.0)
-                }
-            }
-        }
     }
 }

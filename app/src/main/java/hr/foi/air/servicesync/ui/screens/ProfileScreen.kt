@@ -41,15 +41,6 @@ fun ProfileScreen(modifier: Modifier = Modifier, onLogoutClick: () -> Unit) {
                                 color = isDark(primaryDark, primaryLight)
                             )
                         }
-                        TextButton(
-                            onClick = { /* TODO("Add logic for edit profile") */ },
-                            modifier = Modifier.align(Alignment.Center)
-                        ) {
-                            Text(
-                                text = "Uredi",
-                                color = isDark(primaryDark, primaryLight)
-                            )
-                        }
                     }
                 }
             )

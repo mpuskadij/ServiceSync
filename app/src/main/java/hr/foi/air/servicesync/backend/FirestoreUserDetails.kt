@@ -2,6 +2,7 @@ package hr.foi.air.servicesync.backend
 
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import hr.foi.air.servicesync.data.UserSession
 
 class FirestoreUserDetails {
     private var firestore = FirebaseFirestore.getInstance()
@@ -11,16 +12,18 @@ class FirestoreUserDetails {
     var name: String = ""
     var surname: String = ""
     var username: String = ""
+    var email: String = ""
     var description: String = ""
 
     fun loadUserDetails(onResult: (Boolean) -> Unit) {
         userId?.let { id ->
-            firestore.collection("users").document(id).get()
+            firestore.collection("users").document(UserSession.username).get()
                 .addOnSuccessListener { document ->
                     if (document != null) {
                         name = document.getString("name") ?: ""
                         surname = document.getString("surname") ?: ""
                         username = document.getString("username") ?: ""
+                        email = document.getString("email") ?: ""
                         description = document.getString("description") ?: ""
                         onResult(true)
                     } else {

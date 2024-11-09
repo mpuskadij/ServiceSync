@@ -33,7 +33,7 @@ import hr.foi.air.servicesync.ui.items.ProvidedServicesListItem
 @Composable
 fun CompanyDetailsContent(
     modifier: Modifier = Modifier,
-    context: Context? = null
+    context: Context
 ) {
     val firestoreCompanyDetails = FirestoreCompanyDetails()
 
@@ -42,84 +42,98 @@ fun CompanyDetailsContent(
     val companyCategory = remember { mutableStateOf("Loading...") }
     val companyWorkingHours = remember { mutableStateOf(0) }
     val companyGeoPoint = remember { mutableStateOf(GeoPoint(0.0, 0.0)) }
+    val isLoading = remember { mutableStateOf(true) }
 
-    if (context != null) {
-        LaunchedEffect(Unit) {
-            firestoreCompanyDetails.loadCompanyName(context) { name ->
-                companyName.value = name ?: "No name found!"
-            }
-            firestoreCompanyDetails.loadCompanyDescription(context) { description ->
-                companyDescription.value = description ?: "No description found!"
-            }
-            firestoreCompanyDetails.loadCompanyCategory(context) { category ->
-                companyCategory.value = category ?: "No category found!"
-            }
-            firestoreCompanyDetails.loadCompanyWorkingHours(context) { workingHours ->
-                companyWorkingHours.value = workingHours ?: 0
-            }
-            firestoreCompanyDetails.loadCompanyGeopoint(context) { geopoint ->
-                companyGeoPoint.value = geopoint ?: GeoPoint(0.0, 0.0)
-            }
+    LaunchedEffect(Unit)
+    {
+        firestoreCompanyDetails.loadCompanyName(context) { name ->
+            companyName.value = name ?: "No name found!"
+            isLoading.value = false
+        }
+        firestoreCompanyDetails.loadCompanyDescription(context) { description ->
+            companyDescription.value = description ?: "No description found!"
+            isLoading.value = false
+        }
+        firestoreCompanyDetails.loadCompanyCategory(context) { category ->
+            companyCategory.value = category ?: "No category found!"
+            isLoading.value = false
+        }
+        firestoreCompanyDetails.loadCompanyWorkingHours(context) { workingHours ->
+            companyWorkingHours.value = workingHours ?: 0
+            isLoading.value = false
+        }
+        firestoreCompanyDetails.loadCompanyGeopoint(context) { geopoint ->
+            companyGeoPoint.value = geopoint ?: GeoPoint(0.0, 0.0)
+            isLoading.value = false
         }
     }
+    if (isLoading.value)
+    {
+        Text("Loading data...", modifier = Modifier.padding(16.dp))
+    } else
+    {
+        Column(
+            horizontalAlignment = Alignment.Start,
+            verticalArrangement = Arrangement.Top,
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(WindowInsets.navigationBars.asPaddingValues())
+                .verticalScroll(rememberScrollState())
+        ) {
+            val headlineModifier = Modifier.fillMaxWidth().padding(8.dp)
+            val headlineTextStyle = MaterialTheme.typography.headlineMedium
 
-    Column(
-        horizontalAlignment = Alignment.Start,
-        verticalArrangement = Arrangement.Top,
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(WindowInsets.navigationBars.asPaddingValues())
-            .verticalScroll(rememberScrollState())
-    ) {
-        val headlineModifier = Modifier.fillMaxWidth().padding(8.dp)
-        val headlineTextStyle = MaterialTheme.typography.headlineMedium
+            CompanyNameAndImage(companyName.value, R.drawable.ic_launcher_background)
+            Spacer(modifier = Modifier.size(50.dp))
 
-        CompanyNameAndImage(companyName.value, R.drawable.ic_launcher_background)
-        Spacer(modifier = Modifier.size(50.dp))
+            CompanyDescription(companyDescription.value)
+            Spacer(modifier = Modifier.size(25.dp))
 
-        CompanyDescription(companyDescription.value)
-        Spacer(modifier = Modifier.size(25.dp))
+            ListItem(
+                headlineContent = {
+                    Text(
+                        text = stringResource(id = R.string.services),
+                        color = MaterialTheme.colorScheme.onSurface,
+                        style = headlineTextStyle,
+                        modifier = Modifier.fillMaxWidth().padding(vertical = 10.dp)
+                    )
+                },
+                supportingContent = {
+                    Column {
+                        ProvidedServicesListItem(companyCategory.value)
+                    }
+                },
+            )
 
-        ListItem(
-            headlineContent = {
-                Text(
-                    text = stringResource(id = R.string.services),
-                    color = MaterialTheme.colorScheme.onSurface,
-                    style = headlineTextStyle,
-                    modifier = Modifier.fillMaxWidth().padding(vertical = 10.dp)
-                )
-            },
-            supportingContent = {
-                Column {
-                    ProvidedServicesListItem(companyCategory.value)
-                }
-            },
-        )
+            Text(
+                text = "Working Hours: ${companyWorkingHours.value}",
+                style = MaterialTheme.typography.bodyLarge,
+                modifier = Modifier.padding(start = 16.dp, top = 8.dp)
+            )
+            Spacer(Modifier.size(25.dp))
 
-        Text(
-            text = "Working Hours: ${companyWorkingHours.value}",
-            style = MaterialTheme.typography.bodyLarge,
-            modifier = Modifier.padding(start = 16.dp, top = 8.dp)
-        )
-        Spacer(Modifier.size(25.dp))
-
-        ListItem(
-            headlineContent = {
-                Text(
-                    text = stringResource(id = R.string.location),
-                    color = MaterialTheme.colorScheme.onSurface,
-                    style = headlineTextStyle,
-                    modifier = Modifier.fillMaxWidth().padding(vertical = 10.dp)
-                )
-            },
-            supportingContent = {
-                Column {
-                    ProvidedServicesListItem(companyGeoPoint.value.toString())
-                }
-            },
-        )
+            ListItem(
+                headlineContent = {
+                    Text(
+                        text = stringResource(id = R.string.location),
+                        color = MaterialTheme.colorScheme.onSurface,
+                        style = headlineTextStyle,
+                        modifier = Modifier.fillMaxWidth().padding(vertical = 10.dp)
+                    )
+                },
+                supportingContent = {
+                    Column {
+                        ProvidedServicesListItem(companyGeoPoint.value.toString())
+                    }
+                },
+            )
 
 
-        Text(text = stringResource(R.string.reviews), style = headlineTextStyle, modifier = headlineModifier)
+            Text(
+                text = stringResource(R.string.reviews),
+                style = headlineTextStyle,
+                modifier = headlineModifier
+            )
+        }
     }
 }

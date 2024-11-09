@@ -1,16 +1,22 @@
 package hr.foi.air.servicesync.navigation
 
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
-import androidx.navigation.NavController
+import androidx.compose.ui.Modifier
+import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import androidx.navigation.compose.dialog
-import androidx.navigation.compose.navigation
 import androidx.navigation.compose.rememberNavController
 import hr.foi.air.servicesync.data.UserSession
+import hr.foi.air.servicesync.ui.contents.CompanyDetailsContent
+import hr.foi.air.servicesync.ui.screens.CalendarScreen
+import hr.foi.air.servicesync.ui.screens.FavoriteScreen
 import hr.foi.air.servicesync.ui.screens.LoginScreen
 import hr.foi.air.servicesync.ui.screens.MainScreen
+import hr.foi.air.servicesync.ui.screens.ProfileScreen
 import hr.foi.air.servicesync.ui.screens.RegistrationScreen
+import hr.foi.air.servicesync.ui.screens.SearchScreen
 
 @Composable
 fun AppNavHost(startDestination: String) {
@@ -52,3 +58,34 @@ fun AppNavHost(startDestination: String) {
         }
     }
 }
+
+
+@Composable
+fun MainNavHost(
+    navController: NavHostController,
+    innerPadding: PaddingValues,
+    onLogoutClick: () -> Unit
+) {
+    NavHost(
+        navController = navController,
+        startDestination = "search",
+        modifier = Modifier.padding(innerPadding)
+    ) {
+        composable("search") {
+            SearchScreen()
+        }
+        composable("calendar") {
+            CalendarScreen()
+        }
+        composable("favorites") {
+            FavoriteScreen()
+        }
+        composable("profile") {
+            ProfileScreen(onLogoutClick = onLogoutClick)
+        }
+        composable("company_details") {
+            CompanyDetailsContent()
+        }
+    }
+}
+

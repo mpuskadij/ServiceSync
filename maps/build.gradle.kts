@@ -35,6 +35,10 @@ android {
 dependencies {
     //Google Maps
     implementation(libs.maps.compose)
+
+    //MapLibre
+    implementation ("org.maplibre.gl:android-sdk:11.6.1")
+
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)

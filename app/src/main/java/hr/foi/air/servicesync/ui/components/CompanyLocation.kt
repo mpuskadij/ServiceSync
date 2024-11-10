@@ -12,15 +12,18 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import com.example.maps.interfaces.IMapProvider
+import com.google.firebase.firestore.GeoPoint
 import hr.foi.air.servicesync.R
 
 @Composable
-fun CompanyLocation()
+fun CompanyLocation(geopoint: GeoPoint, mapProvider: IMapProvider)
 {
     val headlineModifier = Modifier.fillMaxWidth().padding(8.dp)
     val headlineTextStyle =  MaterialTheme.typography.headlineMedium
     Text(text = stringResource(R.string.location), modifier = headlineModifier, style = headlineTextStyle)
 
-    //TODO remove this box and add GoogleMaps map
-    Box(modifier = Modifier.fillMaxWidth().height(200.dp).background(Color.Black))
+    Box(modifier = Modifier.fillMaxWidth().height(200.dp)) {
+        mapProvider.CreateMap(geopoint.latitude,geopoint.longitude)
+    }
 }

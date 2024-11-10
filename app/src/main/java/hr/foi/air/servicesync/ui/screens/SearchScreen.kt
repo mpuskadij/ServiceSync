@@ -11,6 +11,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import hr.foi.air.servicesync.backend.FirestoreCompanyDetails
 import hr.foi.air.servicesync.ui.contents.CompanyDetailsContent
+import mapproviders.GoogleMapProvider
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -29,7 +30,7 @@ fun SearchScreen(modifier: Modifier = Modifier) {
         CompanyDetailsContent(
             modifier = Modifier.padding(innerPadding),
             firestoreCompanyDetails = firestoreCompanyDetails,
-            context = context
+            context = context,
         )
     }
 }

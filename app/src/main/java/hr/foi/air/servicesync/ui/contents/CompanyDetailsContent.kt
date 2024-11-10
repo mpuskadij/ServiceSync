@@ -2,11 +2,13 @@ package hr.foi.air.servicesync.ui.contents
 
 import android.content.Context
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -22,19 +24,24 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.example.maps.interfaces.IMapProvider
 import com.google.firebase.firestore.GeoPoint
 import hr.foi.air.servicesync.R
 import hr.foi.air.servicesync.backend.FirestoreCompanyDetails
 import hr.foi.air.servicesync.ui.components.CompanyDescription
+import hr.foi.air.servicesync.ui.components.CompanyLocation
 import hr.foi.air.servicesync.ui.components.CompanyNameAndImage
 import hr.foi.air.servicesync.ui.items.ProvidedServicesListItem
+import mapproviders.GoogleMapProvider
+import mapproviders.OpenStreetMapProvider
 
 @Composable
 fun CompanyDetailsContent(
     modifier: Modifier = Modifier,
     firestoreCompanyDetails: FirestoreCompanyDetails = FirestoreCompanyDetails(),
-    context: Context? = null
+    context: Context? = null,
 ) {
     val companyName = remember { mutableStateOf("Loading...") }
     val companyDescription = remember { mutableStateOf("Loading...") }
@@ -82,21 +89,7 @@ fun CompanyDetailsContent(
         )
         Spacer(Modifier.size(25.dp))
 
-        ListItem(
-            headlineContent = {
-                Text(
-                    text = stringResource(id = R.string.location),
-                    color = MaterialTheme.colorScheme.onSurface,
-                    style = headlineTextStyle,
-                    modifier = Modifier.fillMaxWidth().padding(vertical = 10.dp)
-                )
-            },
-            supportingContent = {
-                Column {
-                    ProvidedServicesListItem(companyGeoPoint.value.toString())
-                }
-            },
-        )
+        CompanyLocation(mapProvider = OpenStreetMapProvider(), geopoint = companyGeoPoint.value)
 
         /*
         Text(
@@ -108,6 +101,7 @@ fun CompanyDetailsContent(
          */
 
         Text(text = stringResource(R.string.reviews), style = headlineTextStyle, modifier = headlineModifier)
+
 
         if (context != null) {
             LaunchedEffect(Unit) {
@@ -142,4 +136,10 @@ fun CompanyDetailsContent(
 
          */
     }
+}
+
+@Preview
+@Composable
+fun CompanyDetailsPreview(){
+    CompanyDetailsContent()
 }

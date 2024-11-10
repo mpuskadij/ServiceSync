@@ -11,13 +11,11 @@ import com.google.maps.android.compose.Marker
 import com.google.maps.android.compose.rememberCameraPositionState
 import com.google.maps.android.compose.rememberMarkerState
 
-class GoogleMapProvider(override val longitude: Double, override val latitude: Double) : IMapProvider {
-
-    private val companyCoordinates = LatLng(latitude,longitude)
-
+class GoogleMapProvider() : IMapProvider {
 
     @Composable
-    override fun CreateMap() {
+    override fun CreateMap(latitude: Double, longitude: Double) {
+        val companyCoordinates = LatLng(latitude,longitude)
         val cameraPositionState = rememberCameraPositionState {
             position = CameraPosition.fromLatLngZoom(companyCoordinates,10f)
         }

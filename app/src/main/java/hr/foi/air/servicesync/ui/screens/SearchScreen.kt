@@ -18,6 +18,7 @@ import hr.foi.air.servicesync.ui.contents.CompanyDetailsContent
 @Composable
 fun SearchScreen(modifier: Modifier = Modifier) {
     val context = LocalContext.current
+    val firestoreCompanyDetails = FirestoreCompanyDetails()
 
     Scaffold(
         topBar = {

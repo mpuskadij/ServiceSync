@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
@@ -22,13 +23,17 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.google.firebase.firestore.GeoPoint
 import hr.foi.air.servicesync.R
 import hr.foi.air.servicesync.backend.FirestoreCompanyDetails
 import hr.foi.air.servicesync.ui.components.CompanyDescription
+import hr.foi.air.servicesync.ui.components.CompanyLocation
 import hr.foi.air.servicesync.ui.components.CompanyNameAndImage
 import hr.foi.air.servicesync.ui.items.ProvidedServicesListItem
+import mapproviders.GoogleMapProvider
+import mapproviders.OpenStreetMapProvider
 
 @Composable
 fun CompanyDetailsContent(
@@ -138,6 +143,15 @@ fun CompanyDetailsContent(
                 supportingContent = {
                     ProvidedServicesListItem(companyGeoPoint.value.toString())
                 }
+
+        )
+
+        Text(text = stringResource(R.string.reviews), style = headlineTextStyle, modifier = headlineModifier)
+
+        if (context != null) {
+            LaunchedEffect(Unit) {
+                firestoreCompanyDetails.loadCompanyName(context) { name ->
+                    companyName.value = name ?: "No name found!"
             )
             ListItem(
                 headlineContent = {
@@ -157,4 +171,10 @@ fun CompanyDetailsContent(
             )
         }
     }
+}
+
+@Preview
+@Composable
+fun CompanyDetailsPreview(){
+    CompanyDetailsContent()
 }

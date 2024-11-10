@@ -31,6 +31,7 @@ import hr.foi.air.servicesync.ui.components.CompanyDescription
 import hr.foi.air.servicesync.ui.components.CompanyLocation
 import hr.foi.air.servicesync.ui.components.CompanyNameAndImage
 import hr.foi.air.servicesync.ui.items.ProvidedServicesListItem
+import mapproviders.GoogleMapProvider
 import mapproviders.OpenStreetMapProvider
 
 @Composable
@@ -85,7 +86,7 @@ fun CompanyDetailsContent(
         )
         Spacer(Modifier.size(25.dp))
 
-        CompanyLocation(mapProvider = OpenStreetMapProvider(), geoPoint = companyGeoPoint.value)
+        CompanyLocation(mapProvider = GoogleMapProvider(), geoPoint = companyGeoPoint.value)
 
         Text(text = stringResource(R.string.reviews), style = headlineTextStyle, modifier = headlineModifier)
 

@@ -1,17 +1,7 @@
 package mapproviders
-
-import androidx.compose.foundation.layout.IntrinsicSize
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.width
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.viewinterop.AndroidView
-import com.example.maps.BuildConfig
 import com.example.maps.interfaces.IMapProvider
 import com.utsman.osmandcompose.Marker
 import com.utsman.osmandcompose.OpenStreetMap

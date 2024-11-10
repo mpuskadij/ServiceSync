@@ -53,7 +53,8 @@ fun CompanyDetailsContent(
         val headlineModifier = Modifier.fillMaxWidth().padding(8.dp)
         val headlineTextStyle = MaterialTheme.typography.headlineMedium
 
-        CompanyNameAndImage(companyName.value, R.drawable.ic_launcher_background)
+
+        CompanyNameAndImage(companyName.value)
         Spacer(modifier = Modifier.size(50.dp))
 
         CompanyDescription(companyDescription.value)
@@ -98,16 +99,9 @@ fun CompanyDetailsContent(
             },
         )
 
-        /*
-        Text(
-            text = "Lat: ${companyGeoPoint.value.latitude}, Lng: ${companyGeoPoint.value.longitude}",
-            style = MaterialTheme.typography.bodyLarge,
-            modifier = Modifier.padding(start = 16.dp, top = 4.dp)
-        )
-
-         */
-
         Text(text = stringResource(R.string.reviews), style = headlineTextStyle, modifier = headlineModifier)
+
+        Spacer(Modifier.size(200.dp))
 
         if (context != null) {
             LaunchedEffect(Unit) {
@@ -128,18 +122,5 @@ fun CompanyDetailsContent(
                 }
             }
         }
-        /*
-        Column(modifier = modifier.padding(16.dp)) {
-            Text(text = "Name: ${companyName.value}", style = MaterialTheme.typography.bodyLarge)
-            Text(text = "Description: ${companyDescription.value}", style = MaterialTheme.typography.bodyLarge)
-            Text(text = "Category: ${companyCategory.value}", style = MaterialTheme.typography.bodyLarge)
-            Text(text = "Working Hours: ${companyWorkingHours.value}", style = MaterialTheme.typography.bodyLarge)
-            Text(
-                text = "Location: Lat ${companyGeoPoint.value.latitude}, Lng ${companyGeoPoint.value.longitude}",
-                style = MaterialTheme.typography.bodyLarge
-            )
-        }
-
-         */
     }
 }

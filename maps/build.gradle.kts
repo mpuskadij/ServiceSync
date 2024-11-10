@@ -1,11 +1,15 @@
+import java.io.FileInputStream
+import java.util.Properties
+
 plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.kotlin.compose)
 }
 
 android {
     namespace = "com.example.maps"
-    compileSdk = 34
+    compileSdk = 35
 
     defaultConfig {
         minSdk = 24
@@ -14,6 +18,10 @@ android {
         consumerProguardFiles("consumer-rules.pro")
     }
 
+
+    buildFeatures {
+        compose = true
+    }
     buildTypes {
         release {
             isMinifyEnabled = false
@@ -36,8 +44,9 @@ dependencies {
     //Google Maps
     implementation(libs.maps.compose)
 
-    //MapLibre
-    implementation ("org.maplibre.gl:android-sdk:11.6.1")
+    //OpenStreetMap compose
+    implementation ("org.osmdroid:osmdroid-android:6.1.16")
+    implementation ("tech.utsmankece:osm-android-compose:0.0.5")
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)

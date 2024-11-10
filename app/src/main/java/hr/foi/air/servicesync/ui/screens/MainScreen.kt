@@ -1,6 +1,6 @@
 package hr.foi.air.servicesync.ui.screens
 
-import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Icon
@@ -16,6 +16,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.compose.surfaceContainerDark
 import com.example.compose.surfaceContainerLight
+import hr.foi.air.servicesync.ui.components.isDark
 import hr.foi.air.servicesync.ui.contents.CompanyDetailsContent
 import hr.foi.air.servicesync.ui.items.navItems
 
@@ -27,7 +28,7 @@ fun MainScreen(
 
     val navItemList = navItems()
     Scaffold(
-        containerColor = if (isSystemInDarkTheme()) surfaceContainerDark else surfaceContainerLight,
+        containerColor = isDark(surfaceContainerDark, surfaceContainerLight),
         modifier = Modifier.fillMaxSize(),
         bottomBar = {
             NavigationBar() {
@@ -49,7 +50,9 @@ fun MainScreen(
         NavHost(
             navController = navController,
             startDestination = "search",
-            modifier = Modifier.padding(innerPadding)
+            modifier = Modifier
+                .padding(innerPadding)
+                .background(isDark(surfaceContainerDark, surfaceContainerLight))
         ) {
             composable("search") {
                 CompanyDetailsContent(modifier = Modifier, context = LocalContext.current)

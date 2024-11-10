@@ -14,6 +14,7 @@ import hr.foi.air.servicesync.ui.components.Greeting
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        FirebaseAuth.getInstance().signOut()
 
         val user = FirebaseAuth.getInstance().currentUser
         val startDestination = if (user != null) "main" else "login"

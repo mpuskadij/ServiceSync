@@ -12,4 +12,5 @@
     <string name="working_hours">Radno vrijeme</string>
     <string name="location">Lokacija</string>
     <string name="reviews">Recenzije</string>
+    <string name="description">Opis usluge</string>
 </resources>

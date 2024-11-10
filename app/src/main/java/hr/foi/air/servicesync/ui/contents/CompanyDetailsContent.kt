@@ -10,7 +10,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.ListItem
@@ -45,8 +44,7 @@ fun CompanyDetailsContent(
     val companyGeoPoint = remember { mutableStateOf(GeoPoint(0.0, 0.0)) }
     val isLoading = remember { mutableStateOf(true) }
 
-    LaunchedEffect(Unit)
-    {
+    LaunchedEffect(Unit) {
         firestoreCompanyDetails.loadCompanyName(context) { name ->
             companyName.value = name ?: "No name found!"
             isLoading.value = false
@@ -68,6 +66,7 @@ fun CompanyDetailsContent(
             isLoading.value = false
         }
     }
+
     if (isLoading.value) {
         Text("Loading data...", modifier = Modifier.padding(16.dp))
     } else {
@@ -79,15 +78,24 @@ fun CompanyDetailsContent(
                 .padding(WindowInsets.navigationBars.asPaddingValues())
                 .verticalScroll(rememberScrollState())
         ) {
-            val headlineModifier = Modifier.fillMaxWidth().padding(8.dp)
             val headlineTextStyle = MaterialTheme.typography.headlineMedium
 
-
             CompanyNameAndImage(companyName.value)
-            Spacer(modifier = Modifier.size(50.dp))
 
-            CompanyDescription(companyDescription.value)
-            Spacer(modifier = Modifier.size(25.dp))
+            ListItem(
+                headlineContent = {
+                    Text(
+                        text = stringResource(id = R.string.description),
+                        color = MaterialTheme.colorScheme.onSurface,
+                        style = headlineTextStyle,
+                        modifier = Modifier.fillMaxWidth().padding(vertical = 10.dp)
+                    )
+                    Spacer(modifier = Modifier.height(25.dp))
+                },
+                supportingContent = {
+                    CompanyDescription(companyDescription.value)
+                }
+            )
 
             ListItem(
                 headlineContent = {
@@ -99,18 +107,24 @@ fun CompanyDetailsContent(
                     )
                 },
                 supportingContent = {
-                    Column {
-                        ProvidedServicesListItem(companyCategory.value)
-                    }
-                },
+                    ProvidedServicesListItem(companyCategory.value)
+                }
             )
 
-            Text(
-                text = "Working Hours: ${companyWorkingHours.value}",
-                style = MaterialTheme.typography.bodyLarge,
-                modifier = Modifier.padding(start = 16.dp, top = 8.dp)
+            ListItem(
+                headlineContent = {
+                    Text(
+                        text = stringResource(id = R.string.working_hours),
+                        color = MaterialTheme.colorScheme.onSurface,
+                        style = headlineTextStyle,
+                        modifier = Modifier.fillMaxWidth().padding(vertical = 10.dp)
+                    )
+                    Spacer(modifier = Modifier.height(25.dp))
+                },
+                supportingContent = {
+                    Text("${companyWorkingHours.value}")
+                }
             )
-            Spacer(Modifier.size(25.dp))
 
             ListItem(
                 headlineContent = {
@@ -122,40 +136,25 @@ fun CompanyDetailsContent(
                     )
                 },
                 supportingContent = {
-                    Column {
-                        ProvidedServicesListItem(companyGeoPoint.value.toString())
-                    }
-                },
-            )
-
-
-            Text(
-                text = stringResource(R.string.reviews),
-                style = headlineTextStyle,
-                modifier = headlineModifier
-            )
-
-            Spacer(Modifier.height(200.dp))
-
-            if (context != null) {
-                LaunchedEffect(Unit) {
-                    firestoreCompanyDetails.loadCompanyName(context) { name ->
-                        companyName.value = name ?: "No name found!"
-                    }
-                    firestoreCompanyDetails.loadCompanyDescription(context) { description ->
-                        companyDescription.value = description ?: "No description found!"
-                    }
-                    firestoreCompanyDetails.loadCompanyCategory(context) { category ->
-                        companyCategory.value = category ?: "No category found!"
-                    }
-                    firestoreCompanyDetails.loadCompanyWorkingHours(context) { workingHours ->
-                        companyWorkingHours.value = workingHours ?: 0
-                    }
-                    firestoreCompanyDetails.loadCompanyGeopoint(context) { geopoint ->
-                        companyGeoPoint.value = geopoint ?: GeoPoint(0.0, 0.0)
-                    }
+                    ProvidedServicesListItem(companyGeoPoint.value.toString())
                 }
-            }
+            )
+            ListItem(
+                headlineContent = {
+                    Text(
+                        text = stringResource(R.string.reviews),
+                        color = MaterialTheme.colorScheme.onSurface,
+                        style = headlineTextStyle,
+                        modifier = Modifier.fillMaxWidth().padding(vertical = 10.dp)
+                    )
+                    Spacer(modifier = Modifier.height(25.dp))
+                },
+                supportingContent = {
+                    Text(
+                        text = "Ovdje će biti recenzije"
+                    )
+                }
+            )
         }
     }
 }

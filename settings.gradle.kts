@@ -21,4 +21,4 @@ dependencyResolutionManagement {
 
 rootProject.name = "ServiceSync"
 include(":app")
- 
+include(":maps")

@@ -17,6 +17,9 @@ navigationRuntimeKtx = "2.8.3"
 firebaseFirestoreKtx = "25.1.1"
 appcompat = "1.6.1"
 materialVersion = "1.10.0"
+runtimeAndroid = "1.7.5"
+uiAndroid = "1.7.5"
+foundationLayoutAndroid = "1.7.5"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -45,6 +48,9 @@ firebase-firestore-ktx = { group = "com.google.firebase", name = "firebase-fires
 androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
 maps-compose = { module = "com.google.maps.android:maps-compose", version.ref = "mapsCompose" }
 material = { group = "com.google.android.material", name = "material", version.ref = "materialVersion" }
+androidx-runtime-android = { group = "androidx.compose.runtime", name = "runtime-android", version.ref = "runtimeAndroid" }
+androidx-ui-android = { group = "androidx.compose.ui", name = "ui-android", version.ref = "uiAndroid" }
+androidx-foundation-layout-android = { group = "androidx.compose.foundation", name = "foundation-layout-android", version.ref = "foundationLayoutAndroid" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

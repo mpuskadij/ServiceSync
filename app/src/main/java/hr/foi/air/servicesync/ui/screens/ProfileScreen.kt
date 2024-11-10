@@ -38,13 +38,22 @@ fun ProfileScreen(modifier: Modifier = Modifier, onLogoutClick: () -> Unit) {
                 title = { Text(text = "Profil", style = MaterialTheme.typography.titleLarge) },
                 actions = {
                     Box(modifier = Modifier.width(100.dp)) {
-                        TextButton(
+                        Card(
                             onClick = { onLogoutClick() },
-                            modifier = Modifier.align(Alignment.CenterEnd)
+                            shape = MaterialTheme.shapes.small,
+                            colors = CardDefaults.cardColors(
+                                containerColor = MaterialTheme.colorScheme.primaryContainer
+                            ),
+                            modifier = Modifier
+                                .align(Alignment.CenterEnd)
+                                .padding(end = 8.dp)
                         ) {
                             Text(
                                 text = "Logout",
-                                color = isDark(primaryDark, primaryLight)
+                                modifier = Modifier
+                                    .padding(horizontal = 16.dp, vertical = 8.dp),
+                                color = MaterialTheme.colorScheme.onPrimaryContainer,
+                                style = MaterialTheme.typography.labelLarge
                             )
                         }
                     }
@@ -69,7 +78,7 @@ fun ProfileInfoBox(label: String, value: String) {
         ),
         shape = MaterialTheme.shapes.medium,
         elevation = CardDefaults.cardElevation(
-            defaultElevation = 4.dp
+            defaultElevation = 6.dp
         )
     ) {
         Column(

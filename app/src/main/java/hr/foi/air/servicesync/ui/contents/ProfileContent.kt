@@ -14,6 +14,7 @@ import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.TextField
@@ -183,9 +184,13 @@ fun ProfileContent(modifier: Modifier = Modifier) {
 
                 Button(
                     onClick = { isEditing = true },
-                    colors = ButtonDefaults.buttonColors(containerColor = isDark(Color(0xFF8FA7D6), Color(0xFF65558F))),
+                    colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primaryContainer),
                 ) {
-                    Text("Uredi")
+                    Text(
+                        color = MaterialTheme.colorScheme.onPrimaryContainer,
+                        style = MaterialTheme.typography.labelLarge,
+                        text = "Uredi"
+                    )
                 }
             }
         }

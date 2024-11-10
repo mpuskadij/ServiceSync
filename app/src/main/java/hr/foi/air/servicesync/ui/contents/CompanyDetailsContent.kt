@@ -22,6 +22,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -141,34 +142,17 @@ fun CompanyDetailsContent(
                     )
                 },
                 supportingContent = {
-                    ProvidedServicesListItem(companyGeoPoint.value.toString())
+                    CompanyLocation(geoPoint = companyGeoPoint.value, GoogleMapProvider())
                 }
 
-        )
-
-        Text(text = stringResource(R.string.reviews), style = headlineTextStyle, modifier = headlineModifier)
-
-        if (context != null) {
-            LaunchedEffect(Unit) {
-                firestoreCompanyDetails.loadCompanyName(context) { name ->
-                    companyName.value = name ?: "No name found!"
             )
-            ListItem(
-                headlineContent = {
-                    Text(
-                        text = stringResource(R.string.reviews),
-                        color = MaterialTheme.colorScheme.onSurface,
-                        style = headlineTextStyle,
-                        modifier = Modifier.fillMaxWidth().padding(vertical = 10.dp)
-                    )
-                    Spacer(modifier = Modifier.height(25.dp))
-                },
-                supportingContent = {
-                    Text(
-                        text = "Ovdje će biti recenzije"
-                    )
-                }
+
+            Text(
+                text = stringResource(R.string.reviews),
+                style = headlineTextStyle,
+                modifier = Modifier.fillMaxWidth().padding(vertical = 10.dp)
             )
+
         }
     }
 }
@@ -176,5 +160,5 @@ fun CompanyDetailsContent(
 @Preview
 @Composable
 fun CompanyDetailsPreview(){
-    CompanyDetailsContent()
+    CompanyDetailsContent(context = LocalContext.current)
 }

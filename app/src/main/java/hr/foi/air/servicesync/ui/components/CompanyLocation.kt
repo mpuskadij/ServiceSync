@@ -17,13 +17,6 @@ import hr.foi.air.servicesync.R
 @Composable
 fun CompanyLocation(geoPoint: GeoPoint, mapProvider: IMapProvider)
 {
-    /*
-    val headlineModifier = Modifier.fillMaxWidth().padding(8.dp)
-    val headlineTextStyle =  MaterialTheme.typography.headlineMedium
-    Text(text = stringResource(R.string.location), modifier = headlineModifier, style = headlineTextStyle)
-
-     */
-
     Box(modifier = Modifier.fillMaxWidth().height(200.dp)) {
         mapProvider.CreateMap(geoPoint.latitude,geoPoint.longitude)
     }

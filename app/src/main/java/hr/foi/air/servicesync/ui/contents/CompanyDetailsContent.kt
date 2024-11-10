@@ -98,7 +98,7 @@ fun CompanyDetailsContent(
             },
             supportingContent = {
                 Column {
-                    ProvidedServicesListItem(companyGeoPoint.value.toString())
+                    CompanyLocation(companyGeoPoint.value,OpenStreetMapProvider())
                 }
             },
         )

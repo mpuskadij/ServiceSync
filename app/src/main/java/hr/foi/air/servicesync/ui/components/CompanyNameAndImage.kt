@@ -5,6 +5,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -22,7 +23,7 @@ fun CompanyNameAndImage(companyName: String) {
     Box(
         modifier = Modifier
             .fillMaxWidth()
-            .height(300.dp),
+            .height(200.dp),
         contentAlignment = Alignment.BottomStart
     ) {
         Box(modifier = Modifier.matchParentSize()) {
@@ -39,6 +40,7 @@ fun CompanyNameAndImage(companyName: String) {
             )
         }
         Text(
+            modifier = Modifier.padding(10.dp),
             text = companyName,
             color = Color.White,
             style = TextStyle(

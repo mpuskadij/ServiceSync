@@ -41,6 +41,10 @@ android {
 }
 
 dependencies {
+
+    //maps module
+    project(":maps")
+
     //NAV
     implementation(libs.androidx.navigation.runtime.ktx)
     implementation(libs.androidx.navigation.compose)

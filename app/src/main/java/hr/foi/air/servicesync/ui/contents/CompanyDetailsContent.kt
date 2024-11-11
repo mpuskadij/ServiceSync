@@ -26,12 +26,15 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.example.compose.onSurfaceDark
+import com.example.compose.onSurfaceLight
 import com.google.firebase.firestore.GeoPoint
 import hr.foi.air.servicesync.R
 import hr.foi.air.servicesync.backend.FirestoreCompanyDetails
 import hr.foi.air.servicesync.ui.components.CompanyDescription
 import hr.foi.air.servicesync.ui.components.CompanyLocation
 import hr.foi.air.servicesync.ui.components.CompanyNameAndImage
+import hr.foi.air.servicesync.ui.components.isDark
 import hr.foi.air.servicesync.ui.items.ProvidedServicesListItem
 import mapproviders.GoogleMapProvider
 import mapproviders.OpenStreetMapProvider
@@ -92,7 +95,7 @@ fun CompanyDetailsContent(
                 headlineContent = {
                     Text(
                         text = stringResource(id = R.string.description),
-                        color = MaterialTheme.colorScheme.onSurface,
+                        color = isDark(onSurfaceDark, onSurfaceLight),
                         style = headlineTextStyle,
                         modifier = Modifier.fillMaxWidth().padding(vertical = 10.dp)
                     )
@@ -107,7 +110,7 @@ fun CompanyDetailsContent(
                 headlineContent = {
                     Text(
                         text = stringResource(id = R.string.services),
-                        color = MaterialTheme.colorScheme.onSurface,
+                        color = isDark(onSurfaceDark, onSurfaceLight),
                         style = headlineTextStyle,
                         modifier = Modifier.fillMaxWidth().padding(vertical = 10.dp)
                     )
@@ -121,7 +124,7 @@ fun CompanyDetailsContent(
                 headlineContent = {
                     Text(
                         text = stringResource(id = R.string.working_hours),
-                        color = MaterialTheme.colorScheme.onSurface,
+                        color = isDark(onSurfaceDark, onSurfaceLight),
                         style = headlineTextStyle,
                         modifier = Modifier.fillMaxWidth().padding(vertical = 10.dp)
                     )
@@ -136,7 +139,7 @@ fun CompanyDetailsContent(
                 headlineContent = {
                     Text(
                         text = stringResource(id = R.string.location),
-                        color = MaterialTheme.colorScheme.onSurface,
+                        color = isDark(onSurfaceDark, onSurfaceLight),
                         style = headlineTextStyle,
                         modifier = Modifier.fillMaxWidth().padding(vertical = 10.dp)
                     )
@@ -149,6 +152,7 @@ fun CompanyDetailsContent(
 
             Text(
                 text = stringResource(R.string.reviews),
+                color = isDark(onSurfaceDark, onSurfaceLight),
                 style = headlineTextStyle,
                 modifier = Modifier.fillMaxWidth().padding(vertical = 10.dp)
             )

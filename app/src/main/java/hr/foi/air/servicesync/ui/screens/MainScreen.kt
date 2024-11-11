@@ -14,6 +14,9 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.example.compose.inverseOnSurfaceDark
+import com.example.compose.onSurfaceDark
+import com.example.compose.onSurfaceLight
 import com.example.compose.surfaceContainerDark
 import com.example.compose.surfaceContainerLight
 import hr.foi.air.servicesync.ui.components.isDark
@@ -28,7 +31,7 @@ fun MainScreen(
 
     val navItemList = navItems()
     Scaffold(
-        containerColor = isDark(surfaceContainerDark, surfaceContainerLight),
+        containerColor = isDark(onSurfaceLight, onSurfaceDark),
         modifier = Modifier.fillMaxSize(),
         bottomBar = {
             NavigationBar() {

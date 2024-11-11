@@ -2,7 +2,9 @@ package hr.foi.air.servicesync.ui.screens
 
 import android.widget.Toast
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -26,7 +28,9 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.BlendMode
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -34,6 +38,8 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.example.compose.primaryDark
+import com.example.compose.primaryLight
 import hr.foi.air.servicesync.R
 import hr.foi.air.servicesync.business.loginRegisterHandler
 import hr.foi.air.servicesync.ui.components.isDark
@@ -66,13 +72,22 @@ fun LoginScreen(
                     verticalArrangement = Arrangement.Center,
                     horizontalAlignment = Alignment.CenterHorizontally
                 ){
-                    Image(
-                        painter = painterResource(R.drawable.logo),
-                        contentDescription = "ServiceSync logo",
-                        modifier = Modifier
-                            .size(280.dp)
-                            .padding(8.dp)
-                    )
+                    val isDarkTheme = isSystemInDarkTheme()
+                    Box(modifier = Modifier)
+                    {
+                        Image(
+                            painter = painterResource(R.drawable.logo),
+                            contentDescription = "ServiceSync logo",
+                            modifier = Modifier
+                                .size(280.dp)
+                                .padding(8.dp),
+                            colorFilter = if (isDarkTheme) {
+                                ColorFilter.tint(Color.White, BlendMode.SrcIn)
+                            } else {
+                                ColorFilter.tint(Color.Black, BlendMode.SrcIn)
+                            }
+                        )
+                    }
                 }
                 Spacer(modifier = Modifier.height(8.dp))
                 Text(

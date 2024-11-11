@@ -1,7 +1,6 @@
 package hr.foi.air.servicesync.ui.contents
 
 import android.content.Context
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -9,12 +8,12 @@ import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.ListItem
-import androidx.compose.material3.ListItemDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -27,8 +26,8 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.example.compose.surfaceContainerDark
-import com.example.compose.surfaceContainerLight
+import com.example.compose.onSurfaceDark
+import com.example.compose.onSurfaceLight
 import com.google.firebase.firestore.GeoPoint
 import hr.foi.air.servicesync.R
 import hr.foi.air.servicesync.backend.FirestoreCompanyDetails
@@ -38,6 +37,7 @@ import hr.foi.air.servicesync.ui.components.CompanyNameAndImage
 import hr.foi.air.servicesync.ui.components.isDark
 import hr.foi.air.servicesync.ui.items.ProvidedServicesListItem
 import mapproviders.GoogleMapProvider
+import mapproviders.OpenStreetMapProvider
 
 @Composable
 fun CompanyDetailsContent(
@@ -86,18 +86,16 @@ fun CompanyDetailsContent(
                 .fillMaxWidth()
                 .padding(WindowInsets.navigationBars.asPaddingValues())
                 .verticalScroll(rememberScrollState())
-                .background(isDark(surfaceContainerDark, surfaceContainerLight))
         ) {
             val headlineTextStyle = MaterialTheme.typography.headlineMedium
 
             CompanyNameAndImage(companyName.value)
 
             ListItem(
-                colors = ListItemDefaults.colors(isDark(surfaceContainerDark, surfaceContainerLight)),
                 headlineContent = {
                     Text(
                         text = stringResource(id = R.string.description),
-                        color = MaterialTheme.colorScheme.onSurface,
+                        color = isDark(onSurfaceDark, onSurfaceLight),
                         style = headlineTextStyle,
                         modifier = Modifier.fillMaxWidth().padding(vertical = 10.dp)
                     )
@@ -109,11 +107,10 @@ fun CompanyDetailsContent(
             )
 
             ListItem(
-                colors = ListItemDefaults.colors(isDark(surfaceContainerDark, surfaceContainerLight)),
                 headlineContent = {
                     Text(
                         text = stringResource(id = R.string.services),
-                        color = MaterialTheme.colorScheme.onSurface,
+                        color = isDark(onSurfaceDark, onSurfaceLight),
                         style = headlineTextStyle,
                         modifier = Modifier.fillMaxWidth().padding(vertical = 10.dp)
                     )
@@ -124,11 +121,10 @@ fun CompanyDetailsContent(
             )
 
             ListItem(
-                colors = ListItemDefaults.colors(isDark(surfaceContainerDark, surfaceContainerLight)),
                 headlineContent = {
                     Text(
                         text = stringResource(id = R.string.working_hours),
-                        color = MaterialTheme.colorScheme.onSurface,
+                        color = isDark(onSurfaceDark, onSurfaceLight),
                         style = headlineTextStyle,
                         modifier = Modifier.fillMaxWidth().padding(vertical = 10.dp)
                     )
@@ -140,11 +136,10 @@ fun CompanyDetailsContent(
             )
 
             ListItem(
-                colors = ListItemDefaults.colors(isDark(surfaceContainerDark, surfaceContainerLight)),
                 headlineContent = {
                     Text(
                         text = stringResource(id = R.string.location),
-                        color = MaterialTheme.colorScheme.onSurface,
+                        color = isDark(onSurfaceDark, onSurfaceLight),
                         style = headlineTextStyle,
                         modifier = Modifier.fillMaxWidth().padding(vertical = 10.dp)
                     )
@@ -157,7 +152,7 @@ fun CompanyDetailsContent(
 
             Text(
                 text = stringResource(R.string.reviews),
-                color = MaterialTheme.colorScheme.onSurface,
+                color = isDark(onSurfaceDark, onSurfaceLight),
                 style = headlineTextStyle,
                 modifier = Modifier.fillMaxWidth().padding(vertical = 10.dp)
             )

@@ -33,6 +33,10 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
+import com.example.compose.onPrimaryDark
+import com.example.compose.onPrimaryLight
+import com.example.compose.primaryDark
+import com.example.compose.primaryLight
 import hr.foi.air.servicesync.R
 import hr.foi.air.servicesync.business.UserDataHandler
 import hr.foi.air.servicesync.ui.components.isDark
@@ -159,7 +163,7 @@ fun ProfileContent(modifier: Modifier = Modifier) {
                         newPasswordEmpty = false
                     },
                     modifier = Modifier.fillMaxWidth(),
-                    colors = ButtonDefaults.buttonColors(containerColor = isDark(Color(0xFF8FA7D6), Color(0xFF65558F)))
+                    colors = ButtonDefaults.buttonColors(containerColor = isDark(primaryDark, primaryLight))
                 ) {
                     Text("Spremi")
                 }
@@ -184,10 +188,10 @@ fun ProfileContent(modifier: Modifier = Modifier) {
 
                 Button(
                     onClick = { isEditing = true },
-                    colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primaryContainer),
+                    colors = ButtonDefaults.buttonColors(containerColor = isDark(primaryDark, primaryLight)),
                 ) {
                     Text(
-                        color = MaterialTheme.colorScheme.onPrimaryContainer,
+                        color = isDark(onPrimaryDark, onPrimaryLight),
                         style = MaterialTheme.typography.labelLarge,
                         text = "Uredi"
                     )

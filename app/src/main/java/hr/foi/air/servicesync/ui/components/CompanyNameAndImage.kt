@@ -23,7 +23,7 @@ fun CompanyNameAndImage(companyName: String) {
     Box(
         modifier = Modifier
             .fillMaxWidth()
-            .height(200.dp),
+            .height(300.dp),
         contentAlignment = Alignment.BottomStart
     ) {
         Box(modifier = Modifier.matchParentSize()) {

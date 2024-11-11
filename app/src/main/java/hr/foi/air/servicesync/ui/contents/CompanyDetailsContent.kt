@@ -2,6 +2,7 @@ package hr.foi.air.servicesync.ui.contents
 
 import android.content.Context
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
@@ -150,11 +151,21 @@ fun CompanyDetailsContent(
 
             )
 
-            Text(
-                text = stringResource(R.string.reviews),
-                color = isDark(onSurfaceDark, onSurfaceLight),
-                style = headlineTextStyle,
-                modifier = Modifier.fillMaxWidth().padding(vertical = 10.dp)
+            ListItem(
+                headlineContent = {
+                    Text(
+                        text = stringResource(id = R.string.reviews),
+                        color = isDark(onSurfaceDark, onSurfaceLight),
+                        style = headlineTextStyle,
+                        modifier = Modifier.fillMaxWidth().padding(vertical = 10.dp)
+                    )
+                },
+                supportingContent = {
+                    Text(
+                        text = "Ovdje će biti recenzije"
+                    )
+                }
+
             )
 
         }

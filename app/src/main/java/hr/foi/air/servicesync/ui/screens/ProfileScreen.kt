@@ -22,10 +22,16 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import com.example.compose.onPrimaryDark
+import com.example.compose.onPrimaryLight
+import com.example.compose.onSurfaceDark
+import com.example.compose.onSurfaceLight
 import com.example.compose.primaryDark
 import com.example.compose.primaryLight
 import com.example.compose.secondaryDark
 import com.example.compose.secondaryLight
+import com.example.compose.surfaceDark
+import com.example.compose.surfaceLight
 import hr.foi.air.servicesync.ui.components.isDark
 import hr.foi.air.servicesync.ui.contents.ProfileContent
 
@@ -42,7 +48,7 @@ fun ProfileScreen(modifier: Modifier = Modifier, onLogoutClick: () -> Unit) {
                             onClick = { onLogoutClick() },
                             shape = MaterialTheme.shapes.small,
                             colors = CardDefaults.cardColors(
-                                containerColor = MaterialTheme.colorScheme.primaryContainer
+                                containerColor = isDark(primaryDark, primaryLight)
                             ),
                             modifier = Modifier
                                 .align(Alignment.CenterEnd)
@@ -52,7 +58,7 @@ fun ProfileScreen(modifier: Modifier = Modifier, onLogoutClick: () -> Unit) {
                                 text = "Logout",
                                 modifier = Modifier
                                     .padding(horizontal = 16.dp, vertical = 8.dp),
-                                color = MaterialTheme.colorScheme.onPrimaryContainer,
+                                color = isDark(onPrimaryDark, onPrimaryLight),
                                 style = MaterialTheme.typography.labelLarge
                             )
                         }
@@ -74,7 +80,7 @@ fun ProfileInfoBox(label: String, value: String) {
             .fillMaxWidth()
             .padding(vertical = 8.dp, horizontal = 16.dp),
         colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.surface
+            containerColor = isDark(surfaceDark, surfaceLight)
         ),
         shape = MaterialTheme.shapes.medium,
         elevation = CardDefaults.cardElevation(
@@ -89,7 +95,7 @@ fun ProfileInfoBox(label: String, value: String) {
             Text(
                 text = label,
                 style = MaterialTheme.typography.labelLarge.copy(
-                    color = MaterialTheme.colorScheme.secondary,
+                    color = isDark(secondaryDark, secondaryLight),
                     fontWeight = FontWeight.SemiBold
                 )
             )
@@ -97,7 +103,7 @@ fun ProfileInfoBox(label: String, value: String) {
             Text(
                 text = value,
                 style = MaterialTheme.typography.bodyLarge.copy(
-                    color = MaterialTheme.colorScheme.onSurface,
+                    color = isDark(onSurfaceDark, onSurfaceLight),
                 )
             )
         }

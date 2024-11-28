@@ -25,8 +25,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import hr.foi.air.servicesync.R
 import java.text.DateFormat
-import java.text.ParseException
 import java.util.Date
+import java.util.TimeZone
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -57,8 +57,9 @@ fun ServiceReservationScreen(serviceName: String) {
 
 
                 if (showDatePicker) {
-                                var selectedDateInMiliseconds : Long
-                                val dateFormat = DateFormat.getDateInstance()
+                        val selectedDateInMiliseconds : Long
+                        val dateFormat = DateFormat.getDateInstance()
+                        dateFormat.timeZone = TimeZone.getTimeZone("UTC")
 
                         if (date.isNotEmpty()) {
                                 selectedDateInMiliseconds = dateFormat.parse(date)!!.time
@@ -68,7 +69,7 @@ fun ServiceReservationScreen(serviceName: String) {
                         }
 
                         val datePickerState = rememberDatePickerState(initialSelectedDateMillis = selectedDateInMiliseconds )
-                                DatePickerDialog(onDismissRequest = {
+                        DatePickerDialog(onDismissRequest = {
                                         showDatePicker = false
                                 }, confirmButton = {
                                         TextButton(onClick = {

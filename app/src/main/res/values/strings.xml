@@ -16,4 +16,5 @@
     <string name="logo_text">Sve na jednom mjestu</string>
     <string name="confirm">Potvrdi</string>
     <string name="cancel">Odustani</string>
+    <string name="select_date">Odaberite datum...</string>
 </resources>

@@ -20,6 +20,7 @@ materialVersion = "1.10.0"
 runtimeAndroid = "1.7.5"
 uiAndroid = "1.7.5"
 foundationLayoutAndroid = "1.7.5"
+firebaseMessagingKtx = "24.1.0"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -51,6 +52,7 @@ material = { group = "com.google.android.material", name = "material", version.r
 androidx-runtime-android = { group = "androidx.compose.runtime", name = "runtime-android", version.ref = "runtimeAndroid" }
 androidx-ui-android = { group = "androidx.compose.ui", name = "ui-android", version.ref = "uiAndroid" }
 androidx-foundation-layout-android = { group = "androidx.compose.foundation", name = "foundation-layout-android", version.ref = "foundationLayoutAndroid" }
+firebase-messaging-ktx = { group = "com.google.firebase", name = "firebase-messaging-ktx", version.ref = "firebaseMessagingKtx" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

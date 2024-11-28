@@ -118,6 +118,14 @@ fun LoginScreen(
 
                 Button(
                     onClick =  {
+                        /*
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                            ActivityCompat.requestPermissions(
+                                this,
+                                arrayOf(android.Manifest.permission.POST_NOTIFICATIONS),
+                                REQUEST_CODE
+                            )
+                        }*/
                         var checkedEmail:String
                         var checkedPassword:String
                         if(email==null||email==""){

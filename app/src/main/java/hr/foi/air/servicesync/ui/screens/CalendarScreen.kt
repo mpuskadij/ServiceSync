@@ -3,6 +3,7 @@ package hr.foi.air.servicesync.ui.screens
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -29,7 +30,13 @@ fun CalendarScreen(modifier: Modifier = Modifier) {
         topBar = {
             TopAppBar(
                 title = { Text(text = "Kalendar", style = MaterialTheme.typography.titleLarge) },
-            )
+                windowInsets = WindowInsets(
+                    top = 0.dp,
+                    bottom = 0.dp
+                ),
+                modifier = Modifier
+                    .padding(top = 0.dp)
+                )
         },
         modifier = modifier
     ) { innerPadding ->

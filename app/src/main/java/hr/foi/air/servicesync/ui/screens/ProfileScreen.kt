@@ -3,6 +3,7 @@ package hr.foi.air.servicesync.ui.screens
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -41,6 +42,12 @@ fun ProfileScreen(modifier: Modifier = Modifier, onLogoutClick: () -> Unit) {
     Scaffold(
         topBar = {
             TopAppBar(
+                windowInsets = WindowInsets(
+                    top = 0.dp,
+                    bottom = 0.dp
+                ),
+                modifier = Modifier
+                    .padding(top = 0.dp),
                 title = { Text(text = "Profil", style = MaterialTheme.typography.titleLarge) },
                 actions = {
                     Box(modifier = Modifier.width(100.dp)) {

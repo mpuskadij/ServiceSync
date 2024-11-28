@@ -24,6 +24,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import hr.foi.air.servicesync.R
+import hr.foi.air.servicesync.business.PresentAndFutureSelectableDates
 import java.text.DateFormat
 import java.util.Date
 import java.util.TimeZone
@@ -67,8 +68,7 @@ fun ServiceReservationScreen(serviceName: String) {
                         else {
                                 selectedDateInMiliseconds = System.currentTimeMillis()
                         }
-
-                        val datePickerState = rememberDatePickerState(initialSelectedDateMillis = selectedDateInMiliseconds )
+                        val datePickerState = rememberDatePickerState(initialSelectedDateMillis = selectedDateInMiliseconds, selectableDates = PresentAndFutureSelectableDates())
                         DatePickerDialog(onDismissRequest = {
                                         showDatePicker = false
                                 }, confirmButton = {
@@ -79,6 +79,8 @@ fun ServiceReservationScreen(serviceName: String) {
                                                         date = formattedDate
                                                 }
                                                 showDatePicker = false
+
+                                                //TODO add further logic when connecting to firebase
 
                                         },) {
                                                 Text(text = stringResource(R.string.confirm))

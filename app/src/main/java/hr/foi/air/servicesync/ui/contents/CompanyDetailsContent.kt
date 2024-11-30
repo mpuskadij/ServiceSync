@@ -35,6 +35,7 @@ import hr.foi.air.servicesync.backend.FirestoreCompanyDetails
 import hr.foi.air.servicesync.ui.components.CompanyDescription
 import hr.foi.air.servicesync.ui.components.CompanyLocation
 import hr.foi.air.servicesync.ui.components.CompanyNameAndImage
+import hr.foi.air.servicesync.ui.components.ReviewCard
 import hr.foi.air.servicesync.ui.components.isDark
 import hr.foi.air.servicesync.ui.items.ProvidedServicesListItem
 import mapproviders.GoogleMapProvider
@@ -161,9 +162,7 @@ fun CompanyDetailsContent(
                     )
                 },
                 supportingContent = {
-                    Text(
-                        text = "Ovdje će biti recenzije"
-                    )
+                    ReviewCard()
                 }
 
             )

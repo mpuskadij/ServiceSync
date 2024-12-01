@@ -12,11 +12,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.text.input.TextFieldLineLimits
-import androidx.compose.foundation.text.input.rememberTextFieldState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Search
-import androidx.compose.material3.Card
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
@@ -31,15 +28,10 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.SolidColor
-import androidx.compose.ui.graphics.graphicsLayer
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.TextFieldValue
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import coil.compose.AsyncImage
 import com.example.compose.onSurfaceDark
 import com.example.compose.onSurfaceLight
 import com.example.compose.onSurfaceVariantDark
@@ -47,6 +39,7 @@ import com.example.compose.onSurfaceVariantLight
 import com.example.compose.surfaceContainerHighDark
 import com.example.compose.surfaceContainerHighLight
 import com.google.firebase.firestore.FirebaseFirestore
+import hr.foi.air.servicesync.ui.components.CompanyCard
 import hr.foi.air.servicesync.ui.components.isDark
 
 @Composable
@@ -54,6 +47,7 @@ fun SearchContent(modifier: Modifier = Modifier, navController: NavController)
 {
     val db = FirebaseFirestore.getInstance()
     val companyNames = remember { mutableStateOf<List<Pair<String, String?>>>(emptyList()) }
+    val companyCategory = remember { mutableStateOf<List<Pair<String, String>>>(emptyList()) }
     val filteredCompanyName = remember { mutableStateOf<List<Pair<String, String?>>>(emptyList()) }
     val isLoading = remember { mutableStateOf(true) }
     var searchQuery by remember { mutableStateOf(TextFieldValue(""))}
@@ -88,6 +82,35 @@ fun SearchContent(modifier: Modifier = Modifier, navController: NavController)
             }
     }
 
+    LaunchedEffect(Unit)
+    {
+        db.collection("companies")
+            .get()
+            .addOnSuccessListener { documents ->
+                val categories = documents.mapNotNull { doc ->
+                    val name = doc.getString("name") ?: "Unknown"
+                    val category = doc.getString("category") ?: "Unknown"
+                    if (name.isNotEmpty() && category.isNotEmpty())
+                    {
+                        name to category
+                    }
+                    else
+                    {
+                        null
+                    }
+                }
+
+                Log.d("SearchContent", "Fetched categories: ${categories}")
+
+                companyCategory.value = categories
+                isLoading.value = false
+            }
+            .addOnFailureListener { exception ->
+                Log.e("SearchContent", "Error fetching categories", exception)
+                isLoading.value = false
+            }
+    }
+
     LaunchedEffect(searchQuery.text)
     {
         filteredCompanyName.value = if (searchQuery.text.isEmpty())
@@ -106,12 +129,16 @@ fun SearchContent(modifier: Modifier = Modifier, navController: NavController)
         Log.d("SearchContent", "Filtered companies: ${filteredCompanyName.value}")
     }
 
+    val combinedCompanyData = filteredCompanyName.value.map { company ->
+        val category = companyCategory.value.find { it.first == company.first }?.second ?: "Unknown"
+        company.first to (company.second to category)
+    }
+
     Column(
         modifier = modifier
             .fillMaxSize()
             .padding(16.dp)
     ) {
-
         TextField(
             value = searchQuery.text,
             onValueChange = { newText: String ->
@@ -133,7 +160,8 @@ fun SearchContent(modifier: Modifier = Modifier, navController: NavController)
             },
             textStyle = TextStyle(color = isDark(onSurfaceVariantDark, onSurfaceVariantLight)),
             modifier = Modifier
-                .fillMaxWidth()
+                .fillMaxWidth(0.95f)
+                .align(Alignment.CenterHorizontally)
                 .height(56.dp)
                 .background(
                     color = isDark(surfaceContainerHighDark, surfaceContainerHighLight),
@@ -167,10 +195,12 @@ fun SearchContent(modifier: Modifier = Modifier, navController: NavController)
                     .padding(top = 8.dp),
                 verticalArrangement = Arrangement.spacedBy(8.dp)
             ) {
-                items(filteredCompanyName.value) { (companyName, imageUrl) ->
+                items(combinedCompanyData) { (companyName, imageUrlAndCompany) ->
+                    val (imageUrl, companyCategory) = imageUrlAndCompany
                     CompanyCard(
                         companyName = companyName,
                         imageUrl = imageUrl,
+                        companyCategory = companyCategory,
                         onCardClick = {
                             navController.navigate("company/$companyName")
                         }
@@ -181,49 +211,3 @@ fun SearchContent(modifier: Modifier = Modifier, navController: NavController)
     }
 }
 
-@Composable
-fun CompanyCard(
-    companyName: String,
-    imageUrl: String?,
-    onCardClick: () -> Unit,
-    modifier: Modifier = Modifier
-) {
-    Card(
-        modifier = modifier
-            .fillMaxWidth()
-            .height(120.dp)
-            .padding(8.dp),
-        shape = RoundedCornerShape(12.dp),
-        onClick = onCardClick
-    ) {
-        Box(
-            modifier = Modifier.fillMaxSize()
-        ) {
-            imageUrl?.let {
-                AsyncImage(
-                    model = it,
-                    contentDescription = "$companyName background",
-                    contentScale = ContentScale.Crop,
-                    modifier = Modifier.fillMaxSize()
-                )
-            }
-
-            Box(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .graphicsLayer
-                    {
-                        alpha = 0.8f
-                    }
-                    .background(Color.Black.copy(alpha = 0.6f))
-            ) {
-                Text(
-                    text = companyName,
-                    textAlign = TextAlign.Center,
-                    color = Color.White,
-                    modifier = Modifier.align(Alignment.Center)
-                )
-            }
-        }
-    }
-}

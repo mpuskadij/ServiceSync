@@ -2,7 +2,9 @@ package hr.foi.air.servicesync.ui.screens
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -13,6 +15,7 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.compose.onSurfaceDark
 import com.example.compose.onSurfaceLight
@@ -26,11 +29,14 @@ import hr.foi.air.servicesync.ui.contents.SearchContent
 fun SearchScreen(modifier: Modifier = Modifier, navController: NavController) {
 
     Scaffold(
-        modifier = modifier
+        modifier = modifier.padding()
     ) { innerPadding ->
         Column(
             modifier = modifier
-                .padding(innerPadding)
+                .windowInsetsPadding(WindowInsets(
+                    top = 30.dp,
+                    bottom = 0.dp
+                ))
         ) {
             SearchContent(modifier = Modifier, navController)
         }

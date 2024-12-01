@@ -19,9 +19,10 @@ class FirestoreService {
             "reservationDate" to reservationDate,
             "userId" to userId
         )
+        val documentId = "$companyId-$userId-$reservationDate"
 
         db.collection("reservations")
-            .add(reservation)
+            .document(documentId).set(reservation)
             .addOnSuccessListener { onSuccess() }
             .addOnFailureListener { onFailure(it) }
     }

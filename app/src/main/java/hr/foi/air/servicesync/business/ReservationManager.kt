@@ -19,4 +19,13 @@ class ReservationManager(private val firestoreService: FirestoreService) {
 
         firestoreService.saveReservation(companyId, serviceName, reservationDate, userId, onSuccess, onFailure)
     }
+
+    fun getAvailableTimeSlots(
+        companyId: String,
+        date: Long,
+        onSuccess: (List<Long>) -> Unit,
+        onFailure: (Exception) -> Unit
+    ) {
+        firestoreService.getAvailableTimeSlots(companyId, date, onSuccess, onFailure)
+    }
 }

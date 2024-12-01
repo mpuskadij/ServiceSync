@@ -30,7 +30,7 @@ fun SearchScreen(modifier: Modifier = Modifier, navController: NavController) {
 
     Scaffold(
         modifier = modifier.padding()
-    ) { innerPadding ->
+    ) {
         Column(
             modifier = modifier
                 .windowInsetsPadding(WindowInsets(

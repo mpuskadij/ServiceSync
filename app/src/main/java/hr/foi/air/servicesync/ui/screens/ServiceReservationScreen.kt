@@ -1,24 +1,12 @@
 package hr.foi.air.servicesync.ui.screens
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.DatePicker
-import androidx.compose.material3.DatePickerDialog
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
-import androidx.compose.material3.TextField
-import androidx.compose.material3.rememberDatePickerState
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -29,8 +17,7 @@ import hr.foi.air.servicesync.business.PresentAndFutureSelectableDates
 import hr.foi.air.servicesync.business.ReservationManager
 import hr.foi.air.servicesync.data.UserSession
 import java.text.DateFormat
-import java.util.Date
-import java.util.TimeZone
+import java.util.*
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -38,72 +25,49 @@ fun ServiceReservationScreen(serviceName: String, companyId: String) {
     val reservationManager = remember { ReservationManager(FirestoreService()) }
 
     var showDatePicker by remember { mutableStateOf(false) }
-    var date by remember { mutableStateOf("") }
+    var selectedDateMillis by remember { mutableStateOf<Long?>(null) }
+    var availableSlots by remember { mutableStateOf<List<Long>>(emptyList()) }
+    var selectedSlot by remember { mutableStateOf<Long?>(null) }
+    var loading by remember { mutableStateOf(false) }
 
-
-    Column {
+    Column(modifier = Modifier.padding(16.dp)) {
         Text(
-            text = serviceName, style = MaterialTheme.typography.headlineMedium, modifier = Modifier
-                        .fillMaxWidth()
-                        .padding((8.dp))
+            text = serviceName,
+            style = MaterialTheme.typography.headlineMedium,
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(8.dp)
         )
-
-//var showDatePicker by remember { mutableStateOf(false) }
 
         Spacer(modifier = Modifier.height(25.dp))
 
-//var date by remember { mutableStateOf("") }
-
         TextField(
-            value = date,
-            onValueChange = { date = it },
+            value = selectedDateMillis?.let { DateFormat.getDateInstance().format(Date(it)) } ?: "",
+            onValueChange = {},
             readOnly = true,
             enabled = false,
             modifier = Modifier
-                    .clickable { showDatePicker = true }
-                    .fillMaxWidth(),
+                .clickable { showDatePicker = true }
+                .fillMaxWidth(),
             label = { Text(text = stringResource(R.string.select_date)) }
         )
 
-
         if (showDatePicker) {
-            val selectedDateInMiliseconds: Long
-            val dateFormat = DateFormat.getDateInstance()
-            dateFormat.timeZone = TimeZone.getTimeZone("UTC")
-
-            if (date.isNotEmpty()) {
-                selectedDateInMiliseconds = dateFormat.parse(date)!!.time
-            } else {
-                selectedDateInMiliseconds = System.currentTimeMillis()
-            }
             val datePickerState = rememberDatePickerState(
-                initialSelectedDateMillis = selectedDateInMiliseconds,
+                initialSelectedDateMillis = System.currentTimeMillis(),
                 selectableDates = PresentAndFutureSelectableDates()
             )
-            DatePickerDialog(onDismissRequest = {
-                showDatePicker = false
-            },
+            DatePickerDialog(
+                onDismissRequest = { showDatePicker = false },
                 confirmButton = {
                     TextButton(onClick = {
-                        if (datePickerState.selectedDateMillis != null) {
-                            val selectedDate = Date(datePickerState.selectedDateMillis!!)
-                            val formattedDate = dateFormat.format(selectedDate)
-                            date = formattedDate
-
-                                // Firebase logika za spremanje rezervacije
-                            val userId = UserSession.username
-                            reservationManager.saveReservation(
-                                companyId = companyId,
-                                serviceName = serviceName,
-                                reservationDate = datePickerState.selectedDateMillis!!,
-                                userId = userId,
-                                onSuccess = {
-                                    println("Reservation saved successfully.")
-                                },
-                                onFailure = { exception ->
-                                    println("Error saving reservation: ${exception.message}")
-                                }
-                            )
+                        datePickerState.selectedDateMillis?.let {
+                            selectedDateMillis = it
+                            fetchAvailableSlots(
+                                reservationManager,
+                                companyId,
+                                it
+                            ) { slots -> availableSlots = slots }
                         }
                         showDatePicker = false
                     }) {
@@ -111,11 +75,7 @@ fun ServiceReservationScreen(serviceName: String, companyId: String) {
                     }
                 },
                 dismissButton = {
-                    TextButton(
-                        onClick = {
-                            showDatePicker = false
-
-                        }) {
+                    TextButton(onClick = { showDatePicker = false }) {
                         Text(text = stringResource(R.string.cancel))
                     }
                 }
@@ -123,8 +83,81 @@ fun ServiceReservationScreen(serviceName: String, companyId: String) {
                 DatePicker(state = datePickerState)
             }
         }
-    }
 
+        Spacer(modifier = Modifier.height(16.dp))
+
+        Text(
+            text = "slobodni termini",
+            style = MaterialTheme.typography.titleMedium
+        )
+
+        LazyColumn (
+            modifier = Modifier.weight(0.5f)
+        ) {
+            items(availableSlots) { slot ->
+                val formattedTime = DateFormat.getTimeInstance(DateFormat.SHORT).format(Date(slot))
+                Text(
+                    text = formattedTime,
+                    style = MaterialTheme.typography.bodyMedium,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(8.dp)
+                        .clickable { selectedSlot = slot
+                            println("Odabrani slot: $selectedSlot")
+                        }
+                        .then(
+                            if (selectedSlot == slot) Modifier.background(MaterialTheme.colorScheme.primary.copy(alpha = 0.2f))
+                            else Modifier
+                        )
+                )
+            }
+        }
+
+        Spacer(modifier = Modifier.height(16.dp))
+
+        Button(
+            onClick = {
+                println("Spremanje rezervacije, odabrani slot: $selectedSlot")
+                if (selectedSlot != null) {
+                    val userId = UserSession.username
+                    reservationManager.saveReservation(
+                        companyId = companyId,
+                        serviceName = serviceName,
+                        reservationDate = selectedSlot!!,
+                        userId = userId,
+                        onSuccess = {
+                            println("Reservation saved successfully.")
+                            availableSlots = availableSlots.filter { it != selectedSlot }
+                            selectedSlot = null
+                        },
+                        onFailure = { exception ->
+                            println("Error saving reservation: ${exception.message}")
+                        }
+                    )
+                }
+            },
+            enabled = selectedSlot != null,
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            Text(text = "spremi rezervaciju")
+        }
+    }
+}
+
+private fun fetchAvailableSlots(
+    reservationManager: ReservationManager,
+    companyId: String,
+    dateMillis: Long,
+    onSlotsFetched: (List<Long>) -> Unit
+) {
+    reservationManager.getAvailableTimeSlots(
+        companyId = companyId,
+        date = dateMillis,
+        onSuccess = { slots -> onSlotsFetched(slots) },
+        onFailure = { exception ->
+            println("Error fetching available slots: ${exception.message}")
+        }
+    )
 }
 
 @Preview

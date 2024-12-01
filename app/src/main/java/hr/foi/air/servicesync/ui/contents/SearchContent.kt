@@ -11,21 +11,16 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.text.BasicTextField
-import androidx.compose.foundation.text.selection.TextSelectionColors
-import androidx.compose.foundation.verticalScroll
+import androidx.compose.foundation.text.input.TextFieldLineLimits
+import androidx.compose.foundation.text.input.rememberTextFieldState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.Card
 import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
-import androidx.compose.material3.TextFieldColors
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -43,18 +38,14 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.core.graphics.component1
-import androidx.core.graphics.component2
 import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import com.example.compose.onSurfaceDark
 import com.example.compose.onSurfaceLight
 import com.example.compose.onSurfaceVariantDark
 import com.example.compose.onSurfaceVariantLight
-import com.example.compose.surfaceContainerDark
 import com.example.compose.surfaceContainerHighDark
 import com.example.compose.surfaceContainerHighLight
-import com.example.compose.surfaceContainerLight
 import com.google.firebase.firestore.FirebaseFirestore
 import hr.foi.air.servicesync.ui.components.isDark
 
@@ -121,6 +112,72 @@ fun SearchContent(modifier: Modifier = Modifier, navController: NavController)
             .padding(16.dp)
     ) {
 
+        TextField(
+            value = searchQuery.text,
+            onValueChange = { newText: String ->
+                searchQuery = searchQuery.copy(text = newText)
+                Log.d("SearchContent", "Search query updated: ${newText}")
+            },
+            placeholder = {
+                Text(
+                    text = "Pretraživanje",
+                    color = isDark(onSurfaceVariantDark, onSurfaceVariantLight)
+                )
+            },
+            trailingIcon = {
+                Icon(
+                    imageVector = Icons.Default.Search,
+                    contentDescription = "Search Icon",
+                    tint = isDark(onSurfaceVariantDark, onSurfaceVariantLight)
+                )
+            },
+            textStyle = TextStyle(color = isDark(onSurfaceVariantDark, onSurfaceVariantLight)),
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(56.dp)
+                .background(
+                    color = isDark(surfaceContainerHighDark, surfaceContainerHighLight),
+                    shape = RoundedCornerShape(28.dp)
+                )
+                .padding(horizontal = 16.dp),
+            colors = TextFieldDefaults.colors(
+                cursorColor = isDark(onSurfaceDark, onSurfaceLight),
+                unfocusedContainerColor = Color.Transparent,
+                focusedContainerColor = Color.Transparent,
+                unfocusedIndicatorColor = Color.Transparent,
+                focusedIndicatorColor = Color.Transparent
+            ),
+            singleLine = true
+        )
+
+        if (isLoading.value)
+        {
+            Box(
+                modifier = Modifier.fillMaxSize(),
+                contentAlignment = Alignment.Center
+            ) {
+                CircularProgressIndicator()
+            }
+        }
+        else
+        {
+            LazyColumn(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(top = 8.dp),
+                verticalArrangement = Arrangement.spacedBy(8.dp)
+            ) {
+                items(filteredCompanyName.value) { (companyName, imageUrl) ->
+                    CompanyCard(
+                        companyName = companyName,
+                        imageUrl = imageUrl,
+                        onCardClick = {
+                            navController.navigate("company/$companyName")
+                        }
+                    )
+                }
+            }
+        }
     }
 }
 
@@ -170,4 +227,3 @@ fun CompanyCard(
         }
     }
 }
-

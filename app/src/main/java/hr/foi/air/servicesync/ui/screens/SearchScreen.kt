@@ -22,16 +22,10 @@ import hr.foi.air.servicesync.ui.components.isDark
 import hr.foi.air.servicesync.ui.contents.CompanyDetailsContent
 import hr.foi.air.servicesync.ui.contents.SearchContent
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SearchScreen(modifier: Modifier = Modifier, navController: NavController) {
 
     Scaffold(
-        topBar = {
-            TopAppBar(
-                title = { Text(text = "Pretraži", style = MaterialTheme.typography.titleLarge) },
-            )
-        },
         modifier = modifier
     ) { innerPadding ->
         Column(
@@ -46,3 +40,4 @@ fun SearchScreen(modifier: Modifier = Modifier, navController: NavController) {
         color = isDark(primaryDark, primaryLight)
     )
 }
+

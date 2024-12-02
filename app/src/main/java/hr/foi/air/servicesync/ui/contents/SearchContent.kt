@@ -97,11 +97,6 @@ fun SearchContent(modifier: Modifier = Modifier, navController: NavController)
         }
     }
 
-    val combinedCompanyData = filteredCompany.value.map { company ->
-        val category = companyCategory.value.find { it.first == company.first }?.second ?: "Unknown"
-        company.first to (company.second to category)
-    }
-
     Column(
         modifier = modifier
             .fillMaxSize()

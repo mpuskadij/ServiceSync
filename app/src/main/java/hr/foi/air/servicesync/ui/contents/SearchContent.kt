@@ -2,6 +2,7 @@ package hr.foi.air.servicesync.ui.contents
 
 import android.util.Log
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -10,6 +11,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
@@ -48,88 +50,54 @@ fun SearchContent(modifier: Modifier = Modifier, navController: NavController)
     val db = FirebaseFirestore.getInstance()
     val companyNames = remember { mutableStateOf<List<Pair<String, String?>>>(emptyList()) }
     val companyCategory = remember { mutableStateOf<List<Pair<String, String>>>(emptyList()) }
-    val filteredCompanyName = remember { mutableStateOf<List<Pair<String, String?>>>(emptyList()) }
+    val filteredCompany = remember { mutableStateOf<List<Pair<String, String?>>>(emptyList()) }
+    val distinctCategories = remember { mutableStateOf<List<String>>(emptyList()) }
+    var selectedCategory by remember { mutableStateOf<String?>(null) }
     val isLoading = remember { mutableStateOf(true) }
     var searchQuery by remember { mutableStateOf(TextFieldValue(""))}
 
-    LaunchedEffect(Unit)
-    {
+    LaunchedEffect(Unit) {
         db.collection("companies")
             .get()
             .addOnSuccessListener { documents ->
                 val companies = documents.mapNotNull { doc ->
                     val name = doc.getString("name") ?: "Unknown"
                     val imageUrl = doc.getString("pictureURL")
-                    if (name.isNotEmpty())
-                    {
-                        name to imageUrl
-                    }
-                    else
-                    {
-                        null
-                    }
+                    if (name.isNotEmpty()) name to imageUrl else null
                 }
 
-                Log.d("SearchContent", "Fetched companies: ${companies}")
-
-                companyNames.value = companies
-                filteredCompanyName.value = companies
-                isLoading.value = false
-            }
-            .addOnFailureListener { exception ->
-                Log.e("SearchContent", "Error fetching companies", exception)
-                isLoading.value = false
-            }
-    }
-
-    LaunchedEffect(Unit)
-    {
-        db.collection("companies")
-            .get()
-            .addOnSuccessListener { documents ->
                 val categories = documents.mapNotNull { doc ->
                     val name = doc.getString("name") ?: "Unknown"
                     val category = doc.getString("category") ?: "Unknown"
-                    if (name.isNotEmpty() && category.isNotEmpty())
-                    {
-                        name to category
-                    }
-                    else
-                    {
-                        null
-                    }
+                    if (name.isNotEmpty() && category.isNotEmpty()) name to category else null
                 }
 
-                Log.d("SearchContent", "Fetched categories: ${categories}")
-
+                companyNames.value = companies
                 companyCategory.value = categories
+                filteredCompany.value = companies
+
+                distinctCategories.value = categories.map { it.second }.distinct()
                 isLoading.value = false
             }
-            .addOnFailureListener { exception ->
-                Log.e("SearchContent", "Error fetching categories", exception)
+            .addOnFailureListener {
                 isLoading.value = false
             }
     }
 
-    LaunchedEffect(searchQuery.text)
+    LaunchedEffect(searchQuery.text, selectedCategory)
     {
-        filteredCompanyName.value = if (searchQuery.text.isEmpty())
-        {
-            companyNames.value
-        }
-        else
-        {
-            val filteredList = companyNames.value.filter {
-                it.first.contains(searchQuery.text, ignoreCase = true)
-            }
-            Log.d("SearchContent", "FilteredCompanies: $filteredList")
-            filteredList
-        }
+        filteredCompany.value = companyNames.value.filter { company ->
+            val categoryMatch = selectedCategory?.let { category ->
+                companyCategory.value.any{
+                    it.first == company.first && it.second == category
+                }
+            } ?: true
 
-        Log.d("SearchContent", "Filtered companies: ${filteredCompanyName.value}")
+            company.first.contains(searchQuery.text, ignoreCase = true) && categoryMatch
+        }
     }
 
-    val combinedCompanyData = filteredCompanyName.value.map { company ->
+    val combinedCompanyData = filteredCompany.value.map { company ->
         val category = companyCategory.value.find { it.first == company.first }?.second ?: "Unknown"
         company.first to (company.second to category)
     }
@@ -178,25 +146,68 @@ fun SearchContent(modifier: Modifier = Modifier, navController: NavController)
             singleLine = true
         )
 
-        if (isLoading.value)
-        {
+        LazyRow(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(vertical = 8.dp),
+            horizontalArrangement = Arrangement.spacedBy(8.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            items(distinctCategories.value) { category ->
+                val isSelected = category == selectedCategory
+                val backgroundColor = if (isSelected)
+                {
+                    isDark(onSurfaceVariantDark, onSurfaceVariantLight)
+                }
+                else
+                {
+                    isDark(surfaceContainerHighDark, surfaceContainerHighLight)
+                }
+                val textColor = if (isSelected)
+                {
+                    isDark(onSurfaceLight, onSurfaceDark)
+                }
+                else
+                {
+                    isDark(onSurfaceDark, onSurfaceLight)
+                }
+
+                Text(
+                    text = category,
+                    color = textColor,
+                    modifier = Modifier
+                        .padding(4.dp)
+                        .background(
+                            color = backgroundColor,
+                            shape = RoundedCornerShape(16.dp)
+                        )
+                        .padding(horizontal = 12.dp, vertical = 6.dp)
+                        .clickable {
+                            selectedCategory = if (isSelected) null else category
+                        }
+                )
+            }
+        }
+
+        if (isLoading.value) {
             Box(
                 modifier = Modifier.fillMaxSize(),
                 contentAlignment = Alignment.Center
             ) {
                 CircularProgressIndicator()
             }
-        }
-        else
-        {
+        } else {
             LazyColumn(
                 modifier = Modifier
                     .fillMaxSize()
                     .padding(top = 8.dp),
                 verticalArrangement = Arrangement.spacedBy(8.dp)
             ) {
-                items(combinedCompanyData) { (companyName, imageUrlAndCompany) ->
-                    val (imageUrl, companyCategory) = imageUrlAndCompany
+                items(filteredCompany.value) { (companyName, imageUrl) ->
+                    val companyCategory = companyCategory.value
+                        .find { it.first == companyName }
+                        ?.second ?: "Unknown"
+
                     CompanyCard(
                         companyName = companyName,
                         imageUrl = imageUrl,

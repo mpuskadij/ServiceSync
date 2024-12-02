@@ -7,15 +7,32 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.example.compose.backgroundDark
+import com.example.compose.backgroundLight
+import com.example.compose.inversePrimaryDarkMediumContrast
+import com.example.compose.inversePrimaryLightMediumContrast
+import com.example.compose.onSurfaceDark
+import com.example.compose.onSurfaceLight
+import com.example.compose.outlineVariantDark
+import com.example.compose.outlineVariantLight
+import com.example.compose.secondaryContainerDarkMediumContrast
+import com.example.compose.secondaryContainerLightMediumContrast
+import com.example.compose.surfaceContainerDark
+import com.example.compose.surfaceContainerLight
+import com.example.compose.surfaceVariantDark
+import com.example.compose.surfaceVariantLight
 import hr.foi.air.servicesync.R
 import hr.foi.air.servicesync.backend.FirestoreService
 import hr.foi.air.servicesync.business.PresentAndFutureSelectableDates
 import hr.foi.air.servicesync.business.ReservationManager
 import hr.foi.air.servicesync.data.UserSession
+import hr.foi.air.servicesync.ui.components.isDark
 import java.text.DateFormat
 import java.util.*
 
@@ -87,31 +104,50 @@ fun ServiceReservationScreen(serviceName: String, companyId: String) {
         Spacer(modifier = Modifier.height(16.dp))
 
         Text(
-            text = "slobodni termini",
+            text = "Slobodni termini:",
             style = MaterialTheme.typography.titleMedium
         )
 
-        LazyColumn (
-            modifier = Modifier.weight(0.5f)
+        LazyColumn(
+            modifier = Modifier
+                .weight(0.5f)
+                .fillMaxWidth()
+                .padding(8.dp)
         ) {
             items(availableSlots) { slot ->
                 val formattedTime = DateFormat.getTimeInstance(DateFormat.SHORT).format(Date(slot))
-                Text(
-                    text = formattedTime,
-                    style = MaterialTheme.typography.bodyMedium,
+
+                Card(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(8.dp)
-                        .clickable { selectedSlot = slot
+                        .padding(vertical = 4.dp)
+                        .align(Alignment.CenterHorizontally)
+                        .clickable {
+                            selectedSlot = slot
                             println("Odabrani slot: $selectedSlot")
-                        }
-                        .then(
-                            if (selectedSlot == slot) Modifier.background(MaterialTheme.colorScheme.primary.copy(alpha = 0.2f))
-                            else Modifier
-                        )
-                )
+                        },
+                    colors = CardDefaults.cardColors(
+                        containerColor = if (selectedSlot == slot) isDark(
+                            inversePrimaryDarkMediumContrast, inversePrimaryLightMediumContrast)
+                        else isDark(surfaceVariantDark, surfaceVariantLight)
+                    ),
+                    elevation = CardDefaults.cardElevation(
+                        defaultElevation = if (selectedSlot == slot) 4.dp else 2.dp
+                    )
+                ) {
+                    Text(
+                        text = formattedTime,
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = if (selectedSlot == slot) MaterialTheme.colorScheme.primary
+                        else MaterialTheme.colorScheme.onBackground,
+                        modifier = Modifier
+                            .padding(8.dp)
+                            .align(Alignment.CenterHorizontally)
+                    )
+                }
             }
         }
+
 
         Spacer(modifier = Modifier.height(16.dp))
 
@@ -139,7 +175,7 @@ fun ServiceReservationScreen(serviceName: String, companyId: String) {
             enabled = selectedSlot != null,
             modifier = Modifier.fillMaxWidth()
         ) {
-            Text(text = "spremi rezervaciju")
+            Text(text = "Spremi rezervaciju")
         }
     }
 }

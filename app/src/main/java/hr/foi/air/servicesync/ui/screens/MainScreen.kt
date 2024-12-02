@@ -15,6 +15,11 @@ import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.derivedStateOf
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
@@ -43,28 +48,46 @@ fun MainScreen(
 
     val navController = rememberNavController()
     val navItemList = navItems()
+
+    val (currentRoute, setCurrentRoute) = remember { mutableStateOf<String?>(null) }
+
+    LaunchedEffect(navController) {
+        navController.addOnDestinationChangedListener { _, destination, _ ->
+            setCurrentRoute(destination.route)
+        }
+    }
+
     Scaffold(
         containerColor = isDark(onSurfaceLight, onSurfaceDark),
         modifier = Modifier
             .fillMaxSize()
             .padding(WindowInsets.navigationBars.only(WindowInsetsSides.Bottom).asPaddingValues()),
         bottomBar = {
-            NavigationBar{
-                navItemList.forEach { navItem ->
-                    NavigationBarItem(
-                        selected = false,
-                        onClick = {
-                            navController.navigate(navItem.route)
-                        },
-                        icon = {
-                            Icon(imageVector = navItem.icon, contentDescription = "${navItem.icon}")
-                        },
-                        label = { Text(text = navItem.label) }
-                    )
+            if (currentRoute !in listOf("login", "registration")) {
+                NavigationBar {
+                    navItemList.forEach { navItem ->
+                        NavigationBarItem(
+                            selected = currentRoute == navItem.route,
+                            onClick = {
+                                navController.navigate(navItem.route) {
+                                    popUpTo("main") { saveState = true }
+                                    launchSingleTop = true
+                                    restoreState = true
+                                }
+                            },
+                            icon = {
+                                Icon(
+                                    imageVector = navItem.icon,
+                                    contentDescription = "${navItem.icon}"
+                                )
+                            },
+                            label = { Text(text = navItem.label) }
+                        )
+                    }
                 }
             }
         }
-    ){ innerPadding ->
+    ) { innerPadding ->
         NavHost(
             navController = navController,
             startDestination = startDestination,

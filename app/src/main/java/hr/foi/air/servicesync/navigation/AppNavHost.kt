@@ -7,10 +7,12 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import com.google.firebase.auth.FirebaseAuth
+import hr.foi.air.servicesync.data.UserSession
 import hr.foi.air.servicesync.ui.contents.CompanyDetailsContent
 import hr.foi.air.servicesync.ui.screens.CalendarScreen
 import hr.foi.air.servicesync.ui.screens.FavoriteScreen
 import hr.foi.air.servicesync.ui.screens.LoginScreen
+import hr.foi.air.servicesync.ui.screens.MainScreen
 import hr.foi.air.servicesync.ui.screens.ProfileScreen
 import hr.foi.air.servicesync.ui.screens.RegistrationScreen
 import hr.foi.air.servicesync.ui.screens.SearchScreen
@@ -43,18 +45,8 @@ fun NavGraphBuilder.AppNavHost(navController: NavHostController) {
             }
         )
     }
-    composable("main")
-    {
-        ProfileScreen(
-            onLogoutClick = {
-                Log.d("MainScreen", "Logout initiated")
-                FirebaseAuth.getInstance().signOut()
-                navController.navigate("login")
-                {
-                    popUpTo("main") { inclusive = true }
-                }
-            }
-        )
+    composable("main") {
+        SearchScreen(modifier = Modifier, navController)
     }
 
     composable("company/{companyName}") { backStackEntry ->

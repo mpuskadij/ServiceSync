@@ -68,8 +68,7 @@ fun CompanyDetailsContent(
         firestoreCompanyDetails.loadCompanyName(context) { name ->
             companyName.value = name ?: "No name found!"
             if (!name.isNullOrEmpty()) {
-                // put name variable back as parameter in fetchReviewsForCompany method
-                firestoreReviews.fetchReviewsForCompany("DentWheelchair llc.") { fetchedReviews ->
+                firestoreReviews.fetchReviewsForCompany(name) { fetchedReviews ->
                     reviews.value = fetchedReviews
                     isLoading.value = false
                 }

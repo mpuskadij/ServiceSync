@@ -24,8 +24,6 @@ import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import com.example.compose.onSurfaceDark
 import com.example.compose.onSurfaceLight
-import com.example.compose.surfaceContainerHighestDark
-import com.example.compose.surfaceContainerHighestLight
 
 @Composable
 fun CompanyCard(

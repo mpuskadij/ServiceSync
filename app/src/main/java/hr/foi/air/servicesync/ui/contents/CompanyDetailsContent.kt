@@ -13,6 +13,8 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.ListItem
@@ -62,8 +64,8 @@ fun CompanyDetailsContent(
     val companyCategory = remember { mutableStateOf("Loading...") }
     val companyWorkingHours = remember { mutableStateOf(0) }
     val companyGeoPoint = remember { mutableStateOf(GeoPoint(0.0, 0.0)) }
-    val isLoading = remember { mutableStateOf(true) }
     val reviews = remember { mutableStateOf<List<Review>>(emptyList()) }
+    val isLoading = remember { mutableStateOf(true) }
 
     LaunchedEffect(Unit) {
         firestoreCompanyDetails.loadCompanyName(context) { name ->
@@ -86,113 +88,107 @@ fun CompanyDetailsContent(
             companyGeoPoint.value = geopoint ?: GeoPoint(0.0, 0.0)
             isLoading.value = false
         }
-
-        val fetchedReviews = firestoreReviews.fetchReviews()
-        reviews.value = fetchedReviews
+        reviews.value = firestoreReviews.fetchReviews()
     }
 
     if (isLoading.value) {
         Text("Loading data...", modifier = Modifier.padding(16.dp))
     } else {
-        Column(
-            horizontalAlignment = Alignment.Start,
-            verticalArrangement = Arrangement.Top,
+        LazyColumn(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(WindowInsets.navigationBars.asPaddingValues())
-                .verticalScroll(rememberScrollState())
         ) {
-            val headlineTextStyle = MaterialTheme.typography.headlineMedium
-
-            CompanyNameAndImage(companyName.value)
-
-            ListItem(
-                headlineContent = {
-                    Text(
-                        text = stringResource(id = R.string.description),
-                        color = isDark(onSurfaceDark, onSurfaceLight),
-                        style = headlineTextStyle,
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(vertical = 10.dp)
-                    )
-                    Spacer(modifier = Modifier.height(25.dp))
-                },
-                supportingContent = {
-                    CompanyDescription(companyDescription.value)
-                }
-            )
-
-            ListItem(
-                headlineContent = {
-                    Text(
-                        text = stringResource(id = R.string.services),
-                        color = isDark(onSurfaceDark, onSurfaceLight),
-                        style = headlineTextStyle,
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(vertical = 10.dp)
-                    )
-                },
-                supportingContent = {
-                    ProvidedServicesListItem(companyCategory.value)
-                }
-            )
-
-            ListItem(
-                headlineContent = {
-                    Text(
-                        text = stringResource(id = R.string.working_hours),
-                        color = isDark(onSurfaceDark, onSurfaceLight),
-                        style = headlineTextStyle,
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(vertical = 10.dp)
-                    )
-                    Spacer(modifier = Modifier.height(25.dp))
-                },
-                supportingContent = {
-                    Text("${companyWorkingHours.value}")
-                }
-            )
-
-            ListItem(
-                headlineContent = {
-                    Text(
-                        text = stringResource(id = R.string.location),
-                        color = isDark(onSurfaceDark, onSurfaceLight),
-                        style = headlineTextStyle,
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(vertical = 10.dp)
-                    )
-                },
-                supportingContent = {
-                    CompanyLocation(geoPoint = companyGeoPoint.value, GoogleMapProvider())
-                }
-
-            )
-
-            ListItem(
-                headlineContent = {
-                    Text(
-                        text = stringResource(id = R.string.reviews),
-                        color = isDark(onSurfaceDark, onSurfaceLight),
-                        style = headlineTextStyle,
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(vertical = 10.dp)
-                    )
-                },
-                supportingContent = {
-                    ReviewList(reviews = reviews.value)
-                }
-
-            )
-
+            item {
+                CompanyNameAndImage(companyName.value)
+            }
+            item {
+                ListItem(
+                    headlineContent = {
+                        Text(
+                            text = stringResource(id = R.string.description),
+                            color = isDark(onSurfaceDark, onSurfaceLight),
+                            style = MaterialTheme.typography.headlineMedium,
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(vertical = 10.dp)
+                        )
+                        Spacer(modifier = Modifier.height(25.dp))
+                    },
+                    supportingContent = {
+                        CompanyDescription(companyDescription.value)
+                    }
+                )
+            }
+            item {
+                ListItem(
+                    headlineContent = {
+                        Text(
+                            text = stringResource(id = R.string.services),
+                            color = isDark(onSurfaceDark, onSurfaceLight),
+                            style = MaterialTheme.typography.headlineMedium,
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(vertical = 10.dp)
+                        )
+                    },
+                    supportingContent = {
+                        ProvidedServicesListItem(companyCategory.value)
+                    }
+                )
+            }
+            item {
+                ListItem(
+                    headlineContent = {
+                        Text(
+                            text = stringResource(id = R.string.working_hours),
+                            color = isDark(onSurfaceDark, onSurfaceLight),
+                            style = MaterialTheme.typography.headlineMedium,
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(vertical = 10.dp)
+                        )
+                        Spacer(modifier = Modifier.height(25.dp))
+                    },
+                    supportingContent = {
+                        Text("${companyWorkingHours.value}")
+                    }
+                )
+            }
+            item {
+                ListItem(
+                    headlineContent = {
+                        Text(
+                            text = stringResource(id = R.string.location),
+                            color = isDark(onSurfaceDark, onSurfaceLight),
+                            style = MaterialTheme.typography.headlineMedium,
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(vertical = 10.dp)
+                        )
+                    },
+                    supportingContent = {
+                        CompanyLocation(geoPoint = companyGeoPoint.value, GoogleMapProvider())
+                    }
+                )
+            }
+            item {
+                Text(
+                    text = stringResource(id = R.string.reviews),
+                    color = isDark(onSurfaceDark, onSurfaceLight),
+                    style = MaterialTheme.typography.headlineMedium,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(vertical = 10.dp)
+                )
+            }
+            items(reviews.value) { review ->
+                ReviewCard(review)
+            }
         }
     }
 }
+
 
 @Preview
 @Composable

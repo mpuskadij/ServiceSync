@@ -18,6 +18,9 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextOverflow
+import hr.foi.air.servicesync.R
 import hr.foi.air.servicesync.data.Review
 
 @Composable
@@ -37,31 +40,33 @@ fun ReviewCard(
     ) {
         Column(
             modifier = Modifier
-                .padding(24.dp)
+                .padding(16.dp)
         ) {
             Row(
-                horizontalArrangement = Arrangement.Center,
-                verticalAlignment = Alignment.CenterVertically
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier.fillMaxWidth()
             ) {
                 Text(
                     text = review.userId,
                     fontSize = 20.sp,
                     fontWeight = FontWeight.Bold,
                     style = MaterialTheme.typography.headlineMedium,
-                    color = MaterialTheme.colorScheme.onSurface
+                    color = MaterialTheme.colorScheme.onSurface,
+                    modifier = Modifier.weight(1f),
+                    overflow = TextOverflow.Ellipsis
                 )
 
-                Spacer(modifier = Modifier.height(8.dp))
+                Spacer(modifier = Modifier.width(8.dp))
 
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.End,
-                    modifier = Modifier.fillMaxWidth()
+                    horizontalArrangement = Arrangement.End
                 ) {
                     repeat(review.rating) {
                         Icon(
                             imageVector = Icons.Filled.Star,
-                            contentDescription = "Star",
+                            contentDescription = stringResource(R.string.star),
                             tint = Color.Black,
                             modifier = Modifier.size(20.dp)
                         )
@@ -75,15 +80,25 @@ fun ReviewCard(
                 text = review.description,
                 fontSize = 16.sp,
                 fontWeight = FontWeight.Normal,
+                softWrap = true,
+                maxLines = 2,
+                overflow = TextOverflow.Ellipsis,
                 color = Color.Black,
-                textAlign = TextAlign.Start
+                textAlign = TextAlign.Start,
+                modifier = Modifier.fillMaxWidth()
             )
         }
     }
 }
 
+
 @Preview(showBackground = true)
 @Composable
 fun PreviewReviewCard() {
-//    ReviewCard()
+    val review = Review(
+        "neka_firma",
+        "neki duuuuuuuuuuuuu ukkkkkkkkkkk kuuuuuuuuuu ugiffffffffff opis",
+        5,
+        "anica_kraljica")
+    ReviewCard(review)
 }

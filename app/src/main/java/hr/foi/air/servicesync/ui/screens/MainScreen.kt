@@ -60,8 +60,7 @@ fun MainScreen(
     Scaffold(
         containerColor = isDark(onSurfaceLight, onSurfaceDark),
         modifier = Modifier
-            .fillMaxSize()
-            .padding(WindowInsets.navigationBars.only(WindowInsetsSides.Bottom).asPaddingValues()),
+            .fillMaxSize(),
         bottomBar = {
             if (currentRoute !in listOf("login", "registration")) {
                 NavigationBar {

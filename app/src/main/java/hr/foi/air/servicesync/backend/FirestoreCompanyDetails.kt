@@ -4,24 +4,15 @@ import android.content.Context
 import android.util.Log
 import com.google.firebase.firestore.GeoPoint
 import com.google.firebase.firestore.FirebaseFirestore
-import hr.foi.air.servicesync.data.CompanyInstance
 
 class FirestoreCompanyDetails {
 
     private val db = FirebaseFirestore.getInstance()
 
-    private var companyName: String = "No name found!"
     private var companyDescription: String = "No description found!"
     private var companyCategory: String = "No category found!"
     private var companyWorkingHours: Int = 0
     private var companyGeoPoint: GeoPoint = GeoPoint(0.0, 0.0)
-
-    fun loadCompanyName(context: Context, onResult: (String?) -> Unit) {
-        CompanyInstance.fetchCompanyName(context) { name ->
-            companyName = name ?: "No name found!"
-            onResult(companyName)
-        }
-    }
 
     fun loadCompanyDescriptionByName(companyName: String, onResult: (String?) -> Unit) {
         db.collection("companies")

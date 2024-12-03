@@ -81,10 +81,12 @@ fun CompanyCard(
                 .fillMaxSize()
                 .height(90.dp)
                 .padding(15.dp)
-                .background(isDark(surfaceContainerHighestDark, surfaceContainerHighestLight))
+                .background(Color.Transparent)
         ) {
             Column(
-                modifier = Modifier.fillMaxSize(),
+                modifier = Modifier
+                    .fillMaxSize()
+                    .background(Color.Transparent),
                 verticalArrangement = Arrangement.Bottom,
                 horizontalAlignment = Alignment.Start
             ) {

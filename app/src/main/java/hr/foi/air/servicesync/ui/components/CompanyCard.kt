@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
@@ -25,10 +24,8 @@ import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import com.example.compose.onSurfaceDark
 import com.example.compose.onSurfaceLight
-import com.example.compose.surfaceContainerDark
 import com.example.compose.surfaceContainerHighestDark
 import com.example.compose.surfaceContainerHighestLight
-import com.example.compose.surfaceContainerLight
 
 @Composable
 fun CompanyCard(

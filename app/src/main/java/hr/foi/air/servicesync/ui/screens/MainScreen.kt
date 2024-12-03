@@ -1,13 +1,7 @@
 package hr.foi.air.servicesync.ui.screens
 
-import android.util.Log
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.WindowInsets
-import androidx.compose.foundation.layout.WindowInsetsSides
-import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.navigationBars
-import androidx.compose.foundation.layout.only
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationBar
@@ -16,17 +10,10 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.derivedStateOf
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.unit.dp
-import androidx.navigation.NavGraphBuilder
-import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.compose.onSurfaceDark
 import com.example.compose.onSurfaceLight
@@ -35,8 +22,6 @@ import com.example.compose.surfaceContainerLight
 import com.google.firebase.auth.FirebaseAuth
 import hr.foi.air.servicesync.navigation.AppNavHost
 import hr.foi.air.servicesync.ui.components.isDark
-import hr.foi.air.servicesync.ui.contents.CompanyDetailsContent
-import hr.foi.air.servicesync.ui.contents.SearchContent
 import hr.foi.air.servicesync.ui.items.navItems
 
 @Composable

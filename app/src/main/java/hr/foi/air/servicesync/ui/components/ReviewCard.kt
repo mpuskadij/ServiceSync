@@ -18,9 +18,12 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
+import hr.foi.air.servicesync.data.Review
 
 @Composable
-fun ReviewCard() {
+fun ReviewCard(
+    review: Review
+) {
     Card(
         shape = RoundedCornerShape(8.dp),
         colors = CardDefaults.cardColors(
@@ -41,7 +44,7 @@ fun ReviewCard() {
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(
-                    text = "marija",
+                    text = review.userId,
                     fontSize = 20.sp,
                     fontWeight = FontWeight.Bold,
                     style = MaterialTheme.typography.headlineMedium,
@@ -55,7 +58,7 @@ fun ReviewCard() {
                     horizontalArrangement = Arrangement.End,
                     modifier = Modifier.fillMaxWidth()
                 ) {
-                    repeat(5) {
+                    repeat(review.rating) {
                         Icon(
                             imageVector = Icons.Filled.Star,
                             contentDescription = "Star",
@@ -69,7 +72,7 @@ fun ReviewCard() {
             Spacer(modifier = Modifier.height(8.dp))
 
             Text(
-                text = "Odlična usluga! Ne žalim ni centa!",
+                text = review.description,
                 fontSize = 16.sp,
                 fontWeight = FontWeight.Normal,
                 color = Color.Black,
@@ -82,5 +85,5 @@ fun ReviewCard() {
 @Preview(showBackground = true)
 @Composable
 fun PreviewReviewCard() {
-    ReviewCard()
+//    ReviewCard()
 }

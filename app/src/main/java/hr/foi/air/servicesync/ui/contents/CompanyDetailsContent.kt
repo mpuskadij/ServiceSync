@@ -1,6 +1,7 @@
 package hr.foi.air.servicesync.ui.contents
 
 import android.content.Context
+import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -32,12 +33,19 @@ import com.example.compose.onSurfaceLight
 import com.google.firebase.firestore.GeoPoint
 import hr.foi.air.servicesync.R
 import hr.foi.air.servicesync.backend.FirestoreCompanyDetails
+import hr.foi.air.servicesync.backend.FirestoreReviews
+import hr.foi.air.servicesync.business.ReviewsHandler
+import hr.foi.air.servicesync.data.Review
 import hr.foi.air.servicesync.ui.components.CompanyDescription
 import hr.foi.air.servicesync.ui.components.CompanyLocation
 import hr.foi.air.servicesync.ui.components.CompanyNameAndImage
 import hr.foi.air.servicesync.ui.components.ReviewCard
+import hr.foi.air.servicesync.ui.components.ReviewList
 import hr.foi.air.servicesync.ui.components.isDark
 import hr.foi.air.servicesync.ui.items.ProvidedServicesListItem
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import mapproviders.GoogleMapProvider
 import mapproviders.OpenStreetMapProvider
 
@@ -47,6 +55,7 @@ fun CompanyDetailsContent(
     context: Context
 ) {
     val firestoreCompanyDetails = FirestoreCompanyDetails()
+    val firestoreReviews = FirestoreReviews()
 
     val companyName = remember { mutableStateOf("Loading...") }
     val companyDescription = remember { mutableStateOf("Loading...") }
@@ -54,6 +63,7 @@ fun CompanyDetailsContent(
     val companyWorkingHours = remember { mutableStateOf(0) }
     val companyGeoPoint = remember { mutableStateOf(GeoPoint(0.0, 0.0)) }
     val isLoading = remember { mutableStateOf(true) }
+    val reviews = remember { mutableStateOf<List<Review>>(emptyList()) }
 
     LaunchedEffect(Unit) {
         firestoreCompanyDetails.loadCompanyName(context) { name ->
@@ -76,6 +86,9 @@ fun CompanyDetailsContent(
             companyGeoPoint.value = geopoint ?: GeoPoint(0.0, 0.0)
             isLoading.value = false
         }
+
+        val fetchedReviews = firestoreReviews.fetchReviews()
+        reviews.value = fetchedReviews
     }
 
     if (isLoading.value) {
@@ -99,7 +112,9 @@ fun CompanyDetailsContent(
                         text = stringResource(id = R.string.description),
                         color = isDark(onSurfaceDark, onSurfaceLight),
                         style = headlineTextStyle,
-                        modifier = Modifier.fillMaxWidth().padding(vertical = 10.dp)
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(vertical = 10.dp)
                     )
                     Spacer(modifier = Modifier.height(25.dp))
                 },
@@ -114,7 +129,9 @@ fun CompanyDetailsContent(
                         text = stringResource(id = R.string.services),
                         color = isDark(onSurfaceDark, onSurfaceLight),
                         style = headlineTextStyle,
-                        modifier = Modifier.fillMaxWidth().padding(vertical = 10.dp)
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(vertical = 10.dp)
                     )
                 },
                 supportingContent = {
@@ -128,7 +145,9 @@ fun CompanyDetailsContent(
                         text = stringResource(id = R.string.working_hours),
                         color = isDark(onSurfaceDark, onSurfaceLight),
                         style = headlineTextStyle,
-                        modifier = Modifier.fillMaxWidth().padding(vertical = 10.dp)
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(vertical = 10.dp)
                     )
                     Spacer(modifier = Modifier.height(25.dp))
                 },
@@ -143,7 +162,9 @@ fun CompanyDetailsContent(
                         text = stringResource(id = R.string.location),
                         color = isDark(onSurfaceDark, onSurfaceLight),
                         style = headlineTextStyle,
-                        modifier = Modifier.fillMaxWidth().padding(vertical = 10.dp)
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(vertical = 10.dp)
                     )
                 },
                 supportingContent = {
@@ -158,11 +179,13 @@ fun CompanyDetailsContent(
                         text = stringResource(id = R.string.reviews),
                         color = isDark(onSurfaceDark, onSurfaceLight),
                         style = headlineTextStyle,
-                        modifier = Modifier.fillMaxWidth().padding(vertical = 10.dp)
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(vertical = 10.dp)
                     )
                 },
                 supportingContent = {
-                    ReviewCard()
+                    ReviewList(reviews = reviews.value)
                 }
 
             )

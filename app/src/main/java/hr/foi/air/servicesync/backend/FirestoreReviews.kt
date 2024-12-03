@@ -1,26 +1,41 @@
 package hr.foi.air.servicesync.backend
 
+import android.util.Log
 import com.google.firebase.firestore.FirebaseFirestore
 import hr.foi.air.servicesync.data.Review
-import kotlinx.coroutines.tasks.await
 
 class FirestoreReviews {
-    private val firestore = FirebaseFirestore.getInstance()
 
-    suspend fun fetchReviews(): List<Review> {
-        return try {
-            val reviewsList = firestore.collection("reviews")
-                .get()
-                .await()
-                .documents
-                .mapNotNull { document ->
+    private val db = FirebaseFirestore.getInstance()
+
+    fun fetchAllReviews(onResult: (List<Review>) -> Unit) {
+        db.collection("reviews")
+            .get()
+            .addOnSuccessListener { documents ->
+                val reviewsList = documents.documents.mapNotNull { document ->
                     document.toObject(Review::class.java)
                 }
-            reviewsList
-        } catch (e: Exception) {
-            e.printStackTrace()
-            emptyList()
-        }
+                onResult(reviewsList)
+            }
+            .addOnFailureListener { exception ->
+                Log.e("FirestoreReviews", "Error fetching all reviews", exception)
+                onResult(emptyList())
+            }
     }
 
+    fun fetchReviewsForCompany(companyId: String, onResult: (List<Review>) -> Unit) {
+        db.collection("reviews")
+            .whereEqualTo("companyId", companyId)
+            .get()
+            .addOnSuccessListener { documents ->
+                val reviewsList = documents.documents.mapNotNull { document ->
+                    document.toObject(Review::class.java)
+                }
+                onResult(reviewsList)
+            }
+            .addOnFailureListener { exception ->
+                Log.e("FirestoreReviews", "Error fetching reviews for company: $companyId", exception)
+                onResult(emptyList())
+            }
+    }
 }

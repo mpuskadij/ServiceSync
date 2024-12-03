@@ -45,11 +45,8 @@ import hr.foi.air.servicesync.ui.components.ReviewCard
 import hr.foi.air.servicesync.ui.components.ReviewList
 import hr.foi.air.servicesync.ui.components.isDark
 import hr.foi.air.servicesync.ui.items.ProvidedServicesListItem
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 import mapproviders.GoogleMapProvider
-import mapproviders.OpenStreetMapProvider
+
 
 @Composable
 fun CompanyDetailsContent(
@@ -70,7 +67,15 @@ fun CompanyDetailsContent(
     LaunchedEffect(Unit) {
         firestoreCompanyDetails.loadCompanyName(context) { name ->
             companyName.value = name ?: "No name found!"
-            isLoading.value = false
+            if (!name.isNullOrEmpty()) {
+                // put name variable back as parameter in fetchReviewsForCompany method
+                firestoreReviews.fetchReviewsForCompany("DentWheelchair llc.") { fetchedReviews ->
+                    reviews.value = fetchedReviews
+                    isLoading.value = false
+                }
+            } else {
+                isLoading.value = false
+            }
         }
         firestoreCompanyDetails.loadCompanyDescription(context) { description ->
             companyDescription.value = description ?: "No description found!"
@@ -88,7 +93,6 @@ fun CompanyDetailsContent(
             companyGeoPoint.value = geopoint ?: GeoPoint(0.0, 0.0)
             isLoading.value = false
         }
-        reviews.value = firestoreReviews.fetchReviews()
     }
 
     if (isLoading.value) {

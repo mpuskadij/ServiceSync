@@ -18,7 +18,7 @@ fun ReviewList(reviews: List<Review>) {
     LazyColumn(
         modifier = Modifier
             .fillMaxWidth()
-            .heightIn(min = 200.dp)
+            .heightIn(min = 200.dp, max = 400.dp)
             .padding(16.dp),
         verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {

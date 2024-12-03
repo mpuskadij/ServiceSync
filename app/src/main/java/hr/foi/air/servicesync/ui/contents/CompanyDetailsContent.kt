@@ -179,11 +179,11 @@ fun CompanyDetailsContent(
                     style = MaterialTheme.typography.headlineMedium,
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(vertical = 10.dp)
+                        .padding(horizontal = 16.dp, vertical = 8.dp)
                 )
             }
-            items(reviews.value) { review ->
-                ReviewCard(review)
+            item {
+                ReviewList(reviews = reviews.value)
             }
         }
     }

@@ -7,15 +7,14 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import com.google.firebase.auth.FirebaseAuth
-import hr.foi.air.servicesync.data.UserSession
 import hr.foi.air.servicesync.ui.contents.CompanyDetailsContent
 import hr.foi.air.servicesync.ui.screens.CalendarScreen
 import hr.foi.air.servicesync.ui.screens.FavoriteScreen
 import hr.foi.air.servicesync.ui.screens.LoginScreen
-import hr.foi.air.servicesync.ui.screens.MainScreen
 import hr.foi.air.servicesync.ui.screens.ProfileScreen
 import hr.foi.air.servicesync.ui.screens.RegistrationScreen
 import hr.foi.air.servicesync.ui.screens.SearchScreen
+import hr.foi.air.servicesync.ui.screens.ServiceReservationScreen
 
 
 fun NavGraphBuilder.AppNavHost(navController: NavHostController) {
@@ -56,6 +55,13 @@ fun NavGraphBuilder.AppNavHost(navController: NavHostController) {
             context = LocalContext.current,
             companyName = companyName
         )
+    }
+    composable("company/{companyName}/{serviceName}") {
+        backStackEntry ->
+        val companyName = backStackEntry.arguments?.getString("companyName") ?: "Unknown"
+        val serviceName = backStackEntry.arguments?.getString("companyName") ?: "Unknown"
+        ServiceReservationScreen(serviceName, companyName)
+
     }
     composable("search")
     {

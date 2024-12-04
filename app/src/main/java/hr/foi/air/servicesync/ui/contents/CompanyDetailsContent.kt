@@ -122,7 +122,7 @@ fun CompanyDetailsContent(
                     )
                 },
                 supportingContent = {
-                    ProvidedServicesListItem(companyCategory.value)
+                    ProvidedServicesListItem(companyCategory.value, companyName, navController)
                 }
             )
 

@@ -88,7 +88,7 @@ fun AddReviewScreen(
                 firestoreReviews.addReview(review) { success ->
                     onReviewSubmit(success)
                 }
-                navController.navigate("company/$companyId")
+                navController.popBackStack()
             },
             modifier = Modifier.fillMaxWidth()
         ) {

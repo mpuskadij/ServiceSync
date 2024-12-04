@@ -13,13 +13,12 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavController
 
 @Composable
 fun ProvidedServicesListItem(serviceName: String, onServiceClicked: () -> Unit) {
     Row(modifier = Modifier.fillMaxWidth().padding(vertical = 8.dp).clickable {
 
-        onServiceClicked
+        onServiceClicked()
     }, horizontalArrangement = Arrangement.SpaceBetween) {
         Text(text  =serviceName, color = MaterialTheme.colorScheme.onSurface, style = MaterialTheme.typography.bodyLarge)
 

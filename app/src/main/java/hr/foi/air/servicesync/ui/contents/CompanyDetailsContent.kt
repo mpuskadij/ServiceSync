@@ -35,14 +35,11 @@ import com.google.firebase.firestore.GeoPoint
 import hr.foi.air.servicesync.R
 import hr.foi.air.servicesync.backend.FirestoreCompanyDetails
 import hr.foi.air.servicesync.backend.FirestoreReviews
-import hr.foi.air.servicesync.business.ReviewsHandler
 import hr.foi.air.servicesync.data.Review
 import hr.foi.air.servicesync.data.UserSession
 import hr.foi.air.servicesync.ui.components.CompanyDescription
 import hr.foi.air.servicesync.ui.components.CompanyImage
 import hr.foi.air.servicesync.ui.components.CompanyLocation
-import hr.foi.air.servicesync.ui.components.CompanyNameAndImage
-import hr.foi.air.servicesync.ui.components.ReviewCard
 import hr.foi.air.servicesync.ui.components.ReviewList
 import hr.foi.air.servicesync.ui.components.isDark
 import hr.foi.air.servicesync.ui.items.ProvidedServicesListItem
@@ -65,6 +62,7 @@ fun CompanyDetailsContent(
     val companyWorkingHours = remember { mutableStateOf(0) }
     val companyGeoPoint = remember { mutableStateOf<GeoPoint?>(null) }
     val companyImageUrl = remember { mutableStateOf<String?>(null) }
+    val reviews = remember { mutableStateOf<List<Review>>(emptyList()) }
     val isLoading = remember { mutableStateOf(true) }
 
     LaunchedEffect(companyName) {
@@ -89,6 +87,10 @@ fun CompanyDetailsContent(
         firestoreCompanyDetails.loadCompanyImageUrlByName(companyName) { imageUrl ->
             companyImageUrl.value = imageUrl
         }
+        firestoreReviews.fetchReviewsForCompany(companyName) { fetchedReviews ->
+            Log.d("COMPANYNAME", companyName)
+            reviews.value = fetchedReviews
+        }
 
         isLoading.value = false
     }
@@ -96,12 +98,13 @@ fun CompanyDetailsContent(
     if (isLoading.value) {
         Text("Loading data...", modifier = Modifier.padding(16.dp))
     } else {
-        LazyColumn(
+        Column(
+            horizontalAlignment = Alignment.Start,
+            verticalArrangement = Arrangement.Top,
             modifier = Modifier
                 .fillMaxWidth()
                 .verticalScroll(rememberScrollState())
         ) {
-            item {
             val headlineTextStyle = MaterialTheme.typography.headlineMedium
 
             CompanyImage(
@@ -113,19 +116,29 @@ fun CompanyDetailsContent(
             ListItem(
                 headlineContent = {
                     Text(
-                        text = stringResource(id = R.string.reviews),
+                        text = stringResource(id = R.string.description),
                         color = isDark(onSurfaceDark, onSurfaceLight),
-                        style = MaterialTheme.typography.headlineMedium
+                        style = headlineTextStyle,
+                        modifier = Modifier.fillMaxWidth().padding(vertical = 10.dp)
                     )
-                    Button(
-                        onClick = {
-                            navController.navigate("addReview/DentWheelchair llc./${UserSession.username}")
+                    Spacer(modifier = Modifier.height(25.dp))
+                },
+                supportingContent = {
+                    CompanyDescription(companyDescription.value)
+                }
+            )
 
-                        },
-                        modifier = Modifier
-                    ) {
-                        Text(text = "Dodaj recenziju")
-                    }
+            ListItem(
+                headlineContent = {
+                    Text(
+                        text = stringResource(id = R.string.services),
+                        color = isDark(onSurfaceDark, onSurfaceLight),
+                        style = headlineTextStyle,
+                        modifier = Modifier.fillMaxWidth().padding(vertical = 10.dp)
+                    )
+                },
+                supportingContent = {
+                    ProvidedServicesListItem(companyCategory.value)
                 }
             )
 
@@ -164,21 +177,27 @@ fun CompanyDetailsContent(
 
             ListItem(
                 headlineContent = {
-                    Text(
-                        text = stringResource(id = R.string.reviews),
-                        color = isDark(onSurfaceDark, onSurfaceLight),
-                        style = headlineTextStyle,
-                        modifier = Modifier.fillMaxWidth().padding(vertical = 10.dp)
-                    )
-                },
-                supportingContent = {
-                    Text(
-                        text = "Ovdje će biti recenzije"
-                    )
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Text(
+                            text = stringResource(id = R.string.reviews),
+                            color = isDark(onSurfaceDark, onSurfaceLight),
+                            style = MaterialTheme.typography.headlineMedium
+                        )
+                        Button(
+                            onClick = {
+                            },
+                            modifier = Modifier.padding(start = 16.dp)
+                        ) {
+                            Text(text = "Dodaj recenziju")
+                        }
+                    }
                 }
-
             )
-
+            ReviewList(reviews = reviews.value)
         }
     }
 }

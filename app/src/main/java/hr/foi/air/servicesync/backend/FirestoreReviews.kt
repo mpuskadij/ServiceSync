@@ -25,12 +25,13 @@ class FirestoreReviews {
 
     fun fetchReviewsForCompany(companyId: String, onResult: (List<Review>) -> Unit) {
         db.collection("reviews")
-            .whereEqualTo("companyId", companyId)
+            .whereEqualTo("companyId", companyId.trim())
             .get()
             .addOnSuccessListener { documents ->
                 val reviewsList = documents.documents.mapNotNull { document ->
                     document.toObject(Review::class.java)
                 }
+                Log.d("FirestoreReviews", "Fetched reviews: $reviewsList")
                 onResult(reviewsList)
             }
             .addOnFailureListener { exception ->

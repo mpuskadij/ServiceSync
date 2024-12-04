@@ -1,0 +1,103 @@
+
+    if (isLoading.value)
+    {
+        CircularProgressIndicator(modifier = Modifier.padding(16.dp))
+    }
+    else
+    {
+        companyNames.value.forEach { (companyName, imageUrl) ->
+            CompanyCard(
+                companyName = companyName,
+                imageUrl = imageUrl,
+                onCardClick = {
+                    navController.navigate("company/$companyName")
+                }
+            )
+        }
+    }
+
+
+    if (filteredCompanyName.value.isEmpty()) {
+                        Text(
+                            text = "No companies found.",
+                            style = MaterialTheme.typography.bodyLarge,
+                            textAlign = TextAlign.Center,
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(vertical = 16.dp)
+                        )
+                    } else {
+                        filteredCompanyName.value.forEach { (companyName, imageUrl) ->
+                            CompanyCard(
+                                companyName = companyName,
+                                imageUrl = imageUrl,
+                                onCardClick = {
+                                    navController.navigate("company/$companyName")
+                                }
+                            )
+                        }
+                    }
+
+
+
+                    TextField(
+                                value = searchQuery,
+                                onValueChange = { searchQuery = it },
+                                label = { Text("Search companies") },
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(bottom = 16.dp)
+                            )
+TextField(
+            value = searchQuery.text,
+            onValueChange = { newText: TextFieldValue ->
+                searchQuery = newText
+                Log.d("SearchContent", "Search query updated: ${newText}")
+            },
+            placeholder = {
+                Text("Pretraživanje")
+            },
+            leadingIcon = {
+                Icon(imageVector = Icons.Default.Search, contentDescription = "Search Icon")
+            },
+            textStyle = TextStyle(color = isDark(onSurfaceVariantDark, onSurfaceVariantLight)),
+            modifier = Modifier
+                .fillMaxWidth()
+                .background(
+                    color = isDark(surfaceContainerHighDark, surfaceContainerHighLight),
+                    shape = RoundedCornerShape(28.dp)
+                )
+                .padding(16.dp)
+                .padding(end = 48.dp),
+            cursorBrush = SolidColor(isDark(onSurfaceDark, onSurfaceLight)),
+        )
+
+        if (isLoading.value)
+        {
+            Box(
+                modifier = Modifier.fillMaxSize(),
+                contentAlignment = Alignment.Center
+            ) {
+                CircularProgressIndicator()
+            }
+        }
+        else
+        {
+            LazyColumn(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(top = 8.dp),
+                verticalArrangement = Arrangement.spacedBy(8.dp)
+            ) {
+                items(filteredCompanyName.value) { (companyName, imageUrl) ->
+                    CompanyCard(
+                        companyName = companyName,
+                        imageUrl = imageUrl,
+                        onCardClick = {
+                            navController.navigate("company/$companyName")
+                        }
+                    )
+                }
+            }
+        }
+

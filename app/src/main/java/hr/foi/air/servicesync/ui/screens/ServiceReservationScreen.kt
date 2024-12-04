@@ -32,6 +32,7 @@ import hr.foi.air.servicesync.backend.FirestoreService
 import hr.foi.air.servicesync.business.PresentAndFutureSelectableDates
 import hr.foi.air.servicesync.business.ReservationManager
 import hr.foi.air.servicesync.data.UserSession
+import hr.foi.air.servicesync.ui.components.ReservationCalendar
 import hr.foi.air.servicesync.ui.components.isDark
 import java.text.DateFormat
 import java.util.*
@@ -70,41 +71,29 @@ fun ServiceReservationScreen(serviceName: String, companyId: String) {
         )
 
         if (showDatePicker) {
-            val datePickerState = rememberDatePickerState(
-                initialSelectedDateMillis = System.currentTimeMillis(),
-                selectableDates = PresentAndFutureSelectableDates()
-            )
-            DatePickerDialog(
-                onDismissRequest = { showDatePicker = false },
-                confirmButton = {
-                    TextButton(onClick = {
-                        datePickerState.selectedDateMillis?.let {
-                            selectedDateMillis = it
-                            fetchAvailableSlots(
-                                reservationManager,
-                                companyId,
-                                it
-                            ) { slots -> availableSlots = slots }
-                        }
-                        showDatePicker = false
-                    }) {
-                        Text(text = stringResource(R.string.confirm))
-                    }
+            ReservationCalendar(
+                selectedDates = PresentAndFutureSelectableDates(),
+                onDismiss = {
+                    showDatePicker = false
                 },
-                dismissButton = {
-                    TextButton(onClick = { showDatePicker = false }) {
-                        Text(text = stringResource(R.string.cancel))
+                onConfirm = {selectedDate ->
+                    selectedDate?.let {
+                        selectedDateMillis = it
+                        fetchAvailableSlots(
+                            reservationManager,
+                            companyId,
+                            it
+                        ) { slots -> availableSlots = slots }
                     }
+                    showDatePicker = false
                 }
-            ) {
-                DatePicker(state = datePickerState)
-            }
+            )
         }
 
         Spacer(modifier = Modifier.height(16.dp))
 
         Text(
-            text = "Slobodni termini:",
+            text = stringResource(R.string.available_appointments),
             style = MaterialTheme.typography.titleMedium
         )
 

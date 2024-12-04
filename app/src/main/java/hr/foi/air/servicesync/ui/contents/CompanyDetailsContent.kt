@@ -5,6 +5,7 @@ import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.asPaddingValues
@@ -17,6 +18,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.Button
 import androidx.compose.material3.ListItem
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -30,6 +32,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.compose.rememberNavController
 import com.example.compose.onSurfaceDark
 import com.example.compose.onSurfaceLight
 import com.google.firebase.firestore.GeoPoint
@@ -38,6 +41,7 @@ import hr.foi.air.servicesync.backend.FirestoreCompanyDetails
 import hr.foi.air.servicesync.backend.FirestoreReviews
 import hr.foi.air.servicesync.business.ReviewsHandler
 import hr.foi.air.servicesync.data.Review
+import hr.foi.air.servicesync.data.UserSession
 import hr.foi.air.servicesync.ui.components.CompanyDescription
 import hr.foi.air.servicesync.ui.components.CompanyLocation
 import hr.foi.air.servicesync.ui.components.CompanyNameAndImage
@@ -55,6 +59,7 @@ fun CompanyDetailsContent(
 ) {
     val firestoreCompanyDetails = FirestoreCompanyDetails()
     val firestoreReviews = FirestoreReviews()
+    val navController = rememberNavController()
 
     val companyName = remember { mutableStateOf("Loading...") }
     val companyDescription = remember { mutableStateOf("Loading...") }
@@ -68,7 +73,7 @@ fun CompanyDetailsContent(
         firestoreCompanyDetails.loadCompanyName(context) { name ->
             companyName.value = name ?: "No name found!"
             if (!name.isNullOrEmpty()) {
-                firestoreReviews.fetchReviewsForCompany(name) { fetchedReviews ->
+                firestoreReviews.fetchReviewsForCompany("DentWheelchair llc.") { fetchedReviews ->
                     reviews.value = fetchedReviews
                     isLoading.value = false
                 }
@@ -176,14 +181,28 @@ fun CompanyDetailsContent(
                 )
             }
             item {
-                Text(
-                    text = stringResource(id = R.string.reviews),
-                    color = isDark(onSurfaceDark, onSurfaceLight),
-                    style = MaterialTheme.typography.headlineMedium,
+                Row(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(horizontal = 16.dp, vertical = 8.dp)
-                )
+                        .padding(horizontal = 16.dp, vertical = 8.dp),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Text(
+                        text = stringResource(id = R.string.reviews),
+                        color = isDark(onSurfaceDark, onSurfaceLight),
+                        style = MaterialTheme.typography.headlineMedium
+                    )
+                    Button(
+                        onClick = {
+                            navController.navigate("addReview/DentWheelchair llc./${UserSession.username}")
+
+                        },
+                        modifier = Modifier
+                    ) {
+                        Text(text = "Dodaj recenziju")
+                    }
+                }
             }
             item {
                 ReviewList(reviews = reviews.value)

@@ -38,4 +38,16 @@ class FirestoreReviews {
                 onResult(emptyList())
             }
     }
+    fun addReview(review: Review, onResult: (Boolean) -> Unit) {
+        db.collection("reviews")
+            .add(review)
+            .addOnSuccessListener {
+                Log.d("FirestoreReviews", "Review added successfully for company: ${review.companyId}")
+                onResult(true)
+            }
+            .addOnFailureListener { exception ->
+                Log.e("FirestoreReviews", "Error adding review for company: ${review.companyId}", exception)
+                onResult(false)
+            }
+    }
 }

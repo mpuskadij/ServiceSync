@@ -1,5 +1,6 @@
 package hr.foi.air.servicesync.ui.screens
 
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.WindowInsetsSides
@@ -72,6 +73,23 @@ fun MainScreen(
             composable("profile") {
                 ProfileScreen(onLogoutClick = onLogoutClick)
             }
+            composable("addReview/{companyId}/{userId}") { backStackEntry ->
+                val companyId = backStackEntry.arguments?.getString("companyId") ?: ""
+                val userId = backStackEntry.arguments?.getString("userId") ?: ""
+
+                AddReviewScreen(
+                    companyId = companyId,
+                    userId = userId,
+                    onReviewSubmit = { success ->
+                        if (success) {
+                            Log.d("AddReviewScreen", "Review added successfully.")
+                        } else {
+                            Log.e("AddReviewScreen", "Failed to add review.")
+                        }
+                    }
+                )
+            }
+
         }
     }
 }

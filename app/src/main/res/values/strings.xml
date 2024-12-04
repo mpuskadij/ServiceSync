@@ -18,4 +18,5 @@
     <string name="confirm">Potvrdi</string>
     <string name="cancel">Odustani</string>
     <string name="select_date">Odaberite datum...</string>
+    <string name="po_alji_recenziju">Pošalji recenziju</string>
 </resources>

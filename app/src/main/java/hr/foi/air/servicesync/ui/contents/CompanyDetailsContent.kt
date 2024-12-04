@@ -3,16 +3,11 @@ package hr.foi.air.servicesync.ui.contents
 import android.content.Context
 import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.WindowInsets
-import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -32,6 +27,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.compose.onSurfaceDark
 import com.example.compose.onSurfaceLight
@@ -43,6 +39,7 @@ import hr.foi.air.servicesync.business.ReviewsHandler
 import hr.foi.air.servicesync.data.Review
 import hr.foi.air.servicesync.data.UserSession
 import hr.foi.air.servicesync.ui.components.CompanyDescription
+import hr.foi.air.servicesync.ui.components.CompanyImage
 import hr.foi.air.servicesync.ui.components.CompanyLocation
 import hr.foi.air.servicesync.ui.components.CompanyNameAndImage
 import hr.foi.air.servicesync.ui.components.ReviewCard
@@ -55,48 +52,45 @@ import mapproviders.GoogleMapProvider
 @Composable
 fun CompanyDetailsContent(
     modifier: Modifier = Modifier,
-    context: Context
+    context: Context,
+    navController: NavController,
+    companyName: String
 ) {
     val firestoreCompanyDetails = FirestoreCompanyDetails()
     val firestoreReviews = FirestoreReviews()
     val navController = rememberNavController()
 
-    val companyName = remember { mutableStateOf("Loading...") }
     val companyDescription = remember { mutableStateOf("Loading...") }
     val companyCategory = remember { mutableStateOf("Loading...") }
     val companyWorkingHours = remember { mutableStateOf(0) }
-    val companyGeoPoint = remember { mutableStateOf(GeoPoint(0.0, 0.0)) }
-    val reviews = remember { mutableStateOf<List<Review>>(emptyList()) }
+    val companyGeoPoint = remember { mutableStateOf<GeoPoint?>(null) }
+    val companyImageUrl = remember { mutableStateOf<String?>(null) }
     val isLoading = remember { mutableStateOf(true) }
 
-    LaunchedEffect(Unit) {
-        firestoreCompanyDetails.loadCompanyName(context) { name ->
-            companyName.value = name ?: "No name found!"
-            if (!name.isNullOrEmpty()) {
-                firestoreReviews.fetchReviewsForCompany("DentWheelchair llc.") { fetchedReviews ->
-                    reviews.value = fetchedReviews
-                    isLoading.value = false
-                }
-            } else {
-                isLoading.value = false
-            }
-        }
-        firestoreCompanyDetails.loadCompanyDescription(context) { description ->
+    LaunchedEffect(companyName) {
+        firestoreCompanyDetails.loadCompanyDescriptionByName(companyName) { description ->
             companyDescription.value = description ?: "No description found!"
-            isLoading.value = false
         }
-        firestoreCompanyDetails.loadCompanyCategory(context) { category ->
+
+        firestoreCompanyDetails.loadCompanyCategoryByName(companyName) { category ->
             companyCategory.value = category ?: "No category found!"
-            isLoading.value = false
         }
-        firestoreCompanyDetails.loadCompanyWorkingHours(context) { workingHours ->
+
+        firestoreCompanyDetails.loadCompanyWorkingHoursByName(companyName) { workingHours ->
             companyWorkingHours.value = workingHours ?: 0
-            isLoading.value = false
         }
-        firestoreCompanyDetails.loadCompanyGeopoint(context) { geopoint ->
-            companyGeoPoint.value = geopoint ?: GeoPoint(0.0, 0.0)
-            isLoading.value = false
+
+        firestoreCompanyDetails.loadCompanyGeopointByName(companyName) { geoPoint ->
+            Log.d("Firestore", "Fetchan geopoint: $geoPoint")
+            companyGeoPoint.value = geoPoint
+            Log.d("Firestore", "Fetchan geopoint value: ${companyGeoPoint.value}")
         }
+
+        firestoreCompanyDetails.loadCompanyImageUrlByName(companyName) { imageUrl ->
+            companyImageUrl.value = imageUrl
+        }
+
+        isLoading.value = false
     }
 
     if (isLoading.value) {
@@ -105,89 +99,19 @@ fun CompanyDetailsContent(
         LazyColumn(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(WindowInsets.navigationBars.asPaddingValues())
+                .verticalScroll(rememberScrollState())
         ) {
             item {
-                CompanyNameAndImage(companyName.value)
-            }
-            item {
-                ListItem(
-                    headlineContent = {
-                        Text(
-                            text = stringResource(id = R.string.description),
-                            color = isDark(onSurfaceDark, onSurfaceLight),
-                            style = MaterialTheme.typography.headlineMedium,
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(vertical = 10.dp)
-                        )
-                        Spacer(modifier = Modifier.height(25.dp))
-                    },
-                    supportingContent = {
-                        CompanyDescription(companyDescription.value)
-                    }
-                )
-            }
-            item {
-                ListItem(
-                    headlineContent = {
-                        Text(
-                            text = stringResource(id = R.string.services),
-                            color = isDark(onSurfaceDark, onSurfaceLight),
-                            style = MaterialTheme.typography.headlineMedium,
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(vertical = 10.dp)
-                        )
-                    },
-                    supportingContent = {
-                        ProvidedServicesListItem(companyCategory.value)
-                    }
-                )
-            }
-            item {
-                ListItem(
-                    headlineContent = {
-                        Text(
-                            text = stringResource(id = R.string.working_hours),
-                            color = isDark(onSurfaceDark, onSurfaceLight),
-                            style = MaterialTheme.typography.headlineMedium,
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(vertical = 10.dp)
-                        )
-                        Spacer(modifier = Modifier.height(25.dp))
-                    },
-                    supportingContent = {
-                        Text("${companyWorkingHours.value}")
-                    }
-                )
-            }
-            item {
-                ListItem(
-                    headlineContent = {
-                        Text(
-                            text = stringResource(id = R.string.location),
-                            color = isDark(onSurfaceDark, onSurfaceLight),
-                            style = MaterialTheme.typography.headlineMedium,
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(vertical = 10.dp)
-                        )
-                    },
-                    supportingContent = {
-                        CompanyLocation(geoPoint = companyGeoPoint.value, GoogleMapProvider())
-                    }
-                )
-            }
-            item {
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 16.dp, vertical = 8.dp),
-                    horizontalArrangement = Arrangement.SpaceBetween,
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
+            val headlineTextStyle = MaterialTheme.typography.headlineMedium
+
+            CompanyImage(
+                companyName = companyName,
+                imageUrl = companyImageUrl.value,
+                onBackPressed = { navController.popBackStack() }
+            )
+
+            ListItem(
+                headlineContent = {
                     Text(
                         text = stringResource(id = R.string.reviews),
                         color = isDark(onSurfaceDark, onSurfaceLight),
@@ -203,10 +127,58 @@ fun CompanyDetailsContent(
                         Text(text = "Dodaj recenziju")
                     }
                 }
-            }
-            item {
-                ReviewList(reviews = reviews.value)
-            }
+            )
+
+            ListItem(
+                headlineContent = {
+                    Text(
+                        text = stringResource(id = R.string.working_hours),
+                        color = isDark(onSurfaceDark, onSurfaceLight),
+                        style = headlineTextStyle,
+                        modifier = Modifier.fillMaxWidth().padding(vertical = 10.dp)
+                    )
+                    Spacer(modifier = Modifier.height(25.dp))
+                },
+                supportingContent = {
+                    Text("${companyWorkingHours.value}")
+                }
+            )
+
+            ListItem(
+                headlineContent = {
+                    Text(
+                        text = stringResource(id = R.string.location),
+                        color = isDark(onSurfaceDark, onSurfaceLight),
+                        style = headlineTextStyle,
+                        modifier = Modifier.fillMaxWidth().padding(vertical = 10.dp)
+                    )
+                },
+                supportingContent = {
+                    companyGeoPoint.value?.let { geoPoint ->
+                        Log.d("Firestore", "Supporting content geopoint: $geoPoint")
+                        CompanyLocation(geoPoint = geoPoint, mapProvider = GoogleMapProvider())
+                    } ?: Text("Location data is unavailable.")
+                }
+
+            )
+
+            ListItem(
+                headlineContent = {
+                    Text(
+                        text = stringResource(id = R.string.reviews),
+                        color = isDark(onSurfaceDark, onSurfaceLight),
+                        style = headlineTextStyle,
+                        modifier = Modifier.fillMaxWidth().padding(vertical = 10.dp)
+                    )
+                },
+                supportingContent = {
+                    Text(
+                        text = "Ovdje će biti recenzije"
+                    )
+                }
+
+            )
+
         }
     }
 }
@@ -215,5 +187,5 @@ fun CompanyDetailsContent(
 @Preview
 @Composable
 fun CompanyDetailsPreview(){
-    CompanyDetailsContent(context = LocalContext.current)
+    CompanyDetailsContent(context = LocalContext.current, navController = rememberNavController(), companyName = "Sample Company")
 }

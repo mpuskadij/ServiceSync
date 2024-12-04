@@ -32,7 +32,7 @@ import com.example.compose.onSurfaceLight
 import com.google.firebase.firestore.GeoPoint
 import hr.foi.air.servicesync.R
 import hr.foi.air.servicesync.backend.FirestoreCompanyDetails
-import hr.foi.air.servicesync.backend.FirestoreReviews
+import hr.foi.air.servicesync.business.ReviewHandler
 import hr.foi.air.servicesync.data.Review
 import hr.foi.air.servicesync.data.UserSession
 import hr.foi.air.servicesync.ui.components.CompanyDescription
@@ -49,10 +49,10 @@ fun CompanyDetailsContent(
     modifier: Modifier = Modifier,
     context: Context,
     navController: NavController,
-    companyName: String
+    companyName: String,
+    reviewHandler: ReviewHandler = ReviewHandler()
 ) {
     val firestoreCompanyDetails = FirestoreCompanyDetails()
-    val firestoreReviews = FirestoreReviews()
 
     val companyDescription = remember { mutableStateOf("Loading...") }
     val companyCategory = remember { mutableStateOf("Loading...") }
@@ -84,9 +84,9 @@ fun CompanyDetailsContent(
         firestoreCompanyDetails.loadCompanyImageUrlByName(companyName) { imageUrl ->
             companyImageUrl.value = imageUrl
         }
-        firestoreReviews.fetchReviewsForCompany(companyName) { fetchedReviews ->
-            Log.d("COMPANYNAME", companyName)
+        reviewHandler.fetchReviews(companyName) { fetchedReviews ->
             reviews.value = fetchedReviews
+            isLoading.value = false
         }
 
         isLoading.value = false

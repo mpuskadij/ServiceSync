@@ -26,6 +26,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import hr.foi.air.servicesync.R
 import hr.foi.air.servicesync.backend.FirestoreReviews
+import hr.foi.air.servicesync.business.ReviewHandler
 import hr.foi.air.servicesync.data.Review
 
 @Composable
@@ -34,7 +35,8 @@ fun AddReviewScreen(
     companyId: String,
     userId: String,
     navController: NavController,
-    onReviewSubmit: (Boolean) -> Unit
+    onReviewSubmit: (Boolean) -> Unit,
+    reviewHandler: ReviewHandler = ReviewHandler()
 ) {
     val firestoreReviews = FirestoreReviews()
     val rating = remember { mutableStateOf(0) }
@@ -48,7 +50,7 @@ fun AddReviewScreen(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Text(
-            text = "Dodavanje recenzije",
+            text = stringResource(R.string.adding_review),
             style = MaterialTheme.typography.headlineMedium,
             modifier = Modifier.align(Alignment.Start)
         )
@@ -70,7 +72,7 @@ fun AddReviewScreen(
         OutlinedTextField(
             value = reviewText.value,
             onValueChange = { reviewText.value = it },
-            label = { Text(text = "Opis recenzije...") },
+            label = { Text(text = stringResource(R.string.review_description)) },
             modifier = Modifier
                 .fillMaxWidth()
                 .height(150.dp),
@@ -85,14 +87,14 @@ fun AddReviewScreen(
                     userId = userId
                 )
 
-                firestoreReviews.addReview(review) { success ->
+                reviewHandler.addReview(review) { success ->
                     onReviewSubmit(success)
                 }
                 navController.popBackStack()
             },
             modifier = Modifier.fillMaxWidth()
         ) {
-            Text(text = stringResource(R.string.po_alji_recenziju))
+            Text(text = stringResource(R.string.send_review))
         }
     }
 }

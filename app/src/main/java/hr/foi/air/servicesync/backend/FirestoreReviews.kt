@@ -8,21 +8,6 @@ class FirestoreReviews {
 
     private val db = FirebaseFirestore.getInstance()
 
-    fun fetchAllReviews(onResult: (List<Review>) -> Unit) {
-        db.collection("reviews")
-            .get()
-            .addOnSuccessListener { documents ->
-                val reviewsList = documents.documents.mapNotNull { document ->
-                    document.toObject(Review::class.java)
-                }
-                onResult(reviewsList)
-            }
-            .addOnFailureListener { exception ->
-                Log.e("FirestoreReviews", "Error fetching all reviews", exception)
-                onResult(emptyList())
-            }
-    }
-
     fun fetchReviewsForCompany(companyId: String, onResult: (List<Review>) -> Unit) {
         db.collection("reviews")
             .whereEqualTo("companyId", companyId.trim())

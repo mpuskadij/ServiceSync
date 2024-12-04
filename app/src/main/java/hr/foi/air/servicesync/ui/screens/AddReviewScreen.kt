@@ -23,6 +23,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import hr.foi.air.servicesync.R
 import hr.foi.air.servicesync.backend.FirestoreReviews
 import hr.foi.air.servicesync.data.Review
@@ -32,6 +33,7 @@ fun AddReviewScreen(
     modifier: Modifier = Modifier,
     companyId: String,
     userId: String,
+    navController: NavController,
     onReviewSubmit: (Boolean) -> Unit
 ) {
     val firestoreReviews = FirestoreReviews()
@@ -86,6 +88,7 @@ fun AddReviewScreen(
                 firestoreReviews.addReview(review) { success ->
                     onReviewSubmit(success)
                 }
+                navController.navigate("company/$companyId")
             },
             modifier = Modifier.fillMaxWidth()
         ) {

@@ -9,8 +9,6 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
@@ -55,7 +53,6 @@ fun CompanyDetailsContent(
 ) {
     val firestoreCompanyDetails = FirestoreCompanyDetails()
     val firestoreReviews = FirestoreReviews()
-    val navController = rememberNavController()
 
     val companyDescription = remember { mutableStateOf("Loading...") }
     val companyCategory = remember { mutableStateOf("Loading...") }
@@ -189,6 +186,7 @@ fun CompanyDetailsContent(
                         )
                         Button(
                             onClick = {
+                                navController.navigate("addReview/$companyName/${UserSession.username}")
                             },
                             modifier = Modifier.padding(start = 16.dp)
                         ) {

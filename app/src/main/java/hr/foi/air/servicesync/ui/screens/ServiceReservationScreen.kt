@@ -13,6 +13,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import com.example.compose.backgroundDark
 import com.example.compose.backgroundLight
 import com.example.compose.inversePrimaryDarkMediumContrast
@@ -32,6 +33,7 @@ import hr.foi.air.servicesync.backend.FirestoreService
 import hr.foi.air.servicesync.business.PresentAndFutureSelectableDates
 import hr.foi.air.servicesync.business.ReservationManager
 import hr.foi.air.servicesync.data.UserSession
+import hr.foi.air.servicesync.ui.components.BackButton
 import hr.foi.air.servicesync.ui.components.ReservationCalendar
 import hr.foi.air.servicesync.ui.components.isDark
 import java.text.DateFormat
@@ -39,7 +41,7 @@ import java.util.*
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ServiceReservationScreen(serviceName: String, companyId: String) {
+fun ServiceReservationScreen(serviceName: String, companyId: String, navController: NavController) {
     val reservationManager = remember { ReservationManager(FirestoreService()) }
 
     var showDatePicker by remember { mutableStateOf(false) }
@@ -49,9 +51,11 @@ fun ServiceReservationScreen(serviceName: String, companyId: String) {
     var loading by remember { mutableStateOf(false) }
 
     Column(modifier = Modifier.padding(16.dp)) {
+        BackButton(onBackPressed = { navController.popBackStack()})
         Text(
             text = serviceName,
             style = MaterialTheme.typography.headlineMedium,
+            color = isDark(surfaceVariantLight, surfaceVariantDark),
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(8.dp)
@@ -94,6 +98,7 @@ fun ServiceReservationScreen(serviceName: String, companyId: String) {
 
         Text(
             text = stringResource(R.string.available_appointments),
+            color = isDark(surfaceVariantLight, surfaceVariantDark),
             style = MaterialTheme.typography.titleMedium
         )
 
@@ -185,8 +190,3 @@ private fun fetchAvailableSlots(
     )
 }
 
-@Preview
-@Composable
-fun PreviewServiceReservationScreen() {
-    ServiceReservationScreen("Klasična masaža", "company")
-}

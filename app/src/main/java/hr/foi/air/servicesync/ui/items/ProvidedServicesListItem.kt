@@ -16,10 +16,10 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 
 @Composable
-fun ProvidedServicesListItem(serviceName: String,companyName: String, navController: NavController) {
+fun ProvidedServicesListItem(serviceName: String, onServiceClicked: () -> Unit) {
     Row(modifier = Modifier.fillMaxWidth().padding(vertical = 8.dp).clickable {
 
-        navController.navigate("company/${companyName}/${serviceName}")
+        onServiceClicked
     }, horizontalArrangement = Arrangement.SpaceBetween) {
         Text(text  =serviceName, color = MaterialTheme.colorScheme.onSurface, style = MaterialTheme.typography.bodyLarge)
 

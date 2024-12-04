@@ -60,7 +60,7 @@ fun NavGraphBuilder.AppNavHost(navController: NavHostController) {
         backStackEntry ->
         val companyName = backStackEntry.arguments?.getString("companyName") ?: "Unknown"
         val serviceName = backStackEntry.arguments?.getString("companyName") ?: "Unknown"
-        ServiceReservationScreen(serviceName, companyName)
+        ServiceReservationScreen(serviceName, companyName, navController)
 
     }
     composable("search")

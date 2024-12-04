@@ -17,4 +17,5 @@
     <string name="confirm">Potvrdi</string>
     <string name="cancel">Odustani</string>
     <string name="select_date">Odaberite datum...</string>
+    <string name="available_appointments">Slobodni termini:</string>
 </resources>

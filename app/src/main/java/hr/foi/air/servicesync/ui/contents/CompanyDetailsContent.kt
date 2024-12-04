@@ -122,7 +122,9 @@ fun CompanyDetailsContent(
                     )
                 },
                 supportingContent = {
-                    ProvidedServicesListItem(companyCategory.value, companyName, navController)
+                    ProvidedServicesListItem(serviceName =  companyCategory.value, onServiceClicked = {
+                        navController.navigate("company/${companyName}/${companyCategory.value}")
+                    })
                 }
             )
 

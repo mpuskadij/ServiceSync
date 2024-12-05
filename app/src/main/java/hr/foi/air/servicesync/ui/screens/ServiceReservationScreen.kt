@@ -83,8 +83,7 @@ fun ServiceReservationScreen(serviceName: String, companyId: String, navControll
                 onConfirm = {selectedDate ->
                     selectedDate?.let {
                         selectedDateMillis = it
-                        fetchAvailableSlots(
-                            reservationManager,
+                        reservationManager.fetchAvailableSlots(
                             companyId,
                             it
                         ) { slots -> availableSlots = slots }
@@ -174,19 +173,5 @@ fun ServiceReservationScreen(serviceName: String, companyId: String, navControll
     }
 }
 
-private fun fetchAvailableSlots(
-    reservationManager: ReservationManager,
-    companyId: String,
-    dateMillis: Long,
-    onSlotsFetched: (List<Long>) -> Unit
-) {
-    reservationManager.getAvailableTimeSlots(
-        companyId = companyId,
-        date = dateMillis,
-        onSuccess = { slots -> onSlotsFetched(slots) },
-        onFailure = { exception ->
-            println("Error fetching available slots: ${exception.message}")
-        }
-    )
-}
+
 

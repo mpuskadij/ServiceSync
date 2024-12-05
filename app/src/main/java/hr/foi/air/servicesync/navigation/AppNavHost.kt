@@ -1,6 +1,7 @@
 package hr.foi.air.servicesync.navigation
 
 import android.util.Log
+import android.widget.Toast
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavGraphBuilder
@@ -8,6 +9,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import com.google.firebase.auth.FirebaseAuth
 import hr.foi.air.servicesync.ui.contents.CompanyDetailsContent
+import hr.foi.air.servicesync.ui.screens.AddReviewScreen
 import hr.foi.air.servicesync.ui.screens.CalendarScreen
 import hr.foi.air.servicesync.ui.screens.FavoriteScreen
 import hr.foi.air.servicesync.ui.screens.LoginScreen
@@ -84,6 +86,32 @@ fun NavGraphBuilder.AppNavHost(navController: NavHostController) {
                 navController.navigate("login")
                 {
                     popUpTo("main") { inclusive = true }
+                }
+            }
+        )
+    }
+    composable("addReview/{companyId}/{userId}") { backStackEntry ->
+        val context = LocalContext.current
+        val companyId = backStackEntry.arguments?.getString("companyId") ?: ""
+        val userId = backStackEntry.arguments?.getString("userId") ?: ""
+
+        AddReviewScreen(
+            navController = navController,
+            companyId = companyId,
+            userId = userId,
+            onReviewSubmit = { success ->
+                if (success) {
+                    Toast.makeText(
+                        context,
+                        "Review added successfully.",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                } else {
+                    Toast.makeText(
+                        context,
+                        "Failed to add review. Please try again.",
+                        Toast.LENGTH_SHORT
+                    ).show()
                 }
             }
         )

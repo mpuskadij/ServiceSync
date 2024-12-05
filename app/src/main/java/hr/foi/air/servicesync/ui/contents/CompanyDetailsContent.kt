@@ -4,12 +4,14 @@ import android.content.Context
 import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.Button
 import androidx.compose.material3.ListItem
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -30,19 +32,25 @@ import com.example.compose.onSurfaceLight
 import com.google.firebase.firestore.GeoPoint
 import hr.foi.air.servicesync.R
 import hr.foi.air.servicesync.backend.FirestoreCompanyDetails
+import hr.foi.air.servicesync.business.ReviewHandler
+import hr.foi.air.servicesync.data.Review
+import hr.foi.air.servicesync.data.UserSession
 import hr.foi.air.servicesync.ui.components.CompanyDescription
 import hr.foi.air.servicesync.ui.components.CompanyImage
 import hr.foi.air.servicesync.ui.components.CompanyLocation
+import hr.foi.air.servicesync.ui.components.ReviewList
 import hr.foi.air.servicesync.ui.components.isDark
 import hr.foi.air.servicesync.ui.items.ProvidedServicesListItem
 import mapproviders.GoogleMapProvider
+
 
 @Composable
 fun CompanyDetailsContent(
     modifier: Modifier = Modifier,
     context: Context,
     navController: NavController,
-    companyName: String
+    companyName: String,
+    reviewHandler: ReviewHandler = ReviewHandler()
 ) {
     val firestoreCompanyDetails = FirestoreCompanyDetails()
 
@@ -51,6 +59,7 @@ fun CompanyDetailsContent(
     val companyWorkingHours = remember { mutableStateOf(0) }
     val companyGeoPoint = remember { mutableStateOf<GeoPoint?>(null) }
     val companyImageUrl = remember { mutableStateOf<String?>(null) }
+    val reviews = remember { mutableStateOf<List<Review>>(emptyList()) }
     val isLoading = remember { mutableStateOf(true) }
 
     LaunchedEffect(companyName) {
@@ -74,6 +83,10 @@ fun CompanyDetailsContent(
 
         firestoreCompanyDetails.loadCompanyImageUrlByName(companyName) { imageUrl ->
             companyImageUrl.value = imageUrl
+        }
+        reviewHandler.fetchReviews(companyName) { fetchedReviews ->
+            reviews.value = fetchedReviews
+            isLoading.value = false
         }
 
         isLoading.value = false
@@ -163,24 +176,32 @@ fun CompanyDetailsContent(
 
             ListItem(
                 headlineContent = {
-                    Text(
-                        text = stringResource(id = R.string.reviews),
-                        color = isDark(onSurfaceDark, onSurfaceLight),
-                        style = headlineTextStyle,
-                        modifier = Modifier.fillMaxWidth().padding(vertical = 10.dp)
-                    )
-                },
-                supportingContent = {
-                    Text(
-                        text = "Ovdje će biti recenzije"
-                    )
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Text(
+                            text = stringResource(id = R.string.reviews),
+                            color = isDark(onSurfaceDark, onSurfaceLight),
+                            style = MaterialTheme.typography.headlineMedium
+                        )
+                        Button(
+                            onClick = {
+                                navController.navigate("addReview/$companyName/${UserSession.username}")
+                            },
+                            modifier = Modifier.padding(start = 16.dp)
+                        ) {
+                            Text(text = "Dodaj recenziju")
+                        }
+                    }
                 }
-
             )
-
+            ReviewList(reviews = reviews.value)
         }
     }
 }
+
 
 @Preview
 @Composable

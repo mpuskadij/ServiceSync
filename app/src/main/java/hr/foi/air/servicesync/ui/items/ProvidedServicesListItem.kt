@@ -1,5 +1,6 @@
 package hr.foi.air.servicesync.ui.items
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -14,8 +15,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun ProvidedServicesListItem(serviceName: String) {
-    Row(modifier = Modifier.fillMaxWidth().padding(vertical = 8.dp), horizontalArrangement = Arrangement.SpaceBetween) {
+fun ProvidedServicesListItem(serviceName: String, onServiceClicked: () -> Unit) {
+    Row(modifier = Modifier.fillMaxWidth().padding(vertical = 8.dp).clickable {
+
+        onServiceClicked()
+    }, horizontalArrangement = Arrangement.SpaceBetween) {
         Text(text  =serviceName, color = MaterialTheme.colorScheme.onSurface, style = MaterialTheme.typography.bodyLarge)
 
         Icon(imageVector = Icons.AutoMirrored.Filled.ArrowForward, contentDescription = Icons.AutoMirrored.Filled.ArrowForward.name,

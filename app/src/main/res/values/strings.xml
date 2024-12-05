@@ -18,6 +18,7 @@
     <string name="confirm">Potvrdi</string>
     <string name="cancel">Odustani</string>
     <string name="select_date">Odaberite datum...</string>
+    <string name="available_appointments">Slobodni termini:</string>
     <string name="adding_review">Dodavanje recenzije</string>
     <string name="review_description">Opis recenzije...</string>
     <string name="send_review">Pošalji recenziju</string>

@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -52,18 +53,7 @@ fun CompanyImage(companyName: String, imageUrl: String?, onBackPressed: () -> Un
                     .background(Color.Black.copy(alpha = 0.6f))
             )
         }
-        IconButton(
-            onClick = onBackPressed,
-            modifier = Modifier
-                .padding(16.dp)
-                .align(Alignment.TopStart)
-        ) {
-            Icon(
-                imageVector = Icons.Filled.ArrowBack,
-                contentDescription = "Back",
-                tint = Color.White
-            )
-        }
+        BackButton(onBackPressed = onBackPressed, modifier =  Modifier.padding(16.dp).align(Alignment.TopStart))
         Text(
             modifier = Modifier.padding(10.dp),
             text = companyName,

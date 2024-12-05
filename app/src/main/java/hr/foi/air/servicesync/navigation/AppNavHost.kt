@@ -16,6 +16,7 @@ import hr.foi.air.servicesync.ui.screens.LoginScreen
 import hr.foi.air.servicesync.ui.screens.ProfileScreen
 import hr.foi.air.servicesync.ui.screens.RegistrationScreen
 import hr.foi.air.servicesync.ui.screens.SearchScreen
+import hr.foi.air.servicesync.ui.screens.ServiceReservationScreen
 
 
 fun NavGraphBuilder.AppNavHost(navController: NavHostController) {
@@ -56,6 +57,13 @@ fun NavGraphBuilder.AppNavHost(navController: NavHostController) {
             context = LocalContext.current,
             companyName = companyName
         )
+    }
+    composable("company/{companyName}/{serviceName}") {
+        backStackEntry ->
+        val companyName = backStackEntry.arguments?.getString("companyName") ?: "Unknown"
+        val serviceName = backStackEntry.arguments?.getString("companyName") ?: "Unknown"
+        ServiceReservationScreen(serviceName, companyName, navController)
+
     }
     composable("search")
     {

@@ -10,7 +10,6 @@ import androidx.compose.material3.rememberDatePickerState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.stringResource
 import hr.foi.air.servicesync.R
-import hr.foi.air.servicesync.business.PresentAndFutureSelectableDates
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

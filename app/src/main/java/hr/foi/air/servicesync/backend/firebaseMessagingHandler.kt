@@ -20,6 +20,7 @@ class firebaseMessagingHandler: FirebaseMessagingService(){
 
     override fun onMessageReceived(remoteMessage: RemoteMessage) {
         super.onMessageReceived(remoteMessage)
+        createNotificationChannel()
         Log.d("FCM", "Message received: ${remoteMessage.data}")
         remoteMessage.notification?.let {
             Log.d("FCM", "Notification title: ${it.title}, body: ${it.body}")
@@ -59,7 +60,6 @@ class firebaseMessagingHandler: FirebaseMessagingService(){
             val channel = NotificationChannel(channelId, channelName, importance).apply {
                 description = "Notification channel"
             }
-
             val notificationManager = getSystemService(NotificationManager::class.java)
             notificationManager?.createNotificationChannel(channel)
         }

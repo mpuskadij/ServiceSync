@@ -12,6 +12,8 @@ class firebaseAuthentication {
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
                     val user = auth.currentUser
+                    val firesoreUserDetails : FirestoreUserDetails = FirestoreUserDetails()
+                    firesoreUserDetails.updateFCMToken()
                     Log.d("FirebaseAuth", "User registration successful: ${user?.email}")
                     callback(true, user)
                 } else {
@@ -25,6 +27,8 @@ class firebaseAuthentication {
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
                     currentUser = auth.currentUser
+                    val firesoreUserDetails : FirestoreUserDetails = FirestoreUserDetails()
+                    firesoreUserDetails.updateFCMToken()
                     Log.d("FirebaseAuth", "User successfuly logged in: ${currentUser?.email}")
                     callback(true, currentUser)
                 } else {

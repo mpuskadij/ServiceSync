@@ -2,7 +2,7 @@ package hr.foi.air.servicesync.business
 
 import hr.foi.air.servicesync.backend.FirestoreService
 
-class ReservationManager(private val firestoreService: FirestoreService) {
+class ReservationManager(val firestoreService: FirestoreService) {
 
     fun saveReservation(
         companyId: String,
@@ -20,12 +20,18 @@ class ReservationManager(private val firestoreService: FirestoreService) {
         firestoreService.saveReservation(companyId, serviceName, reservationDate, userId, onSuccess, onFailure)
     }
 
-    fun getAvailableTimeSlots(
+    fun fetchAvailableSlots(
         companyId: String,
-        date: Long,
-        onSuccess: (List<Long>) -> Unit,
-        onFailure: (Exception) -> Unit
+        dateMillis: Long,
+        onSlotsFetched: (List<Long>) -> Unit
     ) {
-        firestoreService.getAvailableTimeSlots(companyId, date, onSuccess, onFailure)
+        firestoreService.getAvailableTimeSlots(
+            companyId = companyId,
+            date = dateMillis,
+            onSuccess = { slots -> onSlotsFetched(slots) },
+            onFailure = { exception ->
+                println("Error fetching available slots: ${exception.message}")
+            }
+        )
     }
 }

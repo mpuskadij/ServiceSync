@@ -1,5 +1,9 @@
 package hr.foi.air.servicesync.ui.screens
 
+import android.Manifest
+import android.content.pm.PackageManager
+import android.os.Build
+import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -38,6 +42,7 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.core.app.ActivityCompat
 import com.example.compose.primaryDark
 import com.example.compose.primaryLight
 import hr.foi.air.servicesync.R
@@ -118,6 +123,41 @@ fun LoginScreen(
 
                 Button(
                     onClick =  {
+                        /*
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                            ActivityCompat.requestPermissions(
+                                this,
+                                arrayOf(android.Manifest.permission.POST_NOTIFICATIONS),
+                                REQUEST_CODE
+                            )
+                        }*/
+                        val activity = context as? android.app.Activity
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                            if (ActivityCompat.checkSelfPermission(
+                                    context,
+                                    Manifest.permission.POST_NOTIFICATIONS
+                                ) != PackageManager.PERMISSION_GRANTED
+                            ) {
+                                // Request the permission
+                                activity?.let {
+                                    ActivityCompat.requestPermissions(
+                                        it,
+                                        arrayOf(Manifest.permission.POST_NOTIFICATIONS),
+                                        101 // Request code
+                                    )
+                                }
+                                return@Button
+                            }
+                        }
+                        /*FirebaseMessaging.getInstance().token
+                            .addOnCompleteListener { task ->
+                                if (task.isSuccessful) {
+                                    val token = task.result
+                                    Log.d("FCM", "FCM Token: $token")
+                                } else {
+                                    Log.e("FCM", "Failed to retrieve FCM token", task.exception)
+                                }
+                            }*/
                         var checkedEmail:String
                         var checkedPassword:String
                         if(email==null||email==""){

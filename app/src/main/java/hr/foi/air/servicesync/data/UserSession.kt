@@ -1,6 +1,7 @@
 package hr.foi.air.servicesync.data
 
 import com.google.firebase.auth.FirebaseAuth
+import hr.foi.air.servicesync.backend.FirestoreUserDetails
 
 object UserSession {
     val username: String
@@ -11,6 +12,9 @@ object UserSession {
     }
 
     fun logout() {
-        FirebaseAuth.getInstance().signOut()
+        val firesoreUserDetails : FirestoreUserDetails = FirestoreUserDetails()
+        firesoreUserDetails.deleteFCMToken{ success ->
+            FirebaseAuth.getInstance().signOut()
+        }
     }
 }

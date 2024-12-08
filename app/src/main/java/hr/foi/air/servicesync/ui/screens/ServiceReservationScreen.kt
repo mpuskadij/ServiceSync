@@ -1,5 +1,6 @@
 package hr.foi.air.servicesync.ui.screens
 
+import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -10,6 +11,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -49,6 +51,7 @@ fun ServiceReservationScreen(serviceName: String, companyId: String, navControll
     var availableSlots by remember { mutableStateOf<List<Long>>(emptyList()) }
     var selectedSlot by remember { mutableStateOf<Long?>(null) }
     var loading by remember { mutableStateOf(false) }
+    val context = LocalContext.current
 
     Column(modifier = Modifier.padding(16.dp)) {
         BackButton(onBackPressed = { navController.popBackStack()})
@@ -157,10 +160,12 @@ fun ServiceReservationScreen(serviceName: String, companyId: String, navControll
                         onSuccess = {
                             println("Reservation saved successfully.")
                             availableSlots = availableSlots.filter { it != selectedSlot }
+                            Toast.makeText(context, "Rezervacija uspješno spremljena!", Toast.LENGTH_SHORT).show()
                             selectedSlot = null
                         },
                         onFailure = { exception ->
                             println("Error saving reservation: ${exception.message}")
+                            Toast.makeText(context, "Greška pri spremanju rezervacije", Toast.LENGTH_SHORT).show()
                         }
                     )
                 }

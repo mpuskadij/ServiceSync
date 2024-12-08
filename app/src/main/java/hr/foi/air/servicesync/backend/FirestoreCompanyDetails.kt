@@ -133,4 +133,30 @@ class FirestoreCompanyDetails {
                 onResult("23:59")
             }
     }
+    fun loadCompanyOpeningTimeById(companyId: String, onResult: (String?) -> Unit) {
+        db.collection("companies")
+            .document(companyId)
+            .get()
+            .addOnSuccessListener { document ->
+                val closingTime = document.getString("openingTime")
+                val formattedOpeningTime = closingTime ?: "23:59"
+                onResult(formattedOpeningTime)
+            }
+            .addOnFailureListener {
+                onResult("23:59")
+            }
+    }
+    fun loadCompanyClosingTimeById(companyId: String, onResult: (String?) -> Unit) {
+        db.collection("companies")
+            .document(companyId)
+            .get()
+            .addOnSuccessListener { document ->
+                val closingTime = document.getString("closingTime")
+                val formattedClosingTime = closingTime ?: "23:59"
+                onResult(formattedClosingTime)
+            }
+            .addOnFailureListener {
+                onResult("23:59")
+            }
+    }
 }

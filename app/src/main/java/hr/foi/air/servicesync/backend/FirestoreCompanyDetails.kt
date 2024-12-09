@@ -139,11 +139,11 @@ class FirestoreCompanyDetails {
             .get()
             .addOnSuccessListener { document ->
                 val closingTime = document.getString("openingTime")
-                val formattedOpeningTime = closingTime ?: "23:59"
+                val formattedOpeningTime = closingTime ?: "0:00"
                 onResult(formattedOpeningTime)
             }
             .addOnFailureListener {
-                onResult("23:59")
+                onResult("0:00")
             }
     }
     fun loadCompanyClosingTimeById(companyId: String, onResult: (String?) -> Unit) {

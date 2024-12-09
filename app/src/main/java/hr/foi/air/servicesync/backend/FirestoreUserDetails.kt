@@ -1,7 +1,9 @@
 package hr.foi.air.servicesync.backend
 
+import android.util.Log
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.messaging.FirebaseMessaging
 import hr.foi.air.servicesync.data.UserSession
 
 class FirestoreUserDetails {
@@ -72,6 +74,59 @@ class FirestoreUserDetails {
             }
             ?.addOnFailureListener {
                 onResult(false)
+            }
+    }
+    //FOR MESSAGING
+    fun saveFCMToken(token: String,onResult: (Boolean) -> Unit) {
+        UserSession.username.let { id ->
+            val userDetails = mapOf(
+                "FCMToken" to token
+            )
+            firestore.collection("users").document(id).update(userDetails)
+                .addOnSuccessListener {
+                    onResult(true)
+                }
+                .addOnFailureListener { exception ->
+                    firestore.collection("users").document(id).set(userDetails)
+                        .addOnSuccessListener {
+                            onResult(true)
+                        }
+                        .addOnFailureListener {
+                            onResult(false)
+                        }
+                }
+        }
+    }
+    fun updateFCMToken() {
+        FirebaseMessaging.getInstance().token
+            .addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    val token = task.result
+                    saveFCMToken(token){ success ->
+
+                    }
+                    Log.d("FCM", "FCM Token: $token")
+                } else {
+                    Log.e("FCM", "Failed to retrieve FCM token", task.exception)
+                }
+            }
+    }
+    fun deleteFCMToken(onResult: (Boolean) -> Unit) {
+        FirebaseMessaging.getInstance().token
+            .addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    val token = task.result
+                    saveFCMToken("") { success ->
+                        Log.d("FCM", "FCM Token: $token")
+                        if(success){
+                            onResult(true)
+                        }
+                        onResult(false)
+                    }
+                } else {
+                    Log.e("FCM", "Failed to retrieve FCM token", task.exception)
+                    onResult(false)
+                }
             }
     }
 }

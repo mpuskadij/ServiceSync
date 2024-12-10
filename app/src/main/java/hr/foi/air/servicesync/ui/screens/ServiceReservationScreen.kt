@@ -160,12 +160,12 @@ fun ServiceReservationScreen(serviceName: String, companyId: String, navControll
                         onSuccess = {
                             println("Reservation saved successfully.")
                             availableSlots = availableSlots.filter { it != selectedSlot }
-                            Toast.makeText(context, "Rezervacija uspješno spremljena!", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(context, context.getString(R.string.reservation_successful), Toast.LENGTH_SHORT).show()
                             selectedSlot = null
                         },
                         onFailure = { exception ->
                             println("Error saving reservation: ${exception.message}")
-                            Toast.makeText(context, "Greška pri spremanju rezervacije", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(context, context.getString(R.string.reservation_error), Toast.LENGTH_SHORT).show()
                         }
                     )
                 }
@@ -173,7 +173,7 @@ fun ServiceReservationScreen(serviceName: String, companyId: String, navControll
             enabled = selectedSlot != null,
             modifier = Modifier.fillMaxWidth()
         ) {
-            Text(text = "Spremi rezervaciju")
+            Text(text = stringResource(R.string.save_reservation))
         }
     }
 }

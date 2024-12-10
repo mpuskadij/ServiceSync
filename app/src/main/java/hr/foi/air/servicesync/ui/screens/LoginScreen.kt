@@ -97,13 +97,13 @@ fun LoginScreen(
                 Spacer(modifier = Modifier.height(8.dp))
                 Text(
                     modifier = Modifier.padding(16.dp),
-                    text = "Prijava",
+                    text = stringResource(R.string.login),
                     style = MaterialTheme.typography.titleLarge,
                 )
                 OutlinedTextField(
                     value = email,
                     onValueChange = { email = it },
-                    label = { Text("Email") },
+                    label = { Text(stringResource(R.string.email)) },
                     singleLine = true,
                     modifier = Modifier.fillMaxWidth()
                 )
@@ -113,7 +113,7 @@ fun LoginScreen(
                 OutlinedTextField(
                     value = password,
                     onValueChange = { password = it },
-                    label = { Text("Lozinka") },
+                    label = { Text(stringResource(R.string.password)) },
                     visualTransformation = PasswordVisualTransformation(),
                     singleLine = true,
                     modifier = Modifier.fillMaxWidth()
@@ -174,14 +174,14 @@ fun LoginScreen(
                             if (isLoggedIn) {
                                 Toast.makeText(
                                     context,
-                                    "Prijava je uspjesna.",
+                                    context.getString(R.string.login_successful),
                                     Toast.LENGTH_LONG
                                 ).show()
                                 onLoginClickSuccesfull()
                             } else {
                                 Toast.makeText(
                                     context,
-                                    "Prijava nije uspjesna.",
+                                    context.getString(R.string.login_error),
                                     Toast.LENGTH_LONG
                                 ).show()
                             }
@@ -192,13 +192,13 @@ fun LoginScreen(
                         .padding(horizontal = 64.dp),
                     colors = ButtonDefaults.buttonColors(containerColor = isDark(Color(0xFF8FA7D6), Color(0xFF65558F)))
                 ) {
-                    Text(text = "Prijava")
+                    Text(text = stringResource(R.string.login))
                 }
 
                 Spacer(modifier = Modifier.height(16.dp))
 
                 Text(
-                    text = "Nemate račun? Registrirajte se",
+                    text = stringResource(R.string.no_account),
                     style = MaterialTheme.typography.bodyMedium,
                     modifier = Modifier.clickable { onRegistrationClick()},
                     textAlign = TextAlign.Center,

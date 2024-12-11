@@ -54,8 +54,8 @@ fun CompanyDetailsContent(
 ) {
     val firestoreCompanyDetails = FirestoreCompanyDetails()
 
-    val companyDescription = remember { mutableStateOf("Loading...") }
-    val companyCategory = remember { mutableStateOf("Loading...") }
+    val companyDescription = remember { mutableStateOf(context.getString(R.string.loading)) }
+    val companyCategory = remember { mutableStateOf(context.getString(R.string.loading)) }
     val companyWorkingHours = remember { mutableStateOf(0) }
     val companyGeoPoint = remember { mutableStateOf<GeoPoint?>(null) }
     val companyImageUrl = remember { mutableStateOf<String?>(null) }
@@ -64,11 +64,11 @@ fun CompanyDetailsContent(
 
     LaunchedEffect(companyName) {
         firestoreCompanyDetails.loadCompanyDescriptionByName(companyName) { description ->
-            companyDescription.value = description ?: "No description found!"
+            companyDescription.value = description ?: context.getString(R.string.no_description)
         }
 
         firestoreCompanyDetails.loadCompanyCategoryByName(companyName) { category ->
-            companyCategory.value = category ?: "No category found!"
+            companyCategory.value = category ?: context.getString(R.string.no_category)
         }
 
         firestoreCompanyDetails.loadCompanyWorkingHoursByName(companyName) { workingHours ->
@@ -93,7 +93,7 @@ fun CompanyDetailsContent(
     }
 
     if (isLoading.value) {
-        Text("Loading data...", modifier = Modifier.padding(16.dp))
+        Text(stringResource(R.string.loading_data), modifier = Modifier.padding(16.dp))
     } else {
         Column(
             horizontalAlignment = Alignment.Start,
@@ -113,7 +113,7 @@ fun CompanyDetailsContent(
             ListItem(
                 headlineContent = {
                     Text(
-                        text = stringResource(id = R.string.description),
+                        text = stringResource(id = R.string.company_description),
                         color = isDark(onSurfaceDark, onSurfaceLight),
                         style = headlineTextStyle,
                         modifier = Modifier.fillMaxWidth().padding(vertical = 10.dp)
@@ -192,7 +192,7 @@ fun CompanyDetailsContent(
                             },
                             modifier = Modifier.padding(start = 16.dp)
                         ) {
-                            Text(text = "Dodaj recenziju")
+                            Text(text = stringResource(R.string.add_review))
                         }
                     }
                 }

@@ -30,6 +30,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -77,13 +78,13 @@ fun RegistrationScreen(
                 Spacer(modifier = Modifier.height(8.dp))
                 Text(
                     modifier = Modifier.padding(16.dp),
-                    text = "Registracija",
+                    text = stringResource(R.string.registration),
                     style = MaterialTheme.typography.titleLarge,
                 )
                 OutlinedTextField(
                     value = email,
                     onValueChange = { email = it },
-                    label = { Text("Email") },
+                    label = { Text(stringResource(R.string.email)) },
                     singleLine = true,
                     modifier = Modifier.fillMaxWidth()
                 )
@@ -137,14 +138,14 @@ fun RegistrationScreen(
                             if (isRegistered) {
                                 Toast.makeText(
                                     context,
-                                    "Registracija je uspjesna.",
+                                    context.getString(R.string.registration_successful),
                                     Toast.LENGTH_LONG
                                 ).show()
                                 onRegisterClickSuccesfull()
                             } else {
                                 Toast.makeText(
                                     context,
-                                    "Registracija nije uspjesna.",
+                                    context.getString(R.string.registration_error),
                                     Toast.LENGTH_LONG
                                 ).show()
                             }
@@ -154,13 +155,13 @@ fun RegistrationScreen(
                         .fillMaxWidth()
                         .padding(horizontal = 64.dp)
                 ) {
-                    Text(text = "Registracija")
+                    Text(text = stringResource(R.string.registration))
                 }
 
                 Spacer(modifier = Modifier.height(16.dp))
 
                 Text(
-                    text = "Već imate račun? Prijavite se",
+                    text = stringResource(R.string.already_have_account),
                     style = MaterialTheme.typography.bodyMedium,
                     modifier = Modifier.clickable { onLoginClick() },
                     textAlign = TextAlign.Center,

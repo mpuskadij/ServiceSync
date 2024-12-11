@@ -1,5 +1,9 @@
 package hr.foi.air.servicesync.ui.screens
 
+import android.Manifest
+import android.content.pm.PackageManager
+import android.os.Build
+import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -38,6 +42,7 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.core.app.ActivityCompat
 import com.example.compose.primaryDark
 import com.example.compose.primaryLight
 import hr.foi.air.servicesync.R
@@ -92,13 +97,13 @@ fun LoginScreen(
                 Spacer(modifier = Modifier.height(8.dp))
                 Text(
                     modifier = Modifier.padding(16.dp),
-                    text = "Prijava",
+                    text = stringResource(R.string.login),
                     style = MaterialTheme.typography.titleLarge,
                 )
                 OutlinedTextField(
                     value = email,
                     onValueChange = { email = it },
-                    label = { Text("Email") },
+                    label = { Text(stringResource(R.string.email)) },
                     singleLine = true,
                     modifier = Modifier.fillMaxWidth()
                 )
@@ -108,7 +113,7 @@ fun LoginScreen(
                 OutlinedTextField(
                     value = password,
                     onValueChange = { password = it },
-                    label = { Text("Lozinka") },
+                    label = { Text(stringResource(R.string.password)) },
                     visualTransformation = PasswordVisualTransformation(),
                     singleLine = true,
                     modifier = Modifier.fillMaxWidth()
@@ -118,6 +123,41 @@ fun LoginScreen(
 
                 Button(
                     onClick =  {
+                        /*
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                            ActivityCompat.requestPermissions(
+                                this,
+                                arrayOf(android.Manifest.permission.POST_NOTIFICATIONS),
+                                REQUEST_CODE
+                            )
+                        }*/
+                        val activity = context as? android.app.Activity
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                            if (ActivityCompat.checkSelfPermission(
+                                    context,
+                                    Manifest.permission.POST_NOTIFICATIONS
+                                ) != PackageManager.PERMISSION_GRANTED
+                            ) {
+                                // Request the permission
+                                activity?.let {
+                                    ActivityCompat.requestPermissions(
+                                        it,
+                                        arrayOf(Manifest.permission.POST_NOTIFICATIONS),
+                                        101 // Request code
+                                    )
+                                }
+                                return@Button
+                            }
+                        }
+                        /*FirebaseMessaging.getInstance().token
+                            .addOnCompleteListener { task ->
+                                if (task.isSuccessful) {
+                                    val token = task.result
+                                    Log.d("FCM", "FCM Token: $token")
+                                } else {
+                                    Log.e("FCM", "Failed to retrieve FCM token", task.exception)
+                                }
+                            }*/
                         var checkedEmail:String
                         var checkedPassword:String
                         if(email==null||email==""){
@@ -134,14 +174,14 @@ fun LoginScreen(
                             if (isLoggedIn) {
                                 Toast.makeText(
                                     context,
-                                    "Prijava je uspjesna.",
+                                    context.getString(R.string.login_successful),
                                     Toast.LENGTH_LONG
                                 ).show()
                                 onLoginClickSuccesfull()
                             } else {
                                 Toast.makeText(
                                     context,
-                                    "Prijava nije uspjesna.",
+                                    context.getString(R.string.login_error),
                                     Toast.LENGTH_LONG
                                 ).show()
                             }
@@ -152,13 +192,13 @@ fun LoginScreen(
                         .padding(horizontal = 64.dp),
                     colors = ButtonDefaults.buttonColors(containerColor = isDark(Color(0xFF8FA7D6), Color(0xFF65558F)))
                 ) {
-                    Text(text = "Prijava")
+                    Text(text = stringResource(R.string.login))
                 }
 
                 Spacer(modifier = Modifier.height(16.dp))
 
                 Text(
-                    text = "Nemate račun? Registrirajte se",
+                    text = stringResource(R.string.no_account),
                     style = MaterialTheme.typography.bodyMedium,
                     modifier = Modifier.clickable { onRegistrationClick()},
                     textAlign = TextAlign.Center,

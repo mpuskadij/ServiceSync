@@ -44,6 +44,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
@@ -60,6 +61,7 @@ import com.example.compose.surfaceContainerHighLight
 import com.example.compose.surfaceContainerLowDark
 import com.example.compose.surfaceContainerLowLight
 import com.google.firebase.firestore.FirebaseFirestore
+import hr.foi.air.servicesync.R
 import hr.foi.air.servicesync.ui.components.CompanyCard
 import hr.foi.air.servicesync.ui.components.isDark
 import java.text.Collator
@@ -87,7 +89,8 @@ fun SearchContent(modifier: Modifier = Modifier, navController: NavController)
     var searchQuery by remember { mutableStateOf(TextFieldValue(""))}
     var showCityDropdown by remember { mutableStateOf(false) }
     val scrollState = rememberScrollState()
-    val cityTextFieldState = remember { mutableStateOf(TextFieldValue("Odaberite grad")) }
+    val chooseCityText = stringResource(R.string.choose_city)
+    val cityTextFieldState = remember { mutableStateOf(TextFieldValue(chooseCityText)) }
 
     LaunchedEffect(Unit)
     {
@@ -165,7 +168,7 @@ fun SearchContent(modifier: Modifier = Modifier, navController: NavController)
             },
             placeholder = {
                 Text(
-                    text = "Pretraživanje",
+                    text = stringResource(R.string.searching),
                     color = isDark(onSurfaceVariantDark, onSurfaceVariantLight)
                 )
             },
@@ -199,7 +202,7 @@ fun SearchContent(modifier: Modifier = Modifier, navController: NavController)
 
         Text(
             modifier = Modifier.padding(start = 8.dp, top = 25.dp),
-            text = "Usluge",
+            text = stringResource(R.string.services),
             style = MaterialTheme.typography.headlineLarge,
             color = isDark(onSurfaceDark, onSurfaceLight)
         )
@@ -308,11 +311,11 @@ fun SearchContent(modifier: Modifier = Modifier, navController: NavController)
                             modifier = Modifier
                                 .fillParentMaxWidth(),
                             text = {
-                                Text("Odaberite grad")
+                                Text(stringResource(R.string.choose_city))
                             },
                             onClick = {
                                 selectedCity = null
-                                cityTextFieldState.value = TextFieldValue("Odaberite grad")
+                                cityTextFieldState.value = TextFieldValue(chooseCityText)
                                 showCityDropdown = false
                             }
                         )

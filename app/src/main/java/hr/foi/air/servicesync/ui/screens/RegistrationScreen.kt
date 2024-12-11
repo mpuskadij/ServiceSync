@@ -1,5 +1,8 @@
 package hr.foi.air.servicesync.ui.screens
 
+import android.Manifest
+import android.content.pm.PackageManager
+import android.os.Build
 import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
@@ -27,10 +30,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.core.app.ActivityCompat
 import hr.foi.air.servicesync.R
 import hr.foi.air.servicesync.business.loginRegisterHandler
 
@@ -73,13 +78,13 @@ fun RegistrationScreen(
                 Spacer(modifier = Modifier.height(8.dp))
                 Text(
                     modifier = Modifier.padding(16.dp),
-                    text = "Registracija",
+                    text = stringResource(R.string.registration),
                     style = MaterialTheme.typography.titleLarge,
                 )
                 OutlinedTextField(
                     value = email,
                     onValueChange = { email = it },
-                    label = { Text("Email") },
+                    label = { Text(stringResource(R.string.email)) },
                     singleLine = true,
                     modifier = Modifier.fillMaxWidth()
                 )
@@ -99,6 +104,24 @@ fun RegistrationScreen(
 
                 Button(
                     onClick =  {
+                        val activity = context as? android.app.Activity
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                            if (ActivityCompat.checkSelfPermission(
+                                    context,
+                                    Manifest.permission.POST_NOTIFICATIONS
+                                ) != PackageManager.PERMISSION_GRANTED
+                            ) {
+                                // Request the permission
+                                activity?.let {
+                                    ActivityCompat.requestPermissions(
+                                        it,
+                                        arrayOf(Manifest.permission.POST_NOTIFICATIONS),
+                                        101 // Request code
+                                    )
+                                }
+                                return@Button
+                            }
+                        }
                         var checkedEmail:String
                         var checkedPassword:String
                         if(email==null||email==""){
@@ -115,14 +138,14 @@ fun RegistrationScreen(
                             if (isRegistered) {
                                 Toast.makeText(
                                     context,
-                                    "Registracija je uspjesna.",
+                                    context.getString(R.string.registration_successful),
                                     Toast.LENGTH_LONG
                                 ).show()
                                 onRegisterClickSuccesfull()
                             } else {
                                 Toast.makeText(
                                     context,
-                                    "Registracija nije uspjesna.",
+                                    context.getString(R.string.registration_error),
                                     Toast.LENGTH_LONG
                                 ).show()
                             }
@@ -132,13 +155,13 @@ fun RegistrationScreen(
                         .fillMaxWidth()
                         .padding(horizontal = 64.dp)
                 ) {
-                    Text(text = "Registracija")
+                    Text(text = stringResource(R.string.registration))
                 }
 
                 Spacer(modifier = Modifier.height(16.dp))
 
                 Text(
-                    text = "Već imate račun? Prijavite se",
+                    text = stringResource(R.string.already_have_account),
                     style = MaterialTheme.typography.bodyMedium,
                     modifier = Modifier.clickable { onLoginClick() },
                     textAlign = TextAlign.Center,

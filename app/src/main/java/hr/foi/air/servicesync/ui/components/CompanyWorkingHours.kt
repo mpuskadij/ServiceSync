@@ -23,7 +23,7 @@ fun CompanyWorkingHours()
         modifier = headlineModifier
     )
 
-    Text("Pon-Pet:",modifier = Modifier.fillMaxWidth().padding(horizontal = 8.dp))
-    Text("Subota:",modifier = Modifier.fillMaxWidth().padding(horizontal = 8.dp))
+    Text(stringResource(R.string.mon_fri),modifier = Modifier.fillMaxWidth().padding(horizontal = 8.dp))
+    Text(stringResource(R.string.saturday),modifier = Modifier.fillMaxWidth().padding(horizontal = 8.dp))
 
 }

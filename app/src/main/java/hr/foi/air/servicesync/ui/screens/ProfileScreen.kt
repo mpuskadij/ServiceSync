@@ -21,6 +21,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.example.compose.onPrimaryDark
@@ -33,6 +34,7 @@ import com.example.compose.secondaryDark
 import com.example.compose.secondaryLight
 import com.example.compose.surfaceDark
 import com.example.compose.surfaceLight
+import hr.foi.air.servicesync.R
 import hr.foi.air.servicesync.ui.components.isDark
 import hr.foi.air.servicesync.ui.contents.ProfileContent
 
@@ -48,7 +50,7 @@ fun ProfileScreen(modifier: Modifier = Modifier, onLogoutClick: () -> Unit) {
                 ),
                 modifier = Modifier
                     .padding(top = 0.dp),
-                title = { Text(text = "Profil", style = MaterialTheme.typography.titleLarge) },
+                title = { Text(text = stringResource(R.string.profile), style = MaterialTheme.typography.titleLarge) },
                 actions = {
                     Box(modifier = Modifier.width(100.dp)) {
                         Card(
@@ -62,7 +64,7 @@ fun ProfileScreen(modifier: Modifier = Modifier, onLogoutClick: () -> Unit) {
                                 .padding(end = 8.dp)
                         ) {
                             Text(
-                                text = "Logout",
+                                text = stringResource(R.string.logout),
                                 modifier = Modifier
                                     .padding(horizontal = 16.dp, vertical = 8.dp),
                                 color = isDark(onPrimaryDark, onPrimaryLight),

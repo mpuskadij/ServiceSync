@@ -14,11 +14,13 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.example.compose.onPrimaryDark
 import com.example.compose.onPrimaryLight
 import com.example.compose.primaryDark
 import com.example.compose.primaryLight
+import hr.foi.air.servicesync.R
 import hr.foi.air.servicesync.ui.components.isDark
 import hr.foi.air.servicesync.ui.contents.CalendarContent
 import hr.foi.air.servicesync.ui.contents.FavoriteContent
@@ -29,7 +31,7 @@ fun CalendarScreen(modifier: Modifier = Modifier) {
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text(text = "Kalendar", style = MaterialTheme.typography.titleLarge) },
+                title = { Text(text = stringResource(R.string.calendar), style = MaterialTheme.typography.titleLarge) },
                 windowInsets = WindowInsets(
                     top = 0.dp,
                     bottom = 0.dp

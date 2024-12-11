@@ -32,6 +32,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import com.example.compose.onPrimaryDark
@@ -87,31 +88,31 @@ fun ProfileContent(modifier: Modifier = Modifier) {
                 TextField(
                     value = name,
                     onValueChange = { name = it },
-                    label = { Text("Ime") },
+                    label = { Text(stringResource(R.string.first_name)) },
                     modifier = Modifier.fillMaxWidth()
                 )
                 TextField(
                     value = surname,
                     onValueChange = { surname = it },
-                    label = { Text("Prezime") },
+                    label = { Text(stringResource(R.string.last_name)) },
                     modifier = Modifier.fillMaxWidth()
                 )
                 TextField(
                     value = username,
                     onValueChange = { username = it },
-                    label = { Text("Korisničko ime/tag") },
+                    label = { Text(stringResource(R.string.username)) },
                     modifier = Modifier.fillMaxWidth()
                 )
                 TextField(
                     value = description,
                     onValueChange = { description = it },
-                    label = { Text("Opis") },
+                    label = { Text(stringResource(R.string.profile_description)) },
                     modifier = Modifier.fillMaxWidth()
                 )
                 TextField(
                     value = newPassword,
                     onValueChange = { newPassword = it },
-                    label = { Text("Nova Lozinka") },
+                    label = { Text(stringResource(R.string.new_password)) },
                     visualTransformation = PasswordVisualTransformation(),
                     modifier = Modifier.fillMaxWidth()
                 )
@@ -132,7 +133,7 @@ fun ProfileContent(modifier: Modifier = Modifier) {
                                     isEditing = false
                                 } else {
                                     showErrorDialog = true
-                                    errorMessage = "Greška pri spremanju podataka."
+                                    errorMessage = context.getString(R.string.error_saving_data)
                                 }
                             }
                         } else {
@@ -147,7 +148,7 @@ fun ProfileContent(modifier: Modifier = Modifier) {
                                     isEditing = false
                                 } else {
                                     showErrorDialog = true
-                                    errorMessage = "Greška pri spremanju podataka."
+                                    errorMessage = context.getString(R.string.error_saving_data)
                                 }
                             }
 
@@ -157,7 +158,7 @@ fun ProfileContent(modifier: Modifier = Modifier) {
                                     isEditing = false
                                 } else {
                                     showErrorDialog = true
-                                    errorMessage = "Greška pri promjeni lozinke. Ponovno se prijavite!"
+                                    errorMessage = context.getString(R.string.error_saving_password)
                                 }
                             }
                         }
@@ -166,12 +167,12 @@ fun ProfileContent(modifier: Modifier = Modifier) {
                     modifier = Modifier.width(100.dp),
                     colors = ButtonDefaults.buttonColors(containerColor = isDark(primaryDark, primaryLight))
                 ) {
-                    Text("Spremi")
+                    Text(stringResource(R.string.save))
                 }
             } else {
                 Image(
                     painter = painterResource(id = R.drawable.profile_image_default),  // Placeholder slika
-                    contentDescription = "Profilna slika",
+                    contentDescription = stringResource(R.string.profile_image),
                     modifier = Modifier
                         .size(120.dp)
                         .padding(8.dp)
@@ -182,10 +183,10 @@ fun ProfileContent(modifier: Modifier = Modifier) {
                 Spacer(modifier = Modifier.height(16.dp))
 
 
-                ProfileInfoBox("Ime i Prezime", "$name $surname")
-                ProfileInfoBox("Korisničko ime/tag", "$username")
-                ProfileInfoBox("Email", "$email")
-                ProfileInfoBox("Opis", description)
+                ProfileInfoBox(stringResource(R.string.full_name), "$name $surname")
+                ProfileInfoBox(stringResource(R.string.username), "$username")
+                ProfileInfoBox(stringResource(R.string.email), "$email")
+                ProfileInfoBox(stringResource(R.string.profile_description), description)
 
                 Button(
                     onClick = { isEditing = true },
@@ -194,7 +195,7 @@ fun ProfileContent(modifier: Modifier = Modifier) {
                     Text(
                         color = isDark(onPrimaryDark, onPrimaryLight),
                         style = MaterialTheme.typography.labelLarge,
-                        text = "Uredi"
+                        text = stringResource(R.string.edit)
                     )
                 }
             }
@@ -204,13 +205,13 @@ fun ProfileContent(modifier: Modifier = Modifier) {
     if (showSuccessDialog) {
         AlertDialog(
             onDismissRequest = { showSuccessDialog = false },
-            title = { Text("Uspješno") },
-            text = { Text("Vaši podaci su uspješno ažurirani.") },
+            title = { Text(stringResource(R.string.success)) },
+            text = { Text(stringResource(R.string.successful_data_save)) },
             confirmButton = {
                 TextButton(
                     onClick = { showSuccessDialog = false }
                 ) {
-                    Text("Zatvori")
+                    Text(stringResource(R.string.close))
                 }
             }
         )
@@ -220,12 +221,12 @@ fun ProfileContent(modifier: Modifier = Modifier) {
         AlertDialog(
             onDismissRequest = { showErrorDialog = false },
             title = { Text("Greška") },
-            text = { Text("Došlo je do pogreške: $errorMessage") },
+            text = { Text("!!!!!!!: $errorMessage") },
             confirmButton = {
                 TextButton(
                     onClick = { showErrorDialog = false }
                 ) {
-                    Text("Zatvori")
+                    Text(stringResource(R.string.close))
                 }
             }
         )

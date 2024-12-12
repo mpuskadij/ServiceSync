@@ -55,7 +55,7 @@ dependencies {
     implementation("com.google.firebase:firebase-analytics")
     implementation("com.google.firebase:firebase-auth:23.1.0")
     implementation("com.google.firebase:firebase-firestore:25.1.1")
-    implementation("com.google.firebase:firebase-messaging")
+    implementation("com.google.firebase:firebase-messaging:24.1.0")
 
     //DEFAULT IMPLEMENTATIONS
     implementation(libs.androidx.core.ktx)

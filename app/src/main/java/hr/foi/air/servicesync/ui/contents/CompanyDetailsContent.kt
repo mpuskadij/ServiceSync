@@ -32,6 +32,7 @@ import com.example.compose.onSurfaceLight
 import com.google.firebase.firestore.GeoPoint
 import hr.foi.air.servicesync.R
 import hr.foi.air.servicesync.backend.FirestoreCompanyDetails
+import hr.foi.air.servicesync.business.CompanyDetailsHandler
 import hr.foi.air.servicesync.business.ReviewHandler
 import hr.foi.air.servicesync.data.Review
 import hr.foi.air.servicesync.data.UserSession
@@ -53,6 +54,7 @@ fun CompanyDetailsContent(
     reviewHandler: ReviewHandler = ReviewHandler()
 ) {
     val firestoreCompanyDetails = FirestoreCompanyDetails()
+    val reviewHandler = ReviewHandler()
 
     val companyDescription = remember { mutableStateOf(context.getString(R.string.loading)) }
     val companyCategory = remember { mutableStateOf(context.getString(R.string.loading)) }
@@ -63,34 +65,22 @@ fun CompanyDetailsContent(
     val isLoading = remember { mutableStateOf(true) }
 
     LaunchedEffect(companyName) {
-        firestoreCompanyDetails.loadCompanyDescriptionByName(companyName) { description ->
-            companyDescription.value = description ?: context.getString(R.string.no_description)
-        }
-
-        firestoreCompanyDetails.loadCompanyCategoryByName(companyName) { category ->
-            companyCategory.value = category ?: context.getString(R.string.no_category)
-        }
-
-        firestoreCompanyDetails.loadCompanyWorkingHoursByName(companyName) { workingHours ->
-            companyWorkingHours.value = workingHours ?: 0
-        }
-
-        firestoreCompanyDetails.loadCompanyGeopointByName(companyName) { geoPoint ->
-            Log.d("Firestore", "Fetchan geopoint: $geoPoint")
-            companyGeoPoint.value = geoPoint
-            Log.d("Firestore", "Fetchan geopoint value: ${companyGeoPoint.value}")
-        }
-
-        firestoreCompanyDetails.loadCompanyImageUrlByName(companyName) { imageUrl ->
-            companyImageUrl.value = imageUrl
-        }
-        reviewHandler.fetchReviews(companyName) { fetchedReviews ->
-            reviews.value = fetchedReviews
-            isLoading.value = false
-        }
-
-        isLoading.value = false
+        val handler = CompanyDetailsHandler()
+        handler.getCompanyDetails(
+            context = context,
+            companyName = companyName,
+            companyDescription = companyDescription,
+            companyCategory = companyCategory,
+            companyWorkingHours = companyWorkingHours,
+            companyGeoPoint = companyGeoPoint,
+            companyImageUrl = companyImageUrl,
+            reviews = reviews,
+            isLoading = isLoading,
+            firestoreCompanyDetails = firestoreCompanyDetails,
+            reviewHandler = reviewHandler
+        )
     }
+
 
     if (isLoading.value) {
         Text(stringResource(R.string.loading_data), modifier = Modifier.padding(16.dp))

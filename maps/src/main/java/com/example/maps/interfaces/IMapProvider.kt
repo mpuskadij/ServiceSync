@@ -5,8 +5,6 @@ import androidx.compose.runtime.Composable
 interface IMapProvider {
 
     @Composable
-    fun CreateMap(latitude: Double, longitude: Double) {
-
-    }
+    fun CreateMap(latitude: Double, longitude: Double)
 
 }

@@ -158,7 +158,7 @@ fun CompanyDetailsContent(
                 supportingContent = {
                     companyGeoPoint.value?.let { geoPoint ->
                         Log.d("Firestore", "Supporting content geopoint: $geoPoint")
-                        CompanyLocation(geoPoint = geoPoint, mapProvider = GoogleMapProvider())
+                        CompanyLocation(geoPoint = geoPoint)
                     } ?: Text("Location data is unavailable.")
                 }
 

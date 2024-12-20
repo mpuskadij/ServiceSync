@@ -17,6 +17,8 @@ navigationRuntimeKtx = "2.8.3"
 firebaseFirestoreKtx = "25.1.1"
 appcompat = "1.6.1"
 materialVersion = "1.10.0"
+osmAndroidCompose = "0.0.5"
+osmdroidAndroid = "6.1.16"
 runtimeAndroid = "1.7.5"
 uiAndroid = "1.7.5"
 foundationLayoutAndroid = "1.7.5"
@@ -53,6 +55,8 @@ androidx-runtime-android = { group = "androidx.compose.runtime", name = "runtime
 androidx-ui-android = { group = "androidx.compose.ui", name = "ui-android", version.ref = "uiAndroid" }
 androidx-foundation-layout-android = { group = "androidx.compose.foundation", name = "foundation-layout-android", version.ref = "foundationLayoutAndroid" }
 firebase-messaging-ktx = { group = "com.google.firebase", name = "firebase-messaging-ktx", version.ref = "firebaseMessagingKtx" }
+osm-android-compose = { module = "tech.utsmankece:osm-android-compose", version.ref = "osmAndroidCompose" }
+osmdroid-android = { module = "org.osmdroid:osmdroid-android", version.ref = "osmdroidAndroid" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

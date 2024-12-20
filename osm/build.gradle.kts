@@ -14,6 +14,10 @@ android {
         consumerProguardFiles("consumer-rules.pro")
     }
 
+    buildFeatures {
+        compose  = true
+    }
+
     buildTypes {
         release {
             isMinifyEnabled = false
@@ -34,9 +38,15 @@ android {
 
 dependencies {
 
+    //OpenStreetMap compose
+    implementation (libs.osmdroid.android)
+    implementation (libs.osm.android.compose)
+
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
+    implementation(libs.androidx.ui.android)
+    implementation(libs.androidx.foundation.layout.android)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)

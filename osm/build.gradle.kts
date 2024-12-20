@@ -38,6 +38,8 @@ android {
 
 dependencies {
 
+    implementation(project(":maps"))
+
     //OpenStreetMap compose
     implementation (libs.osmdroid.android)
     implementation (libs.osm.android.compose)

@@ -11,6 +11,9 @@ import org.osmdroid.util.GeoPoint
 
 
 class OpenStreetMapProvider() : IMapProvider {
+    override fun getName(): String {
+        return ""
+    }
 
     @Composable
     override fun CreateMap(latitude: Double, longitude: Double) {

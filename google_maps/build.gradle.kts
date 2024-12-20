@@ -39,10 +39,9 @@ android {
 dependencies {
     //Google maps dependency
     implementation(libs.maps.compose)
-
     //maps module dependency
     implementation(project(":maps"))
-    
+
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)

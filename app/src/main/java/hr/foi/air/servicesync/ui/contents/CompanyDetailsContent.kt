@@ -42,7 +42,6 @@ import hr.foi.air.servicesync.ui.components.CompanyLocation
 import hr.foi.air.servicesync.ui.components.ReviewList
 import hr.foi.air.servicesync.ui.components.isDark
 import hr.foi.air.servicesync.ui.items.ProvidedServicesListItem
-import mapproviders.GoogleMapProvider
 
 
 @Composable

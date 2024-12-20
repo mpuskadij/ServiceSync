@@ -23,3 +23,4 @@ rootProject.name = "ServiceSync"
 include(":app")
 include(":maps")
 include(":google_maps")
+include(":osm")

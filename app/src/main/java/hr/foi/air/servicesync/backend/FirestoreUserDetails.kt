@@ -17,6 +17,30 @@ class FirestoreUserDetails {
     var email: String = ""
     var description: String = ""
 
+    fun registerUserDetails(
+        email: String,
+        password: String,
+        onResult: (Boolean) -> Unit
+    ) {
+        val userDetails = mapOf(
+            "email" to email,
+            "username" to email.substringBefore("@"),
+            "name" to "",
+            "surname" to "",
+            "description" to "New user",
+            "password" to password
+        )
+        firestore.collection("users").document(email).set(userDetails)
+            .addOnSuccessListener {
+                Log.d("loginRegisterHandler", "User details added to Firestore")
+                onResult(true)
+            }
+            .addOnFailureListener { exception ->
+                Log.e("loginRegisterHandler", "Failed to add user details to Firestore", exception)
+                onResult(false)
+            }
+    }
+
     fun loadUserDetails(onResult: (Boolean) -> Unit) {
         UserSession.username.let { id ->
             firestore.collection("users").document(UserSession.username).get()

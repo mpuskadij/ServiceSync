@@ -37,6 +37,7 @@ fun MapDropdown(mapProviderName: String,onMapProviderChange : (String) -> Unit) 
     ){
         var chosenMapProvider by remember { mutableStateOf(mapProviderName)
          }
+        //TODO this text field is greyed out because property enabled is set to false, make it like the other enabled text fields
         TextField(
             label = {
                 Text(text = stringResource(R.string.choose_map_type)) },

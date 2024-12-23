@@ -14,7 +14,7 @@ object MapProviderManager : IMapProviderStateManager {
     override fun getAllProviders() : List<IMapProvider> {
         return mapProviders
     }
-
+    //TODO should check if the name even exists in the list
     override fun saveMapProvider(context: Context, mapProviderName: String) {
         SharedPreferencesManager.saveStringPreference(context,KEY,mapProviderName)
     }

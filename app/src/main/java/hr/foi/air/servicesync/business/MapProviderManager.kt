@@ -19,8 +19,19 @@ object MapProviderManager : IMapProviderStateManager {
         SharedPreferencesManager.saveStringPreference(context,KEY,mapProviderName)
     }
 
-    override fun getCurrentMapProvider(context: Context) : String {
-        return SharedPreferencesManager.getMapProvider(context, KEY) ?: mapProviders.first().getName()
+    override fun getCurrentMapProviderName(context: Context) : String {
+        val storedMapProvider = SharedPreferencesManager.getMapProvider(context, KEY) ?: mapProviders.first().getName()
+        val foundProvider = mapProviders.any { provider -> provider.getName() == storedMapProvider }
+        if (foundProvider) {
+            return storedMapProvider
+        }
+        else {
+            return mapProviders.first().getName()
+        }
+    }
+
+    override fun getCurrentMapProvider(context: Context): IMapProvider {
+        return mapProviders.find {mapProvider -> mapProvider.getName() == getCurrentMapProviderName(context) }!!
     }
 
 }

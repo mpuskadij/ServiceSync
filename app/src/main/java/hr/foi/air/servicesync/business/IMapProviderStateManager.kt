@@ -8,5 +8,7 @@ interface IMapProviderStateManager {
 
     fun saveMapProvider(context: Context, mapProviderName: String)
 
-    fun getCurrentMapProvider(context: Context) : String
+    fun getCurrentMapProviderName(context: Context) : String
+
+    fun getCurrentMapProvider(context: Context) : IMapProvider
 }

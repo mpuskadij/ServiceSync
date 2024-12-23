@@ -5,11 +5,11 @@ import androidx.preference.PreferenceManager
 
 object SharedPreferencesManager {
 
-    fun savePreference(context: Context, preference : Pair<String,String>) {
+    fun saveStringPreference(context: Context, key: String, value: String) {
         val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
 
         with(sharedPreferences.edit()) {
-            putString(preference.first,preference.second)
+            putString(key,value)
             apply()
         }
     }

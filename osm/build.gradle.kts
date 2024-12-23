@@ -7,7 +7,7 @@ plugins {
 
 android {
     namespace = "com.example.osm"
-    compileSdk = 34
+    compileSdk = 35
 
     defaultConfig {
         minSdk = 24
@@ -40,7 +40,8 @@ android {
 
 dependencies {
 
-    implementation(project(":maps"))
+    //dependency for IMapProvider interface
+    api(project(":maps"))
 
     //OpenStreetMap compose
     implementation (libs.osmdroid.android)

@@ -6,7 +6,8 @@ plugins {
 
 android {
     namespace = "com.example.google_maps"
-    compileSdk = 34
+    compileSdk = 35
+
 
     defaultConfig {
         minSdk = 24
@@ -41,7 +42,7 @@ dependencies {
     //Google maps dependency
     implementation(libs.maps.compose)
     //maps module dependency
-    implementation(project(":maps"))
+    api(project(":maps"))
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)

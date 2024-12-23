@@ -60,4 +60,6 @@
     <string name="username">Korisničko ime / tag</string>
     <string name="working_hours">Radno vrijeme</string>
     <string name="profile">Profil</string>
+    <string name="choose_map_type">Odaberite vrstu karti</string>
+    <string name="no_providers_found">Nema pružatelja mapa</string>
 </resources>

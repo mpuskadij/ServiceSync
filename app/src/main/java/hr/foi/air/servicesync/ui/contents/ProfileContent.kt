@@ -41,6 +41,7 @@ import com.example.compose.primaryDark
 import com.example.compose.primaryLight
 import hr.foi.air.servicesync.R
 import hr.foi.air.servicesync.business.UserDataHandler
+import hr.foi.air.servicesync.ui.components.MapDropdown
 import hr.foi.air.servicesync.ui.components.isDark
 import hr.foi.air.servicesync.ui.screens.ProfileInfoBox
 
@@ -187,6 +188,8 @@ fun ProfileContent(modifier: Modifier = Modifier) {
                 ProfileInfoBox(stringResource(R.string.username), "$username")
                 ProfileInfoBox(stringResource(R.string.email), "$email")
                 ProfileInfoBox(stringResource(R.string.profile_description), description)
+
+                MapDropdown()
 
                 Button(
                     onClick = { isEditing = true },

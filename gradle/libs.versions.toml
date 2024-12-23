@@ -19,6 +19,7 @@ appcompat = "1.6.1"
 materialVersion = "1.10.0"
 osmAndroidCompose = "0.0.5"
 osmdroidAndroid = "6.1.16"
+preferenceKtx = "1.2.1"
 runtimeAndroid = "1.7.5"
 uiAndroid = "1.7.5"
 foundationLayoutAndroid = "1.7.5"
@@ -30,6 +31,7 @@ androidx-material = { module = "androidx.compose.material:material", version.ref
 androidx-material-icons-extended = { module = "androidx.compose.material:material-icons-extended" }
 androidx-material-icons-core = { module = "androidx.compose.material:material-icons-core" }
 androidx-navigation-compose = { module = "androidx.navigation:navigation-compose", version.ref = "navigationCompose" }
+androidx-preference-ktx = { module = "androidx.preference:preference-ktx", version.ref = "preferenceKtx" }
 firebase-analytics = { module = "com.google.firebase:firebase-analytics" }
 firebase-bom = { module = "com.google.firebase:firebase-bom", version.ref = "firebaseBom" }
 google-services = { module = "com.google.gms:google-services", version.ref = "googleServices" }

@@ -33,6 +33,7 @@ import com.google.firebase.firestore.GeoPoint
 import hr.foi.air.servicesync.R
 import hr.foi.air.servicesync.backend.FirestoreCompanyDetails
 import hr.foi.air.servicesync.business.CompanyDetailsHandler
+import hr.foi.air.servicesync.business.MapProviderManager
 import hr.foi.air.servicesync.business.ReviewHandler
 import hr.foi.air.servicesync.data.Review
 import hr.foi.air.servicesync.data.UserSession
@@ -145,23 +146,25 @@ fun CompanyDetailsContent(
                 }
             )
 
-            ListItem(
-                headlineContent = {
-                    Text(
-                        text = stringResource(id = R.string.location),
-                        color = isDark(onSurfaceDark, onSurfaceLight),
-                        style = headlineTextStyle,
-                        modifier = Modifier.fillMaxWidth().padding(vertical = 10.dp)
-                    )
-                },
-                supportingContent = {
-                    companyGeoPoint.value?.let { geoPoint ->
-                        Log.d("Firestore", "Supporting content geopoint: $geoPoint")
-                        CompanyLocation(geoPoint = geoPoint)
-                    } ?: Text("Location data is unavailable.")
-                }
+            if (MapProviderManager.getAllProviders().isNotEmpty()) {
+                ListItem(
+                    headlineContent = {
+                        Text(
+                            text = stringResource(id = R.string.location),
+                            color = isDark(onSurfaceDark, onSurfaceLight),
+                            style = headlineTextStyle,
+                            modifier = Modifier.fillMaxWidth().padding(vertical = 10.dp)
+                        )
+                    },
+                    supportingContent = {
+                        companyGeoPoint.value?.let { geoPoint ->
+                            Log.d("Firestore", "Supporting content geopoint: $geoPoint")
+                            CompanyLocation(geoPoint = geoPoint)
+                        } ?: Text("Location data is unavailable.")
+                    }
 
-            )
+                )
+            }
 
             ListItem(
                 headlineContent = {

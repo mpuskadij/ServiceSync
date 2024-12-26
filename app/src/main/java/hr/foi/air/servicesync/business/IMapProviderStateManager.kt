@@ -10,5 +10,5 @@ interface IMapProviderStateManager {
 
     fun getCurrentMapProviderName(context: Context) : String
 
-    fun getCurrentMapProvider(context: Context) : IMapProvider
+    fun getCurrentMapProvider(context: Context) : IMapProvider?
 }

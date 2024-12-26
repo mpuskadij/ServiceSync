@@ -31,8 +31,8 @@ object MapProviderManager : IMapProviderStateManager {
         }
     }
     //TODO should return null if no map provider exists so that a map will not be drawn
-    override fun getCurrentMapProvider(context: Context): IMapProvider {
-        return mapProviders.find {mapProvider -> mapProvider.getName() == getCurrentMapProviderName(context) }!!
+    override fun getCurrentMapProvider(context: Context): IMapProvider? {
+        return mapProviders.find {mapProvider -> mapProvider.getName() == getCurrentMapProviderName(context) }
     }
 
 }

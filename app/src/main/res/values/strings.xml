@@ -63,4 +63,5 @@
     <string name="map_type">Vrsta karti</string>
     <string name="choose_map_type">Odaberite vrstu karti</string>
     <string name="no_providers_found">Nema pružatelja mapa</string>
+    <string name="map_not_available">Prikaz karte nije trenutno dostupan!</string>
 </resources>

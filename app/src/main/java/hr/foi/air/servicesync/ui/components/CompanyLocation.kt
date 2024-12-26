@@ -16,10 +16,16 @@ import hr.foi.air.servicesync.business.MapProviderManager
 @Composable
 fun CompanyLocation(geoPoint: GeoPoint)
 {
-    Box(modifier = Modifier
-        .fillMaxWidth()
-        .height(200.dp)) {
-        MapProviderManager.getCurrentMapProvider(context = LocalContext.current)?.CreateMap(geoPoint.latitude,geoPoint.longitude) ?:
+    val mapProvider = MapProviderManager.getCurrentMapProvider(context = LocalContext.current)
+    if (mapProvider != null) {
+        Box(modifier = Modifier
+            .fillMaxWidth()
+            .height(200.dp)) {
+            mapProvider.CreateMap(geoPoint.latitude,geoPoint.longitude)
+        }
+    }
+    else {
         Text(text = stringResource(R.string.map_not_available))
     }
+
 }

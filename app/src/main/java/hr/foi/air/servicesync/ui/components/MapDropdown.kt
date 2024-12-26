@@ -10,6 +10,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.MenuAnchorType
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
+import androidx.compose.material3.TextFieldColors
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -27,6 +28,17 @@ fun MapDropdown(mapProviderName: String,onMapProviderChange : (String) -> Unit) 
     val  mapProviders = MapProviderManager.getAllProviders()
     var expanded by remember { mutableStateOf(false) }
 
+    val dropdownTextFieldColors : TextFieldColors = if (mapProviders.isNotEmpty()) {
+        TextFieldDefaults.colors(
+            disabledLabelColor = MaterialTheme.colorScheme.onSurfaceVariant,
+            disabledTextColor = MaterialTheme.colorScheme.onSurface
+
+        )
+    }
+    else {
+        TextFieldDefaults.colors()
+    }
+
     ExposedDropdownMenuBox(
         expanded = expanded,
         onExpandedChange = {expanded = !expanded},
@@ -43,10 +55,7 @@ fun MapDropdown(mapProviderName: String,onMapProviderChange : (String) -> Unit) 
             },
             readOnly = true,
             enabled = false,
-            colors = TextFieldDefaults.colors(
-                disabledLabelColor = MaterialTheme.colorScheme.onSurfaceVariant,
-                disabledTextColor = MaterialTheme.colorScheme.onSurface
-            ),
+            colors = dropdownTextFieldColors,
             trailingIcon = {
                 ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded)
             },

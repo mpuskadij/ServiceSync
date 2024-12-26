@@ -10,7 +10,9 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -77,7 +79,8 @@ fun ProfileContent(modifier: Modifier = Modifier) {
     Column(
         modifier = modifier
             .fillMaxSize()
-            .padding(16.dp),
+            .padding(16.dp)
+            .verticalScroll(rememberScrollState()),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Top
     ) {
@@ -182,12 +185,6 @@ fun ProfileContent(modifier: Modifier = Modifier) {
 
                 Spacer(modifier = Modifier.height(16.dp))
 
-
-                ProfileInfoBox(stringResource(R.string.full_name), "$name $surname")
-                ProfileInfoBox(stringResource(R.string.username), "$username")
-                ProfileInfoBox(stringResource(R.string.email), "$email")
-                ProfileInfoBox(stringResource(R.string.profile_description), description)
-
                 Button(
                     onClick = { isEditing = true },
                     colors = ButtonDefaults.buttonColors(containerColor = isDark(primaryDark, primaryLight)),
@@ -198,6 +195,11 @@ fun ProfileContent(modifier: Modifier = Modifier) {
                         text = stringResource(R.string.edit)
                     )
                 }
+
+                ProfileInfoBox(stringResource(R.string.full_name), "$name $surname")
+                ProfileInfoBox(stringResource(R.string.username), "$username")
+                ProfileInfoBox(stringResource(R.string.email), "$email")
+                ProfileInfoBox(stringResource(R.string.profile_description), description)
             }
         }
     }

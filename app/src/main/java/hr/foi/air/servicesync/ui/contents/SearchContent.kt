@@ -67,7 +67,6 @@ import hr.foi.air.servicesync.ui.components.isDark
 import java.text.Collator
 import java.util.Locale
 
-@ExperimentalMaterial3Api
 @Composable
 fun SearchContent(modifier: Modifier = Modifier, navController: NavController)
 {
@@ -201,7 +200,7 @@ fun SearchContent(modifier: Modifier = Modifier, navController: NavController)
         )
 
         Text(
-            modifier = Modifier.padding(start = 8.dp, top = 15.dp),
+            modifier = Modifier.padding(start = 8.dp, top = 12.dp),
             text = stringResource(R.string.services),
             style = MaterialTheme.typography.headlineMedium,
             color = isDark(onSurfaceDark, onSurfaceLight)

@@ -1,6 +1,7 @@
 package hr.foi.air.servicesync.business
 
 import android.content.Context
+import android.util.Log
 import com.example.maps.interfaces.IMapProvider
 import hr.foi.air.servicesync.R
 import hr.foi.air.servicesync.backend.SharedPreferencesManager
@@ -19,9 +20,15 @@ object MapProviderManager : IMapProviderStateManager {
     override fun getAllProviders() : List<IMapProvider> {
         return mapProviders
     }
-    //TODO should check if the name even exists in the list
+
     override fun saveMapProvider(context: Context, mapProviderName: String) {
-        SharedPreferencesManager.saveStringPreference(context,KEY,mapProviderName)
+        val mapProviderExists = mapProviders.any { mp -> mp.getName() == mapProviderName }
+        if (mapProviderExists) {
+            SharedPreferencesManager.saveStringPreference(context,KEY,mapProviderName)
+        }
+        else {
+            Log.e("NONEXISTANT_MAP_PROVIDER", "Korisnik je pokušao spremiti karte koje ne postoje u aplikaciji trenutno!")
+        }
     }
 
     override fun getCurrentMapProviderName(context: Context) : String {

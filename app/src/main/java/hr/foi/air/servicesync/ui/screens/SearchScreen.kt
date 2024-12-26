@@ -29,7 +29,7 @@ fun SearchScreen(modifier: Modifier = Modifier, navController: NavController) {
         Column(
             modifier = modifier
                 .windowInsetsPadding(WindowInsets(
-                    top = 30.dp,
+                    top = 5.dp,
                     bottom = 0.dp
                 ))
         ) {

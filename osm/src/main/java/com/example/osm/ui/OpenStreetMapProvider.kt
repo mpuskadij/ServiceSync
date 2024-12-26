@@ -1,4 +1,5 @@
-package mapproviders
+package com.example.osm.ui
+
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -9,8 +10,10 @@ import com.utsman.osmandcompose.rememberCameraState
 import com.utsman.osmandcompose.rememberMarkerState
 import org.osmdroid.util.GeoPoint
 
-
-class OpenStreetMapProvider() : IMapProvider {
+class OpenStreetMapProvider : IMapProvider {
+    override fun getName(): String {
+        return "Open Street Map"
+    }
 
     @Composable
     override fun CreateMap(latitude: Double, longitude: Double) {

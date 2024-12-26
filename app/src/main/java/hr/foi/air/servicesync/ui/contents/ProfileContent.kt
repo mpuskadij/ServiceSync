@@ -40,7 +40,9 @@ import com.example.compose.onPrimaryLight
 import com.example.compose.primaryDark
 import com.example.compose.primaryLight
 import hr.foi.air.servicesync.R
+import hr.foi.air.servicesync.business.MapProviderManager
 import hr.foi.air.servicesync.business.UserDataHandler
+import hr.foi.air.servicesync.ui.components.MapDropdown
 import hr.foi.air.servicesync.ui.components.isDark
 import hr.foi.air.servicesync.ui.screens.ProfileInfoBox
 
@@ -61,6 +63,7 @@ fun ProfileContent(modifier: Modifier = Modifier) {
     var errorMessage by remember { mutableStateOf("") }
     var newPasswordEmpty by remember { mutableStateOf(false) }
     val context = LocalContext.current
+    var mapProvider by remember { mutableStateOf("") }
 
     LaunchedEffect(Unit) {
         userDataHandler.loadUserDetails { data ->
@@ -72,6 +75,7 @@ fun ProfileContent(modifier: Modifier = Modifier) {
             description = data?.get("description") ?: ""
             isLoading = false
         }
+        mapProvider = MapProviderManager.getCurrentMapProviderName(context)
     }
 
     Column(
@@ -115,6 +119,12 @@ fun ProfileContent(modifier: Modifier = Modifier) {
                     label = { Text(stringResource(R.string.new_password)) },
                     visualTransformation = PasswordVisualTransformation(),
                     modifier = Modifier.fillMaxWidth()
+                )
+                MapDropdown(
+                    mapProviderName = mapProvider,
+                    onMapProviderChange = { newName ->
+                        mapProvider = newName
+                    }
                 )
 
                 Button(
@@ -163,6 +173,10 @@ fun ProfileContent(modifier: Modifier = Modifier) {
                             }
                         }
                         newPasswordEmpty = false
+                        MapProviderManager.saveMapProvider(
+                            context = context,
+                            mapProviderName = mapProvider
+                        )
                     },
                     modifier = Modifier.width(100.dp),
                     colors = ButtonDefaults.buttonColors(containerColor = isDark(primaryDark, primaryLight))
@@ -187,6 +201,8 @@ fun ProfileContent(modifier: Modifier = Modifier) {
                 ProfileInfoBox(stringResource(R.string.username), "$username")
                 ProfileInfoBox(stringResource(R.string.email), "$email")
                 ProfileInfoBox(stringResource(R.string.profile_description), description)
+
+                ProfileInfoBox(stringResource(R.string.map_type), mapProvider)
 
                 Button(
                     onClick = { isEditing = true },

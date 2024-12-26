@@ -60,4 +60,9 @@
     <string name="username">Korisničko ime / tag</string>
     <string name="working_hours">Radno vrijeme</string>
     <string name="profile">Profil</string>
+    <string name="map_type">Vrsta karti</string>
+    <string name="choose_map_type">Odaberite vrstu karti</string>
+    <string name="no_providers_found">Nema pružatelja mapa</string>
+    <string name="map_not_available">Prikaz karte nije trenutno dostupan!</string>
+    <string name="no_available_maps">Nema dostupnih karti</string>
 </resources>

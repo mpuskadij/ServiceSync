@@ -1,16 +1,12 @@
-
 plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
-    id("com.google.android.libraries.mapsplatform.secrets-gradle-plugin")
-}
-secrets {
-    propertiesFileName = "local.properties"
+
 }
 
 android {
-    namespace = "com.example.maps"
+    namespace = "com.example.osm"
     compileSdk = 35
 
     defaultConfig {
@@ -20,10 +16,10 @@ android {
         consumerProguardFiles("consumer-rules.pro")
     }
 
-
     buildFeatures {
-        compose = true
+        compose  = true
     }
+
     buildTypes {
         release {
             isMinifyEnabled = false
@@ -44,10 +40,16 @@ android {
 
 dependencies {
 
+    //dependency for IMapProvider interface
+    api(project(":maps"))
+
+    //OpenStreetMap compose
+    implementation (libs.osmdroid.android)
+    implementation (libs.osm.android.compose)
+
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
-    implementation(libs.androidx.runtime.android)
     implementation(libs.androidx.ui.android)
     implementation(libs.androidx.foundation.layout.android)
     testImplementation(libs.junit)

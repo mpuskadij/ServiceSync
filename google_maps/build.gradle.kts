@@ -1,17 +1,13 @@
-
 plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
-    id("com.google.android.libraries.mapsplatform.secrets-gradle-plugin")
-}
-secrets {
-    propertiesFileName = "local.properties"
 }
 
 android {
-    namespace = "com.example.maps"
+    namespace = "com.example.google_maps"
     compileSdk = 35
+
 
     defaultConfig {
         minSdk = 24
@@ -20,10 +16,10 @@ android {
         consumerProguardFiles("consumer-rules.pro")
     }
 
-
     buildFeatures {
         compose = true
     }
+
     buildTypes {
         release {
             isMinifyEnabled = false
@@ -43,6 +39,10 @@ android {
 }
 
 dependencies {
+    //Google maps dependency
+    implementation(libs.maps.compose)
+    //maps module dependency
+    api(project(":maps"))
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)

@@ -42,8 +42,18 @@ android {
 
 dependencies {
 
-    //maps module
+    //maps module for interface and modules that have the implementations of the interface
     implementation(project(":maps"))
+
+    //map implementations, there are modular, can be removed and the app will function normally without them
+    implementation(project(":google_maps"))
+    implementation(project(":osm"))
+
+
+
+
+    //preferences
+    implementation(libs.androidx.preference.ktx)
 
     //NAV
     implementation(libs.androidx.navigation.runtime.ktx)

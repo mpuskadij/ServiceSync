@@ -18,7 +18,6 @@ import com.example.compose.primaryLight
 import hr.foi.air.servicesync.ui.components.isDark
 import hr.foi.air.servicesync.ui.contents.SearchContent
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SearchScreen(modifier: Modifier = Modifier, navController: NavController) {
 

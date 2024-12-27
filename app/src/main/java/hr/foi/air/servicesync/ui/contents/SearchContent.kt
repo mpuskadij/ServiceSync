@@ -67,7 +67,6 @@ import hr.foi.air.servicesync.ui.components.isDark
 import java.text.Collator
 import java.util.Locale
 
-@ExperimentalMaterial3Api
 @Composable
 fun SearchContent(modifier: Modifier = Modifier, navController: NavController)
 {
@@ -201,17 +200,17 @@ fun SearchContent(modifier: Modifier = Modifier, navController: NavController)
         )
 
         Text(
-            modifier = Modifier.padding(start = 8.dp, top = 25.dp),
+            modifier = Modifier.padding(start = 8.dp, top = 12.dp),
             text = stringResource(R.string.services),
-            style = MaterialTheme.typography.headlineLarge,
+            style = MaterialTheme.typography.headlineMedium,
             color = isDark(onSurfaceDark, onSurfaceLight)
         )
 
         LazyRow(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(bottom = 8.dp, top = 25.dp),
-            horizontalArrangement = Arrangement.spacedBy(12.dp),
+                .padding(bottom = 0.dp, top = 8.dp),
+            horizontalArrangement = Arrangement.spacedBy(4.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
             items(distinctCategories.value) { category ->
@@ -250,15 +249,15 @@ fun SearchContent(modifier: Modifier = Modifier, navController: NavController)
             }
         }
 
-        Spacer(modifier = Modifier.padding(bottom = 20.dp, top = 30.dp))
+        Spacer(modifier = Modifier.padding(bottom = 6.dp, top = 0.dp))
 
         LazyColumn(
             modifier = Modifier
                 .fillMaxSize()
                 .heightIn(300.dp)
                 .pointerInput(Unit) {}
-                .padding(top = 8.dp),
-            verticalArrangement = Arrangement.spacedBy(8.dp)
+                .padding(top = 5.dp),
+            verticalArrangement = Arrangement.spacedBy(5.dp)
         ) {
             item {
                 Card(

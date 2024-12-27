@@ -1,6 +1,5 @@
 package hr.foi.air.servicesync.business
 
-import android.content.Context
 import hr.foi.air.servicesync.backend.FirestoreUserDetails
 
 class UserDataHandler {
@@ -21,6 +20,16 @@ class UserDataHandler {
             } else {
                 onResult(null)
             }
+        }
+    }
+
+    fun registerUserDetails(
+        email: String,
+        password: String,
+        onResult: (Boolean) -> Unit
+    ) {
+        firestoreUserDetails.registerUserDetails(email, password) { success ->
+            onResult(success)
         }
     }
 

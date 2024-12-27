@@ -1,8 +1,12 @@
 package hr.foi.air.servicesync.ui.contents
 
+import android.app.Activity
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -15,10 +19,13 @@ import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.TextField
+import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -40,14 +47,17 @@ import com.example.compose.onPrimaryLight
 import com.example.compose.primaryDark
 import com.example.compose.primaryLight
 import hr.foi.air.servicesync.R
+import hr.foi.air.servicesync.business.LanguageChangeHelper
 import hr.foi.air.servicesync.business.MapProviderManager
 import hr.foi.air.servicesync.business.UserDataHandler
 import hr.foi.air.servicesync.ui.components.MapDropdown
 import hr.foi.air.servicesync.ui.components.isDark
 import hr.foi.air.servicesync.ui.screens.ProfileInfoBox
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ProfileContent(modifier: Modifier = Modifier) {
+    //Profile
     val userDataHandler = UserDataHandler()
     var userData by remember { mutableStateOf<Map<String, String>?>(null) }
     var isLoading by remember { mutableStateOf(true) }
@@ -64,6 +74,19 @@ fun ProfileContent(modifier: Modifier = Modifier) {
     var newPasswordEmpty by remember { mutableStateOf(false) }
     val context = LocalContext.current
     var mapProvider by remember { mutableStateOf("") }
+
+
+    //Language
+    val languageChangeHelper = LanguageChangeHelper()
+
+    var languageSheet by remember { mutableStateOf(false) }
+    val sheetState = rememberModalBottomSheetState()
+    var currentLanguage by remember { mutableStateOf(languageChangeHelper.getSelectedLanguage(context)) }
+    val selectedLocale by remember { mutableStateOf(languageChangeHelper.getSelectedLocale(context)) }
+
+    LaunchedEffect(currentLanguage) {
+        languageChangeHelper.updateResources(context, currentLanguage)
+    }
 
     LaunchedEffect(Unit) {
         userDataHandler.loadUserDetails { data ->
@@ -178,21 +201,79 @@ fun ProfileContent(modifier: Modifier = Modifier) {
                             mapProviderName = mapProvider
                         )
                     },
-                    modifier = Modifier.width(100.dp),
+                    modifier = Modifier.width(125.dp),
                     colors = ButtonDefaults.buttonColors(containerColor = isDark(primaryDark, primaryLight))
                 ) {
                     Text(stringResource(R.string.save))
                 }
             } else {
-                Image(
-                    painter = painterResource(id = R.drawable.profile_image_default),  // Placeholder slika
-                    contentDescription = stringResource(R.string.profile_image),
+                Box(
                     modifier = Modifier
-                        .size(120.dp)
-                        .padding(8.dp)
-                        .clip(CircleShape),
-                    contentScale = ContentScale.Crop
-                )
+                        .fillMaxWidth()
+                ) {
+                    Image(
+                        painter = painterResource(id = R.drawable.profile_image_default),  // Placeholder slika
+                        contentDescription = stringResource(R.string.profile_image),
+                        modifier = Modifier
+                            .size(120.dp)
+                            .padding(8.dp)
+                            .clip(CircleShape)
+                            .align(Alignment.Center),
+                        contentScale = ContentScale.Crop
+                    )
+
+                    TextButton(
+                        modifier = Modifier
+                            .align(Alignment.CenterEnd)
+                            .background(Color.Transparent),
+                        onClick = {
+                            languageSheet = true
+                        }
+                    ) {
+                        Text(
+                            text = selectedLocale.flagEmoji,
+                            style = MaterialTheme.typography.headlineMedium
+                        )
+                    }
+                }
+
+
+                if (languageSheet) {
+                    ModalBottomSheet(
+                        sheetState = sheetState,
+                        onDismissRequest = { languageSheet = false },
+                        content = {
+                            languageChangeHelper.locales.forEach { locale ->
+                                TextButton(
+                                    onClick = {
+                                        languageChangeHelper.setLanguage(context, locale.code)
+                                        currentLanguage = locale.code
+                                        (context as? Activity)?.recreate()
+                                        languageSheet = false
+                                    },
+                                    modifier = Modifier.fillMaxWidth(),
+                                ) {
+                                    Row(
+                                        verticalAlignment = Alignment.CenterVertically,
+                                        horizontalArrangement = Arrangement.Start,
+                                        modifier = Modifier.fillMaxWidth()
+                                    ) {
+                                        Text(
+                                            text = locale.flagEmoji,
+                                            style = MaterialTheme.typography.bodyLarge
+                                        )
+                                        Spacer(modifier = Modifier.width(8.dp))
+                                        Text(
+                                            text = locale.language,
+                                            style = MaterialTheme.typography.bodyLarge
+                                        )
+                                    }
+                                }
+                            }
+                        }
+                    )
+                }
+
 
                 Spacer(modifier = Modifier.height(16.dp))
 

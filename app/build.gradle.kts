@@ -38,6 +38,11 @@ android {
     buildFeatures {
         compose = true
     }
+
+    androidResources {
+        generateLocaleConfig = true
+    }
+
 }
 
 dependencies {
@@ -48,8 +53,6 @@ dependencies {
     //map implementations, there are modular, can be removed and the app will function normally without them
     implementation(project(":google_maps"))
     implementation(project(":osm"))
-
-
 
 
     //preferences

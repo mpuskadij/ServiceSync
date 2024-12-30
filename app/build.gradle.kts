@@ -46,6 +46,8 @@ android {
 }
 
 dependencies {
+    // QR implementation
+    implementation("com.google.mlkit:barcode-scanning:17.0.3")
 
     //maps module for interface and modules that have the implementations of the interface
     implementation(project(":maps"))

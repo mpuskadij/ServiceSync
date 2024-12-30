@@ -27,7 +27,8 @@ class FirestoreService {
             "companyId" to companyId,
             "serviceName" to serviceName,
             "reservationDate" to reservationDate,
-            "userId" to userId
+            "userId" to userId,
+            "notificationSent" to false
         )
         val documentId = "$companyId-$userId-$reservationDate"
 

@@ -31,8 +31,11 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.navigation.NavController
+import com.example.compose.errorDark
+import com.example.compose.errorLight
 import com.example.compose.onSurfaceDark
 import com.example.compose.onSurfaceLight
 import com.example.compose.primaryDark
@@ -74,7 +77,20 @@ fun CalendarContent(
                 color = MaterialTheme.colorScheme.error,
                 style = MaterialTheme.typography.bodyLarge
             )
-        } else {
+        } else if (reservations.isEmpty()) {
+            Text(
+                text = stringResource(R.string.no_future_appointments),
+                style = MaterialTheme.typography.bodyLarge,
+                color = isDark(errorDark, errorLight),
+                modifier = Modifier.padding(top = 16.dp)
+            )
+        }else {
+            Text(
+                text = stringResource(R.string.future_appointments),
+                style = MaterialTheme.typography.headlineSmall,
+                color = isDark(primaryDark, primaryLight),
+                modifier = Modifier.padding(bottom = 8.dp)
+            )
             LazyColumn(
                 modifier = Modifier.fillMaxSize(),
                 contentPadding = PaddingValues(top = 8.dp)

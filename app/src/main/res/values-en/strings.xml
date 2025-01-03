@@ -67,4 +67,5 @@
     <string name="select_language">Choose language</string>
     <string name="future_appointments">Your upcoming appointments:</string>
     <string name="no_future_appointments">There is no future appointments.</string>
+    <string name="days">days</string>
 </resources>

@@ -24,6 +24,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Card
@@ -45,6 +46,7 @@ import com.example.compose.surfaceContainerLight
 import hr.foi.air.servicesync.R
 import hr.foi.air.servicesync.ui.components.isDark
 import kotlinx.coroutines.delay
+import java.util.concurrent.TimeUnit
 
 @Composable
 fun CalendarContent(
@@ -136,6 +138,8 @@ fun ReservationItem(
     reservationDate: Long,
     onClick: () -> Unit
 ) {
+    val daysUntilReservation = calculateDaysUntilReservation(reservationDate)
+
     Card(
         modifier = Modifier
             .fillMaxWidth()
@@ -164,19 +168,39 @@ fun ReservationItem(
                     ),
                     color = isDark(primaryDark, primaryLight)
                 )
-                Spacer(modifier = Modifier.height(4.dp))
+                Spacer(modifier = Modifier.height(2.dp))
                 Text(
                     text = formatDate(reservationDate),
                     style = MaterialTheme.typography.bodyMedium,
                     color = isDark(onSurfaceDark, onSurfaceLight)
                 )
             }
-            Icon(
-                painter = painterResource(id = R.drawable.baseline_access_time_filled_24),
-                contentDescription = "Clock Icon",
-                modifier = Modifier.size(24.dp),
-                tint = isDark(primaryDark, primaryLight)
-            )
+            Row (
+                verticalAlignment = Alignment.CenterVertically
+            ){
+                Icon(
+                    painter = painterResource(id = R.drawable.baseline_access_time_filled_24),
+                    contentDescription = "Clock Icon",
+                    modifier = Modifier.size(24.dp),
+                    tint = isDark(primaryDark, primaryLight)
+                )
+                Spacer(modifier = Modifier.width(8.dp))
+                Column (
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ){
+                    Text(
+                        text = daysUntilReservation.toString(),
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = isDark(primaryDark, primaryLight)
+                    )
+                    Spacer(modifier = Modifier.height(4.dp))
+                    Text(
+                        text = stringResource(R.string.days),
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = isDark(primaryDark, primaryLight)
+                    )
+                }
+            }
         }
     }
 }
@@ -184,4 +208,10 @@ fun ReservationItem(
 fun formatDate(timestamp: Long): String {
     val sdf = java.text.SimpleDateFormat("dd.MM.yyyy HH:mm", java.util.Locale.getDefault())
     return sdf.format(java.util.Date(timestamp))
+}
+
+fun calculateDaysUntilReservation(reservationDate: Long): Long {
+    val currentDate = System.currentTimeMillis()
+    val differenceInMillis = reservationDate - currentDate
+    return TimeUnit.MILLISECONDS.toDays(differenceInMillis)
 }

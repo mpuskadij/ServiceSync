@@ -1,6 +1,5 @@
 package hr.foi.air.servicesync.ui.contents
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.padding
@@ -40,10 +39,7 @@ import com.example.compose.primaryDark
 import com.example.compose.primaryLight
 import com.example.compose.surfaceContainerDark
 import com.example.compose.surfaceContainerLight
-import com.example.compose.surfaceDark
-import com.example.compose.surfaceLight
 import hr.foi.air.servicesync.R
-import hr.foi.air.servicesync.ui.components.CompanyCard
 import hr.foi.air.servicesync.ui.components.isDark
 
 @Composable

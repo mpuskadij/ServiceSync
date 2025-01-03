@@ -38,7 +38,8 @@ fun CalendarContent(
     var reservations by remember { mutableStateOf<List<Map<String, Any>>>(emptyList()) }
     var error by remember { mutableStateOf<String?>(null) }
 
-    LaunchedEffect(Unit) {
+    LaunchedEffect(key1 = Unit) {
+        reservations = emptyList()
         reservationManager.fetchUserReservations(
             userId = userId,
             onReservationsFetched = { reservations = it },
@@ -69,7 +70,9 @@ fun CalendarContent(
                             .clickable {
                                 navController.navigate(
                                     "companyDetails/$companyName/$serviceName/$reservationDate"
-                                )
+                                ) {
+                                    popUpTo("calendar") { inclusive = true }
+                                }
                             }
                     )
                 }

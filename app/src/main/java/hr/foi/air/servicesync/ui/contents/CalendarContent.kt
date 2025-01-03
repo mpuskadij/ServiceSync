@@ -45,7 +45,6 @@ fun CalendarContent(
     var error by remember { mutableStateOf<String?>(null) }
 
     LaunchedEffect(key1 = Unit) {
-        //reservations = emptyList()
         reservationManager.fetchUserReservations(
             userId = userId,
             onReservationsFetched = { reservations = it },
@@ -56,7 +55,7 @@ fun CalendarContent(
     Column(
         modifier = modifier
             .fillMaxSize()
-            .padding(16.dp, 0.dp),
+            .padding(16.dp, 0.dp, 16.dp, 0.dp),
         verticalArrangement = Arrangement.spacedBy(8.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
@@ -93,7 +92,7 @@ fun CalendarContent(
             )
             LazyColumn(
                 modifier = Modifier.fillMaxSize(),
-                contentPadding = PaddingValues(top = 8.dp)
+                contentPadding = PaddingValues(top = 2.dp)
             ) {
                 items(reservations) { reservation ->
                     val companyName = reservation["companyId"] as String

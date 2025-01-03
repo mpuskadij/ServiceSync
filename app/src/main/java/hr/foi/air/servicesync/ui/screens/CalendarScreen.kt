@@ -16,6 +16,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import com.example.compose.onPrimaryDark
 import com.example.compose.onPrimaryLight
 import com.example.compose.primaryDark
@@ -27,7 +28,7 @@ import hr.foi.air.servicesync.ui.contents.FavoriteContent
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun CalendarScreen(modifier: Modifier = Modifier) {
+fun CalendarScreen(modifier: Modifier = Modifier, navController: NavController) {
     Scaffold(
         topBar = {
             TopAppBar(
@@ -42,7 +43,7 @@ fun CalendarScreen(modifier: Modifier = Modifier) {
         },
         modifier = modifier
     ) { innerPadding ->
-        CalendarContent(modifier = Modifier.padding(innerPadding))
+        CalendarContent(modifier = Modifier.padding(innerPadding), navController = navController)
     }
     Text(
         text = "",

@@ -1,5 +1,6 @@
 package hr.foi.air.servicesync.ui.contents
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
@@ -22,11 +23,16 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.ui.Alignment
+import androidx.navigation.NavController
 import com.example.compose.primaryDark
+import com.example.compose.primaryLight
+import hr.foi.air.servicesync.ui.components.isDark
 
 @Composable
-fun CalendarContent(modifier: Modifier = Modifier)
-{
+fun CalendarContent(
+    modifier: Modifier = Modifier,
+    navController: NavController
+) {
     val reservationManager = remember { ReservationManager(FirestoreService()) }
     val userId = UserSession.username
     var reservations by remember { mutableStateOf<List<Map<String, Any>>>(emptyList()) }
@@ -48,14 +54,8 @@ fun CalendarContent(modifier: Modifier = Modifier)
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         if (error != null) {
-            Text(text = "Error: $error", color = primaryDark)
+            Text(text = "Error: $error", color = isDark(primaryDark, primaryLight))
         } else {
-            // Prikaz kalendara
-            Text(text = "Kalendar dolazi ovdje", style = MaterialTheme.typography.titleMedium)
-
-            Spacer(modifier = Modifier.height(16.dp))
-
-            // Lista nadolazećih termina
             LazyColumn {
                 items(reservations) { reservation ->
                     val companyName = reservation["companyId"] as String
@@ -64,7 +64,13 @@ fun CalendarContent(modifier: Modifier = Modifier)
                     Text(
                         text = "$companyName - $serviceName\n${formatDate(reservationDate)}",
                         style = MaterialTheme.typography.bodyMedium,
-                        modifier = Modifier.padding(8.dp)
+                        modifier = Modifier
+                            .padding(8.dp)
+                            .clickable {
+                                navController.navigate(
+                                    "companyDetails/$companyName/$serviceName/$reservationDate"
+                                )
+                            }
                     )
                 }
             }

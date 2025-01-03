@@ -1,5 +1,6 @@
 package hr.foi.air.servicesync.ui.contents
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.padding
@@ -17,15 +18,32 @@ import hr.foi.air.servicesync.backend.FirestoreService
 import hr.foi.air.servicesync.business.ReservationManager
 import hr.foi.air.servicesync.data.UserSession
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.Icon
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.navigation.NavController
+import com.example.compose.onSurfaceDark
+import com.example.compose.onSurfaceLight
 import com.example.compose.primaryDark
 import com.example.compose.primaryLight
+import com.example.compose.surfaceContainerDark
+import com.example.compose.surfaceContainerLight
+import com.example.compose.surfaceDark
+import com.example.compose.surfaceLight
+import hr.foi.air.servicesync.R
+import hr.foi.air.servicesync.ui.components.CompanyCard
 import hr.foi.air.servicesync.ui.components.isDark
 
 @Composable
@@ -51,32 +69,90 @@ fun CalendarContent(
         modifier = modifier
             .fillMaxSize()
             .padding(16.dp),
-        verticalArrangement = Arrangement.Top,
+        verticalArrangement = Arrangement.spacedBy(8.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         if (error != null) {
-            Text(text = "Error: $error", color = isDark(primaryDark, primaryLight))
+            Text(
+                text = "Error: $error",
+                color = MaterialTheme.colorScheme.error,
+                style = MaterialTheme.typography.bodyLarge
+            )
         } else {
-            LazyColumn {
+            LazyColumn(
+                modifier = Modifier.fillMaxSize(),
+                contentPadding = PaddingValues(top = 8.dp)
+            ) {
                 items(reservations) { reservation ->
                     val companyName = reservation["companyId"] as String
                     val serviceName = reservation["serviceName"] as String
                     val reservationDate = reservation["reservationDate"] as Long
-                    Text(
-                        text = "$companyName - $serviceName\n${formatDate(reservationDate)}",
-                        style = MaterialTheme.typography.bodyMedium,
-                        modifier = Modifier
-                            .padding(8.dp)
-                            .clickable {
-                                navController.navigate(
-                                    "companyDetails/$companyName/$serviceName/$reservationDate"
-                                ) {
-                                    popUpTo("calendar") { inclusive = true }
-                                }
+                    ReservationItem(
+                        companyName = companyName,
+                        serviceName = serviceName,
+                        reservationDate = reservationDate,
+                        onClick = {
+                            navController.navigate(
+                                "companyDetails/$companyName/$serviceName/$reservationDate"
+                            ) {
+                                popUpTo("calendar") { inclusive = true }
                             }
+                        }
                     )
                 }
             }
+        }
+    }
+}
+
+@Composable
+fun ReservationItem(
+    companyName: String,
+    serviceName: String,
+    reservationDate: Long,
+    onClick: () -> Unit
+) {
+    Card(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(8.dp)
+            //.background(isDark(surfaceDark, surfaceLight))
+            .clickable { onClick() },
+        shape = MaterialTheme.shapes.medium,
+        colors = CardDefaults.cardColors(
+            containerColor = isDark(surfaceContainerDark, surfaceContainerLight)
+        ),
+    ) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(16.dp),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.SpaceBetween
+        ) {
+            Column(
+                modifier = Modifier.weight(1f)
+            ) {
+                Text(
+                    text = serviceName,
+                    style = MaterialTheme.typography.bodyLarge.copy(
+                        fontWeight = FontWeight.Bold
+                    ),
+                    color = isDark(primaryDark, primaryLight)
+                )
+                Spacer(modifier = Modifier.height(4.dp))
+                Text(
+                    text = formatDate(reservationDate),
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = isDark(onSurfaceDark, onSurfaceLight)
+                )
+            }
+            Icon(
+                painter = painterResource(id = R.drawable.baseline_access_time_filled_24),
+                contentDescription = "Clock Icon",
+                modifier = Modifier.size(24.dp),
+                tint = isDark(primaryDark, primaryLight)
+            )
         }
     }
 }

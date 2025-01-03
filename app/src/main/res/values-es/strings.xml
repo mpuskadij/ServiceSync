@@ -65,4 +65,5 @@
     <string name="map_not_available">¡Vista de mapa no disponible actualmente!</string>
     <string name="no_available_maps">No hay mapas disponibles</string>
     <string name="select_language">Seleccione un idioma</string>
+    <string name="future_appointments">Sus próximas citas:</string>
 </resources>

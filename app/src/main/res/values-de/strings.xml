@@ -66,4 +66,5 @@
     <string name="map_not_available">Kartenansicht derzeit nicht verfügbar!</string>
     <string name="no_available_maps">Keine verfügbaren Karten</string>
     <string name="select_language">Sprache wählen</string>
+    <string name="future_appointments">Ihre anstehenden Termine:</string>
 </resources>

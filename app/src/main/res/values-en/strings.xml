@@ -65,4 +65,5 @@
     <string name="map_not_available">Map view currently unavailable!</string>
     <string name="no_available_maps">No available maps</string>
     <string name="select_language">Choose language</string>
+    <string name="future_appointments">Your upcoming appointments:</string>
 </resources>

@@ -44,6 +44,7 @@ import com.example.compose.surfaceContainerDark
 import com.example.compose.surfaceContainerLight
 import hr.foi.air.servicesync.R
 import hr.foi.air.servicesync.ui.components.isDark
+import kotlinx.coroutines.delay
 
 @Composable
 fun CalendarContent(
@@ -56,7 +57,7 @@ fun CalendarContent(
     var error by remember { mutableStateOf<String?>(null) }
 
     LaunchedEffect(key1 = Unit) {
-        reservations = emptyList()
+        //reservations = emptyList()
         reservationManager.fetchUserReservations(
             userId = userId,
             onReservationsFetched = { reservations = it },
@@ -78,12 +79,23 @@ fun CalendarContent(
                 style = MaterialTheme.typography.bodyLarge
             )
         } else if (reservations.isEmpty()) {
-            Text(
-                text = stringResource(R.string.no_future_appointments),
-                style = MaterialTheme.typography.bodyLarge,
-                color = isDark(errorDark, errorLight),
-                modifier = Modifier.padding(top = 16.dp)
-            )
+            var showNoAppointmentsMessage by remember { mutableStateOf(false) }
+
+            LaunchedEffect(reservations) {
+                delay(1000L)
+                if (reservations.isEmpty()) {
+                    showNoAppointmentsMessage = true
+                }
+            }
+
+            if (showNoAppointmentsMessage) {
+                Text(
+                    text = stringResource(R.string.no_future_appointments),
+                    style = MaterialTheme.typography.bodyLarge,
+                    color = isDark(errorDark, errorLight),
+                    modifier = Modifier.padding(top = 16.dp)
+                )
+            }
         }else {
             Text(
                 text = stringResource(R.string.future_appointments),

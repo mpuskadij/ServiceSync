@@ -27,9 +27,9 @@ import com.example.compose.onBackgroundLight
 import com.example.compose.tertiaryContainerDark
 import com.example.compose.tertiaryContainerLight
 import hr.foi.air.servicesync.R
+import hr.foi.air.servicesync.business.formatDate
 import hr.foi.air.servicesync.ui.components.isDark
 import hr.foi.air.servicesync.ui.contents.CompanyDetailsContent
-import hr.foi.air.servicesync.ui.contents.formatDate
 
 @Composable
 fun CompanyDetailsWithHeader(

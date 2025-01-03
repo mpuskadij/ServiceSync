@@ -31,7 +31,6 @@ import com.example.compose.surfaceContainerLight
 import hr.foi.air.servicesync.R
 import hr.foi.air.servicesync.business.calculateDaysUntilReservation
 import hr.foi.air.servicesync.business.formatDate
-import java.util.concurrent.TimeUnit
 
 @Composable
 fun ReservationItem(
@@ -46,7 +45,6 @@ fun ReservationItem(
         modifier = Modifier
             .fillMaxWidth()
             .padding(8.dp)
-            //.background(isDark(surfaceDark, surfaceLight))
             .clickable { onClick() },
         shape = MaterialTheme.shapes.medium,
         colors = CardDefaults.cardColors(

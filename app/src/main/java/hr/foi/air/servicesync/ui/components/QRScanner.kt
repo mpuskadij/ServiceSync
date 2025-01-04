@@ -53,8 +53,8 @@ fun QRScannerContent(modifier: Modifier = Modifier, onCodeScanned: (String) -> U
                             .addOnSuccessListener { barcodes ->
                                 for (barcode in barcodes) {
                                     barcode.rawValue?.let {
-                                        onCodeScanned(it)
                                         imageProxy.close()
+                                        onCodeScanned(it)
                                         return@addOnSuccessListener
                                     }
                                 }

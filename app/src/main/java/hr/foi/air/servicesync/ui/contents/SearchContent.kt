@@ -72,7 +72,7 @@ import java.text.Collator
 import java.util.Locale
 
 @Composable
-fun SearchContent(modifier: Modifier = Modifier, navController: NavController)
+fun SearchContent(modifier: Modifier = Modifier, navController: NavController, onQRCameraClick: () -> Unit)
 {
     val db = FirebaseFirestore.getInstance()
 
@@ -188,7 +188,7 @@ fun SearchContent(modifier: Modifier = Modifier, navController: NavController)
                         contentDescription = "Camera Icon",
                         tint = isDark(onSurfaceVariantDark, onSurfaceVariantLight),
                         modifier = Modifier.clickable {
-                            Log.d("SearchContent", "Camera icon clicked")
+                            onQRCameraClick()
                         }
                     )
                 }

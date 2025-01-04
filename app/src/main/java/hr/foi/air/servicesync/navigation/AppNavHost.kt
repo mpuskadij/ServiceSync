@@ -48,7 +48,10 @@ fun NavGraphBuilder.AppNavHost(navController: NavHostController) {
         )
     }
     composable("main") {
-        SearchScreen(modifier = Modifier, navController)
+        SearchScreen(modifier = Modifier, navController, onQRCameraClick = {
+            navController.navigate("qr_scanner") {
+            }
+        },)
     }
 
     composable("company/{companyName}") { backStackEntry ->
@@ -68,7 +71,11 @@ fun NavGraphBuilder.AppNavHost(navController: NavHostController) {
     }
     composable("search")
     {
-        SearchScreen(modifier = Modifier, navController)
+        SearchScreen(modifier = Modifier, navController, onQRCameraClick = {
+                navController.navigate("qr_scanner") {
+                }
+            }
+        )
     }
     composable("calendar")
     {

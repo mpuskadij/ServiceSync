@@ -34,7 +34,9 @@
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
-
+        <meta-data
+            android:name="androidx.camera.core.CameraXConfig.Provider"
+            android:value="androidx.camera.lifecycle.ProcessCameraProvider" />
     </application>
 
 

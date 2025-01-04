@@ -47,9 +47,11 @@ android {
 
 dependencies {
     // QR implementation
-    implementation("com.google.mlkit:barcode-scanning:17.0.3")
-    implementation("androidx.camera:camera-view:1.3.0")
-    implementation("androidx.camera:camera-lifecycle:1.3.0")
+    implementation("androidx.camera:camera-core:1.4.0")
+    implementation("androidx.camera:camera-camera2:1.4.0")
+    implementation("androidx.camera:camera-lifecycle:1.4.0")
+    implementation("androidx.camera:camera-view:1.4.0")
+    implementation("androidx.camera:camera-extensions:1.4.0")
     implementation("com.google.mlkit:barcode-scanning:17.0.3")
 
     //maps module for interface and modules that have the implementations of the interface

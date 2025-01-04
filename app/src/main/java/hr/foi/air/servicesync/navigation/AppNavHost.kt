@@ -8,6 +8,7 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import com.google.firebase.auth.FirebaseAuth
+import hr.foi.air.servicesync.ui.components.QRScannerContent
 import hr.foi.air.servicesync.ui.contents.CompanyDetailsContent
 import hr.foi.air.servicesync.ui.screens.AddReviewScreen
 import hr.foi.air.servicesync.ui.screens.CalendarScreen
@@ -113,6 +114,13 @@ fun NavGraphBuilder.AppNavHost(navController: NavHostController) {
                         Toast.LENGTH_SHORT
                     ).show()
                 }
+            }
+        )
+    }
+    composable("qr_scanner") {
+        QRScannerContent(
+            onCodeScanned = { code ->
+                navController.navigate("company/$code")
             }
         )
     }

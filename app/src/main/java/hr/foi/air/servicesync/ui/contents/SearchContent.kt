@@ -48,6 +48,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.TextFieldValue
@@ -184,8 +185,8 @@ fun SearchContent(modifier: Modifier = Modifier, navController: NavController, o
                     )
                     Spacer(modifier = Modifier.width(8.dp)) // Space between icons
                     Icon(
-                        imageVector = Icons.Default.AddCircle, // TODO put proper icon
-                        contentDescription = "Camera Icon",
+                        painter = painterResource(id = R.drawable.qr_code_scanner),
+                        contentDescription = "QR Code Scanner Icon",
                         tint = isDark(onSurfaceVariantDark, onSurfaceVariantLight),
                         modifier = Modifier.clickable {
                             onQRCameraClick()

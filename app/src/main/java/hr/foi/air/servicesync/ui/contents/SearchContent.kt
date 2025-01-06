@@ -350,6 +350,7 @@ fun SearchContent(modifier: Modifier = Modifier, navController: NavController)
                 CompanyCard(
                     companyName = companyName,
                     imageUrl = imageUrl,
+                    companyRating = 4.8,
                     companyCategory = companyCategory,
                     onCardClick = {
                         navController.navigate("company/$companyName")

@@ -4,12 +4,18 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.Card
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -29,6 +35,7 @@ import com.example.compose.onSurfaceLight
 fun CompanyCard(
     companyName: String,
     companyCategory: String,
+    companyRating: Double,
     imageUrl: String?,
     onCardClick: () -> Unit,
     modifier: Modifier = Modifier
@@ -94,13 +101,31 @@ fun CompanyCard(
                     textAlign = TextAlign.Start,
                     color = isDark(onSurfaceDark, onSurfaceLight),
                 )
-                Text(
-                    text = companyCategory,
-                    style = MaterialTheme.typography.titleMedium,
-                    textAlign = TextAlign.Start,
-                    color = isDark(onSurfaceDark, onSurfaceLight),
-                    modifier = Modifier.fillMaxWidth()
-                )
+                Row (
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.Start
+                ){
+                    Text(
+                        text = companyCategory,
+                        style = MaterialTheme.typography.titleMedium,
+                        textAlign = TextAlign.Start,
+                        color = isDark(onSurfaceDark, onSurfaceLight),
+                        modifier = Modifier.weight(1f)
+                    )
+                    Text(
+                        text = companyRating.toString(),
+                        style = MaterialTheme.typography.titleLarge,
+                        textAlign = TextAlign.End,
+                        color = isDark(onSurfaceDark, onSurfaceLight),
+                        modifier = Modifier.weight(1f)
+                    )
+                    Spacer(modifier = Modifier.width(4.dp))
+                    Icon(
+                        imageVector = Icons.Default.Star,
+                        contentDescription = "Star Icon",
+                        tint = isDark(onSurfaceDark, onSurfaceLight)
+                    )
+                }
             }
         }
     }

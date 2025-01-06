@@ -2,6 +2,7 @@ package hr.foi.air.servicesync.ui.components
 
 import android.content.Context
 import android.content.pm.PackageManager
+import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.OptIn
@@ -68,10 +69,19 @@ fun QRScannerContent(modifier: Modifier = Modifier, onCodeScanned: (String) -> U
                         barcodeScanner.process(image)
                             .addOnSuccessListener { barcodes ->
                                 for (barcode in barcodes) {
-                                    barcode.rawValue?.let {
-                                        imageProxy.close()
-                                        onCodeScanned(it)
-                                        return@addOnSuccessListener
+                                    barcode.rawValue?.let { rawValue ->
+                                        if (rawValue.startsWith("ServiceSync::")) {
+                                            val remainingCode = rawValue.removePrefix("ServiceSync::")
+                                            imageProxy.close()
+                                            onCodeScanned(remainingCode)
+                                            return@addOnSuccessListener
+                                        } else {
+                                            Toast.makeText(
+                                                context,
+                                                "Invalid QR Code",
+                                                Toast.LENGTH_SHORT
+                                            ).show()
+                                        }
                                     }
                                 }
                             }

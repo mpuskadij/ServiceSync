@@ -1,6 +1,9 @@
 package hr.foi.air.servicesync.ui.components
 
 import android.content.Context
+import android.content.pm.PackageManager
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.OptIn
 import androidx.camera.core.CameraSelector
 import androidx.camera.core.ExperimentalGetImage
@@ -30,7 +33,14 @@ fun QRScannerContent(modifier: Modifier = Modifier, onCodeScanned: (String) -> U
 
     val cameraProviderFuture = remember { ProcessCameraProvider.getInstance(context) }
     val previewView = remember { PreviewView(context) }
-
+    val permissionLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.RequestPermission(),
+        onResult = { isGranted ->
+            if (!isGranted) {
+                // Handle permission denied (e.g., show a message or close the screen)
+            }
+        }
+    )
     Box(modifier = modifier.fillMaxSize()) {
         AndroidView(
             factory = { previewView },
@@ -38,6 +48,12 @@ fun QRScannerContent(modifier: Modifier = Modifier, onCodeScanned: (String) -> U
         )
 
         LaunchedEffect(Unit) {
+
+            if (ContextCompat.checkSelfPermission(context, android.Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+                permissionLauncher.launch(android.Manifest.permission.CAMERA)
+                return@LaunchedEffect // Exit if permission is not granted
+            }
+
             val cameraProvider = cameraProviderFuture.get()
             val preview = androidx.camera.core.Preview.Builder().build().also {
                 it.setSurfaceProvider(previewView.surfaceProvider)

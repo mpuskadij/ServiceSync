@@ -55,6 +55,7 @@ import hr.foi.air.servicesync.business.UserDataHandler
 import hr.foi.air.servicesync.ui.components.MapDropdown
 import hr.foi.air.servicesync.ui.components.isDark
 import hr.foi.air.servicesync.ui.screens.ProfileInfoBox
+import kotlinx.coroutines.delay
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -62,7 +63,7 @@ fun ProfileContent(modifier: Modifier = Modifier) {
     //Profile
     val userDataHandler = UserDataHandler()
     var userData by remember { mutableStateOf<Map<String, String>?>(null) }
-    var isLoading by remember { mutableStateOf(true) }
+    var isLoading by remember { mutableStateOf(false) }
     var isEditing by remember { mutableStateOf(false) }
     var name by remember { mutableStateOf("") }
     var surname by remember { mutableStateOf("") }
@@ -85,6 +86,15 @@ fun ProfileContent(modifier: Modifier = Modifier) {
     val sheetState = rememberModalBottomSheetState()
     var currentLanguage by remember { mutableStateOf(languageChangeHelper.getSelectedLanguage(context)) }
     val selectedLocale by remember { mutableStateOf(languageChangeHelper.getSelectedLocale(context)) }
+
+    LaunchedEffect(isLoading) {
+        if (isLoading) {
+            delay(200L) // Odgoda od 500ms
+            isLoading = true
+        } else {
+            isLoading = false
+        }
+    }
 
     LaunchedEffect(currentLanguage) {
         languageChangeHelper.updateResources(context, currentLanguage)

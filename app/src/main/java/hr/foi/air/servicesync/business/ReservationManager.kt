@@ -34,4 +34,12 @@ class ReservationManager(private val firestoreService: FirestoreService) {
             }
         )
     }
+
+    fun fetchUserReservations(
+        userId: String,
+        onReservationsFetched: (List<Map<String, Any>>) -> Unit,
+        onFailure: (Exception) -> Unit
+    ) {
+        firestoreService.fetchUserReservations(userId, onReservationsFetched, onFailure)
+    }
 }

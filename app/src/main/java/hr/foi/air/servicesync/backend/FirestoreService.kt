@@ -77,4 +77,20 @@ class FirestoreService {
         }
     }
 
+    fun fetchUserReservations(
+        userId: String,
+        onSuccess: (List<Map<String, Any>>) -> Unit,
+        onFailure: (Exception) -> Unit
+    ) {
+        db.collection("reservations")
+            .whereEqualTo("userId", userId)
+            .whereGreaterThan("reservationDate", System.currentTimeMillis())
+            .get()
+            .addOnSuccessListener { documents ->
+                val reservations = documents.map { it.data }
+                onSuccess(reservations)
+            }
+            .addOnFailureListener { onFailure(it) }
+    }
+
 }

@@ -29,6 +29,8 @@ import com.example.compose.primaryDark
 import com.example.compose.primaryLight
 import com.example.compose.secondaryDark
 import com.example.compose.secondaryLight
+import com.example.compose.surfaceContainerDark
+import com.example.compose.surfaceContainerLight
 import com.example.compose.surfaceDark
 import com.example.compose.surfaceLight
 import hr.foi.air.servicesync.R
@@ -86,7 +88,7 @@ fun ProfileInfoBox(label: String, value: String) {
             .fillMaxWidth()
             .padding(vertical = 8.dp, horizontal = 16.dp),
         colors = CardDefaults.cardColors(
-            containerColor = isDark(surfaceDark, surfaceLight)
+            containerColor = isDark(surfaceContainerDark, surfaceContainerLight)
         ),
         shape = MaterialTheme.shapes.medium,
         elevation = CardDefaults.cardElevation(

@@ -1,6 +1,5 @@
 package hr.foi.air.servicesync.business
 
-import android.annotation.SuppressLint
 import hr.foi.air.servicesync.backend.FirestoreReviews
 import hr.foi.air.servicesync.data.Review
 import java.math.BigDecimal
@@ -9,11 +8,8 @@ import java.math.RoundingMode
 class ReviewHandler(
     private val firestoreReviews: FirestoreReviews = FirestoreReviews()
 ) {
-    private var reviewList: List<Review> = emptyList()
-
     fun fetchReviews(companyName: String, onResult: (List<Review>) -> Unit) {
         firestoreReviews.fetchReviewsForCompany(companyName) { reviews ->
-            reviewList = reviews
             onResult(reviews)
         }
     }

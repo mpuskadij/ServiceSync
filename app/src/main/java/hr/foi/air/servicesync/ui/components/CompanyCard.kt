@@ -35,7 +35,7 @@ import com.example.compose.onSurfaceLight
 fun CompanyCard(
     companyName: String,
     companyCategory: String,
-    companyRating: Double,
+    companyRating: String,
     imageUrl: String?,
     onCardClick: () -> Unit,
     modifier: Modifier = Modifier
@@ -113,7 +113,7 @@ fun CompanyCard(
                         modifier = Modifier.weight(1f)
                     )
                     Text(
-                        text = companyRating.toString(),
+                        text = companyRating,
                         style = MaterialTheme.typography.titleLarge,
                         textAlign = TextAlign.End,
                         color = isDark(onSurfaceDark, onSurfaceLight),

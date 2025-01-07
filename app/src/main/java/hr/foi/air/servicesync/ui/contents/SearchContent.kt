@@ -62,6 +62,7 @@ import com.example.compose.surfaceContainerLowDark
 import com.example.compose.surfaceContainerLowLight
 import com.google.firebase.firestore.FirebaseFirestore
 import hr.foi.air.servicesync.R
+import hr.foi.air.servicesync.business.ReviewHandler
 import hr.foi.air.servicesync.ui.components.CompanyCard
 import hr.foi.air.servicesync.ui.components.isDark
 import java.text.Collator
@@ -71,9 +72,11 @@ import java.util.Locale
 fun SearchContent(modifier: Modifier = Modifier, navController: NavController)
 {
     val db = FirebaseFirestore.getInstance()
+    val reviewsHandler = ReviewHandler()
 
     val companyNames = remember { mutableStateOf<List<Pair<String, String?>>>(emptyList()) }
     val companyCategory = remember { mutableStateOf<List<Pair<String, String>>>(emptyList()) }
+    val reviewAverages = remember { mutableStateOf(mapOf<String, Double>()) }
     val companyCities = remember { mutableStateOf<List<Pair<String, String>>>(emptyList()) }
 
     val filteredCompany = remember { mutableStateOf<List<Pair<String, String?>>>(emptyList()) }
@@ -347,11 +350,19 @@ fun SearchContent(modifier: Modifier = Modifier, navController: NavController)
                     .find { it.first == companyName }
                     ?.second ?: "Unknown"
 
+                val averageRating = reviewAverages.value[companyName] ?: "Loading..."
+
+                if (!reviewAverages.value.containsKey(companyName)) {
+                    reviewsHandler.fetchAndCalculateReviewAverage(companyName) { average ->
+                        reviewAverages.value += (companyName to average)
+                    }
+                }
+
                 CompanyCard(
                     companyName = companyName,
                     imageUrl = imageUrl,
-                    companyRating = 4.8,
                     companyCategory = companyCategory,
+                    companyRating = averageRating.toString(),
                     onCardClick = {
                         navController.navigate("company/$companyName")
                     }

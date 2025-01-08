@@ -19,7 +19,7 @@ import hr.foi.air.servicesync.ui.components.isDark
 import hr.foi.air.servicesync.ui.contents.SearchContent
 
 @Composable
-fun SearchScreen(modifier: Modifier = Modifier, navController: NavController) {
+fun SearchScreen(modifier: Modifier = Modifier, navController: NavController, onQRCameraClick: () -> Unit) {
 
     Scaffold(
         modifier = modifier.padding()
@@ -32,7 +32,7 @@ fun SearchScreen(modifier: Modifier = Modifier, navController: NavController) {
                     bottom = 0.dp
                 ))
         ) {
-            SearchContent(modifier = Modifier, navController)
+            SearchContent(modifier = Modifier, navController, onQRCameraClick)
         }
     }
     Text(

@@ -7,12 +7,14 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
@@ -21,8 +23,10 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.AbsoluteRoundedCornerShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.AddCircle
 import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.material.icons.filled.Search
+import androidx.compose.material.icons.filled.Warning
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardColors
 import androidx.compose.material3.CircularProgressIndicator
@@ -44,6 +48,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.TextFieldValue
@@ -68,7 +73,7 @@ import java.text.Collator
 import java.util.Locale
 
 @Composable
-fun SearchContent(modifier: Modifier = Modifier, navController: NavController)
+fun SearchContent(modifier: Modifier = Modifier, navController: NavController, onQRCameraClick: () -> Unit)
 {
     val db = FirebaseFirestore.getInstance()
 
@@ -172,11 +177,22 @@ fun SearchContent(modifier: Modifier = Modifier, navController: NavController)
                 )
             },
             trailingIcon = {
-                Icon(
-                    imageVector = Icons.Default.Search,
-                    contentDescription = "Search Icon",
-                    tint = isDark(onSurfaceVariantDark, onSurfaceVariantLight)
-                )
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    Icon(
+                        imageVector = Icons.Default.Search,
+                        contentDescription = "Search Icon",
+                        tint = isDark(onSurfaceVariantDark, onSurfaceVariantLight)
+                    )
+                    Spacer(modifier = Modifier.width(8.dp)) // Space between icons
+                    Icon(
+                        painter = painterResource(id = R.drawable.qr_code_scanner),
+                        contentDescription = "QR Code Scanner Icon",
+                        tint = isDark(onSurfaceVariantDark, onSurfaceVariantLight),
+                        modifier = Modifier.clickable {
+                            onQRCameraClick()
+                        }
+                    )
+                }
             },
             textStyle = TextStyle(color = isDark(onSurfaceVariantDark, onSurfaceVariantLight)),
             modifier = Modifier

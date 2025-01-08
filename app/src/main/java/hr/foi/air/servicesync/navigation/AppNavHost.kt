@@ -10,6 +10,7 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import com.google.firebase.auth.FirebaseAuth
+import hr.foi.air.servicesync.ui.components.QRScannerContent
 import hr.foi.air.servicesync.ui.contents.CompanyDetailsContent
 import hr.foi.air.servicesync.ui.screens.AddReviewScreen
 import hr.foi.air.servicesync.ui.screens.CalendarScreen
@@ -50,7 +51,10 @@ fun NavGraphBuilder.AppNavHost(navController: NavHostController) {
         )
     }
     composable("main") {
-        SearchScreen(modifier = Modifier, navController)
+        SearchScreen(modifier = Modifier, navController, onQRCameraClick = {
+            navController.navigate("qr_scanner") {
+            }
+        },)
     }
 
     composable("company/{companyName}") { backStackEntry ->
@@ -92,7 +96,11 @@ fun NavGraphBuilder.AppNavHost(navController: NavHostController) {
 
     composable("search")
     {
-        SearchScreen(modifier = Modifier, navController)
+        SearchScreen(modifier = Modifier, navController, onQRCameraClick = {
+                navController.navigate("qr_scanner") {
+                }
+            }
+        )
     }
     composable("calendar")
     {
@@ -138,6 +146,13 @@ fun NavGraphBuilder.AppNavHost(navController: NavHostController) {
                         Toast.LENGTH_SHORT
                     ).show()
                 }
+            }
+        )
+    }
+    composable("qr_scanner") {
+        QRScannerContent(
+            onCodeScanned = { code ->
+                navController.navigate("company/$code")
             }
         )
     }

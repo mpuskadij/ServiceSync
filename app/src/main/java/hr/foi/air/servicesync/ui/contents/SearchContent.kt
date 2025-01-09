@@ -7,12 +7,14 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
@@ -21,8 +23,10 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.AbsoluteRoundedCornerShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.AddCircle
 import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.material.icons.filled.Search
+import androidx.compose.material.icons.filled.Warning
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardColors
 import androidx.compose.material3.CircularProgressIndicator
@@ -44,6 +48,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.TextFieldValue
@@ -62,19 +67,21 @@ import com.example.compose.surfaceContainerLowDark
 import com.example.compose.surfaceContainerLowLight
 import com.google.firebase.firestore.FirebaseFirestore
 import hr.foi.air.servicesync.R
+import hr.foi.air.servicesync.business.ReviewHandler
 import hr.foi.air.servicesync.ui.components.CompanyCard
 import hr.foi.air.servicesync.ui.components.isDark
 import java.text.Collator
 import java.util.Locale
 
-@ExperimentalMaterial3Api
 @Composable
-fun SearchContent(modifier: Modifier = Modifier, navController: NavController)
+fun SearchContent(modifier: Modifier = Modifier, navController: NavController, onQRCameraClick: () -> Unit)
 {
     val db = FirebaseFirestore.getInstance()
+    val reviewsHandler = ReviewHandler()
 
     val companyNames = remember { mutableStateOf<List<Pair<String, String?>>>(emptyList()) }
     val companyCategory = remember { mutableStateOf<List<Pair<String, String>>>(emptyList()) }
+    val reviewAverages = remember { mutableStateOf(mapOf<String, Double>()) }
     val companyCities = remember { mutableStateOf<List<Pair<String, String>>>(emptyList()) }
 
     val filteredCompany = remember { mutableStateOf<List<Pair<String, String?>>>(emptyList()) }
@@ -173,11 +180,22 @@ fun SearchContent(modifier: Modifier = Modifier, navController: NavController)
                 )
             },
             trailingIcon = {
-                Icon(
-                    imageVector = Icons.Default.Search,
-                    contentDescription = "Search Icon",
-                    tint = isDark(onSurfaceVariantDark, onSurfaceVariantLight)
-                )
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    Icon(
+                        imageVector = Icons.Default.Search,
+                        contentDescription = "Search Icon",
+                        tint = isDark(onSurfaceVariantDark, onSurfaceVariantLight)
+                    )
+                    Spacer(modifier = Modifier.width(8.dp)) // Space between icons
+                    Icon(
+                        painter = painterResource(id = R.drawable.qr_code_scanner),
+                        contentDescription = "QR Code Scanner Icon",
+                        tint = isDark(onSurfaceVariantDark, onSurfaceVariantLight),
+                        modifier = Modifier.clickable {
+                            onQRCameraClick()
+                        }
+                    )
+                }
             },
             textStyle = TextStyle(color = isDark(onSurfaceVariantDark, onSurfaceVariantLight)),
             modifier = Modifier
@@ -201,17 +219,17 @@ fun SearchContent(modifier: Modifier = Modifier, navController: NavController)
         )
 
         Text(
-            modifier = Modifier.padding(start = 8.dp, top = 25.dp),
+            modifier = Modifier.padding(start = 8.dp, top = 12.dp),
             text = stringResource(R.string.services),
-            style = MaterialTheme.typography.headlineLarge,
+            style = MaterialTheme.typography.headlineMedium,
             color = isDark(onSurfaceDark, onSurfaceLight)
         )
 
         LazyRow(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(bottom = 8.dp, top = 25.dp),
-            horizontalArrangement = Arrangement.spacedBy(12.dp),
+                .padding(bottom = 0.dp, top = 8.dp),
+            horizontalArrangement = Arrangement.spacedBy(4.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
             items(distinctCategories.value) { category ->
@@ -250,15 +268,15 @@ fun SearchContent(modifier: Modifier = Modifier, navController: NavController)
             }
         }
 
-        Spacer(modifier = Modifier.padding(bottom = 20.dp, top = 30.dp))
+        Spacer(modifier = Modifier.padding(bottom = 6.dp, top = 0.dp))
 
         LazyColumn(
             modifier = Modifier
                 .fillMaxSize()
                 .heightIn(300.dp)
                 .pointerInput(Unit) {}
-                .padding(top = 8.dp),
-            verticalArrangement = Arrangement.spacedBy(8.dp)
+                .padding(top = 5.dp),
+            verticalArrangement = Arrangement.spacedBy(5.dp)
         ) {
             item {
                 Card(
@@ -348,10 +366,19 @@ fun SearchContent(modifier: Modifier = Modifier, navController: NavController)
                     .find { it.first == companyName }
                     ?.second ?: "Unknown"
 
+                val averageRating = reviewAverages.value[companyName] ?: "Loading..."
+
+                if (!reviewAverages.value.containsKey(companyName)) {
+                    reviewsHandler.fetchAndCalculateReviewAverage(companyName) { average ->
+                        reviewAverages.value += (companyName to average)
+                    }
+                }
+
                 CompanyCard(
                     companyName = companyName,
                     imageUrl = imageUrl,
                     companyCategory = companyCategory,
+                    companyRating = averageRating.toString(),
                     onCardClick = {
                         navController.navigate("company/$companyName")
                     }

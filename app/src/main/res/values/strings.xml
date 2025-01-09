@@ -1,6 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <resources>
     <string name="app_name">ServiceSync</string>
-
     <string name="add_review">Dodaj recenziju</string>
     <string name="adding_review">Dodavanje recenzije</string>
     <string name="already_have_account">Već imate račun? Prijavite se</string>
@@ -8,7 +8,7 @@
     <string name="calendar">Kalendar</string>
     <string name="cancel">Odustani</string>
     <string name="choose_city">Odaberite grad</string>
-    <string name="choose_date">Odaberite datum...</string>
+    <string name="choose_date">Odaberite datum…</string>
     <string name="close">Zatvori</string>
     <string name="company_description">Opis usluge</string>
     <string name="company_location">Lokacija tvrtke</string>
@@ -24,7 +24,7 @@
     <string name="full_name">Ime i prezime</string>
     <string name="last_name">Prezime</string>
     <string name="loading">Učitavanje</string>
-    <string name="loading_data">Loading data...</string>
+    <string name="loading_data">Loading data…</string>
     <string name="location">Lokacija</string>
     <string name="login">Prijava</string>
     <string name="login_error">Prijava nije uspješna!</string>
@@ -44,14 +44,14 @@
     <string name="registration_successful">Registracija je uspješna!</string>
     <string name="reservation_error">Greška pri spremanju rezervacije!</string>
     <string name="reservation_successful">Rezervacija uspješno spremljena!</string>
-    <string name="review_description">Opis recenzije...</string>
+    <string name="review_description">Opis recenzije…</string>
     <string name="reviews">Recenzije</string>
     <string name="saturday">Subota</string>
     <string name="save">Spremi</string>
     <string name="save_reservation">Spremi rezervaciju</string>
     <string name="search">Pretraži</string>
     <string name="searching">Pretraživanje</string>
-    <string name="select_date">Odaberite datum...</string>
+    <string name="select_date">Odaberite datum…</string>
     <string name="send_review">Pošalji recenziju</string>
     <string name="services">Usluge</string>
     <string name="star">Star</string>
@@ -60,4 +60,13 @@
     <string name="username">Korisničko ime / tag</string>
     <string name="working_hours">Radno vrijeme</string>
     <string name="profile">Profil</string>
+    <string name="map_type">Vrsta karata</string>
+    <string name="choose_map_type">Odaberite vrstu karte</string>
+    <string name="no_providers_found">Nema pružatelja mapa</string>
+    <string name="map_not_available">Prikaz karte nije trenutno dostupan!</string>
+    <string name="no_available_maps">Nema dostupnih karata</string>
+    <string name="select_language">Odaberite jezik</string>
+    <string name="future_appointments">Vaši nadolazeći termini:</string>
+    <string name="no_future_appointments">Nema nadolazećih termina.</string>
+    <string name="days">dana</string>
 </resources>

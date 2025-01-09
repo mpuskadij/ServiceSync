@@ -1,4 +1,4 @@
-package mapproviders
+package com.example.google_maps.ui
 
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
@@ -11,7 +11,10 @@ import com.google.maps.android.compose.Marker
 import com.google.maps.android.compose.rememberCameraPositionState
 import com.google.maps.android.compose.rememberMarkerState
 
-class GoogleMapProvider() : IMapProvider {
+class GoogleMapsProvider : IMapProvider {
+    override fun getName(): String {
+        return "Google Maps"
+    }
 
     @Composable
     override fun CreateMap(latitude: Double, longitude: Double) {
@@ -24,5 +27,4 @@ class GoogleMapProvider() : IMapProvider {
             Marker(state = markerState, title = "Lokacija tvrte")
         }
     }
-
 }

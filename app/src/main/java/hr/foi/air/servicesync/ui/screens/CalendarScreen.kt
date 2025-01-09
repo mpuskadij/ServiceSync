@@ -1,10 +1,6 @@
 package hr.foi.air.servicesync.ui.screens
 
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.WindowInsets
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
@@ -12,22 +8,16 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import com.example.compose.onPrimaryDark
-import com.example.compose.onPrimaryLight
-import com.example.compose.primaryDark
-import com.example.compose.primaryLight
+import androidx.navigation.NavController
 import hr.foi.air.servicesync.R
-import hr.foi.air.servicesync.ui.components.isDark
 import hr.foi.air.servicesync.ui.contents.CalendarContent
-import hr.foi.air.servicesync.ui.contents.FavoriteContent
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun CalendarScreen(modifier: Modifier = Modifier) {
+fun CalendarScreen(modifier: Modifier = Modifier, navController: NavController) {
     Scaffold(
         topBar = {
             TopAppBar(
@@ -42,10 +32,6 @@ fun CalendarScreen(modifier: Modifier = Modifier) {
         },
         modifier = modifier
     ) { innerPadding ->
-        CalendarContent(modifier = Modifier.padding(innerPadding))
+        CalendarContent(modifier = Modifier.padding(innerPadding), navController = navController)
     }
-    Text(
-        text = "",
-        color = isDark(primaryDark, primaryLight)
-    )
 }

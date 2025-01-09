@@ -38,12 +38,32 @@ android {
     buildFeatures {
         compose = true
     }
+
+    androidResources {
+        generateLocaleConfig = true
+    }
+
 }
 
 dependencies {
+    // QR implementation
+    implementation("androidx.camera:camera-core:1.4.0")
+    implementation("androidx.camera:camera-camera2:1.4.0")
+    implementation("androidx.camera:camera-lifecycle:1.4.0")
+    implementation("androidx.camera:camera-view:1.4.0")
+    implementation("androidx.camera:camera-extensions:1.4.0")
+    implementation("com.google.mlkit:barcode-scanning:17.0.3")
 
-    //maps module
+    //maps module for interface and modules that have the implementations of the interface
     implementation(project(":maps"))
+
+    //map implementations, there are modular, can be removed and the app will function normally without them
+    implementation(project(":google_maps"))
+    implementation(project(":osm"))
+
+
+    //preferences
+    implementation(libs.androidx.preference.ktx)
 
     //NAV
     implementation(libs.androidx.navigation.runtime.ktx)

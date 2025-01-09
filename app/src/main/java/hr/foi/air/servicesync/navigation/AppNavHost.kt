@@ -6,11 +6,15 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
+import androidx.navigation.NavType
 import androidx.navigation.compose.composable
+import androidx.navigation.navArgument
 import com.google.firebase.auth.FirebaseAuth
+import hr.foi.air.servicesync.ui.components.QRScannerContent
 import hr.foi.air.servicesync.ui.contents.CompanyDetailsContent
 import hr.foi.air.servicesync.ui.screens.AddReviewScreen
 import hr.foi.air.servicesync.ui.screens.CalendarScreen
+import hr.foi.air.servicesync.ui.screens.CompanyDetailsWithHeader
 import hr.foi.air.servicesync.ui.screens.FavoriteScreen
 import hr.foi.air.servicesync.ui.screens.LoginScreen
 import hr.foi.air.servicesync.ui.screens.ProfileScreen
@@ -47,7 +51,10 @@ fun NavGraphBuilder.AppNavHost(navController: NavHostController) {
         )
     }
     composable("main") {
-        SearchScreen(modifier = Modifier, navController)
+        SearchScreen(modifier = Modifier, navController, onQRCameraClick = {
+            navController.navigate("qr_scanner") {
+            }
+        },)
     }
 
     composable("company/{companyName}") { backStackEntry ->
@@ -65,13 +72,39 @@ fun NavGraphBuilder.AppNavHost(navController: NavHostController) {
         ServiceReservationScreen(serviceName, companyName, navController)
 
     }
+
+    composable(
+        "companyDetails/{companyName}/{serviceName}/{reservationDate}",
+        arguments = listOf(
+            navArgument("companyName") { type = NavType.StringType },
+            navArgument("serviceName") { type = NavType.StringType },
+            navArgument("reservationDate") { type = NavType.LongType }
+        )
+    ) { backStackEntry ->
+        val companyName = backStackEntry.arguments?.getString("companyName") ?: "Unknown"
+        val serviceName = backStackEntry.arguments?.getString("serviceName") ?: "Unknown"
+        val reservationDate = backStackEntry.arguments?.getLong("reservationDate") ?: 0L
+
+        CompanyDetailsWithHeader(
+            navController = navController,
+            companyName = companyName,
+            serviceName = serviceName,
+            reservationDate = reservationDate
+        )
+    }
+
+
     composable("search")
     {
-        SearchScreen(modifier = Modifier, navController)
+        SearchScreen(modifier = Modifier, navController, onQRCameraClick = {
+                navController.navigate("qr_scanner") {
+                }
+            }
+        )
     }
     composable("calendar")
     {
-        CalendarScreen()
+        CalendarScreen(navController = navController)
     }
     composable("favorites")
     {
@@ -113,6 +146,13 @@ fun NavGraphBuilder.AppNavHost(navController: NavHostController) {
                         Toast.LENGTH_SHORT
                     ).show()
                 }
+            }
+        )
+    }
+    composable("qr_scanner") {
+        QRScannerContent(
+            onCodeScanned = { code ->
+                navController.navigate("company/$code")
             }
         )
     }

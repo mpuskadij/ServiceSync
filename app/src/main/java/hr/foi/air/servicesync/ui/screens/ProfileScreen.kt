@@ -11,16 +11,13 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -32,6 +29,8 @@ import com.example.compose.primaryDark
 import com.example.compose.primaryLight
 import com.example.compose.secondaryDark
 import com.example.compose.secondaryLight
+import com.example.compose.surfaceContainerDark
+import com.example.compose.surfaceContainerLight
 import com.example.compose.surfaceDark
 import com.example.compose.surfaceLight
 import hr.foi.air.servicesync.R
@@ -52,7 +51,7 @@ fun ProfileScreen(modifier: Modifier = Modifier, onLogoutClick: () -> Unit) {
                     .padding(top = 0.dp),
                 title = { Text(text = stringResource(R.string.profile), style = MaterialTheme.typography.titleLarge) },
                 actions = {
-                    Box(modifier = Modifier.width(100.dp)) {
+                    Box(modifier = Modifier.width(125.dp)) {
                         Card(
                             onClick = { onLogoutClick() },
                             shape = MaterialTheme.shapes.small,
@@ -89,7 +88,7 @@ fun ProfileInfoBox(label: String, value: String) {
             .fillMaxWidth()
             .padding(vertical = 8.dp, horizontal = 16.dp),
         colors = CardDefaults.cardColors(
-            containerColor = isDark(surfaceDark, surfaceLight)
+            containerColor = isDark(surfaceContainerDark, surfaceContainerLight)
         ),
         shape = MaterialTheme.shapes.medium,
         elevation = CardDefaults.cardElevation(

@@ -18,9 +18,8 @@ import com.example.compose.primaryLight
 import hr.foi.air.servicesync.ui.components.isDark
 import hr.foi.air.servicesync.ui.contents.SearchContent
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun SearchScreen(modifier: Modifier = Modifier, navController: NavController) {
+fun SearchScreen(modifier: Modifier = Modifier, navController: NavController, onQRCameraClick: () -> Unit) {
 
     Scaffold(
         modifier = modifier.padding()
@@ -29,11 +28,11 @@ fun SearchScreen(modifier: Modifier = Modifier, navController: NavController) {
         Column(
             modifier = modifier
                 .windowInsetsPadding(WindowInsets(
-                    top = 30.dp,
+                    top = 5.dp,
                     bottom = 0.dp
                 ))
         ) {
-            SearchContent(modifier = Modifier, navController)
+            SearchContent(modifier = Modifier, navController, onQRCameraClick)
         }
     }
     Text(

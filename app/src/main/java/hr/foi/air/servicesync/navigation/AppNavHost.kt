@@ -4,12 +4,14 @@ import android.util.Log
 import android.widget.Toast
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import com.google.firebase.auth.FirebaseAuth
+import hr.foi.air.servicesync.R
 import hr.foi.air.servicesync.ui.components.QRScannerContent
 import hr.foi.air.servicesync.ui.contents.CompanyDetailsContent
 import hr.foi.air.servicesync.ui.screens.AddReviewScreen
@@ -136,7 +138,7 @@ fun NavGraphBuilder.AppNavHost(navController: NavHostController) {
                 if (success) {
                     Toast.makeText(
                         context,
-                        "Review added successfully.",
+                        context.getString(R.string.adding_review),
                         Toast.LENGTH_SHORT
                     ).show()
                 } else {

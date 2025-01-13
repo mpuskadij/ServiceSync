@@ -70,4 +70,5 @@
     <string name="days">days</string>
     <string name="added_review">Review added successfully.</string>
     <string name="added_review_fail">Error adding review. Try again!</string>
+    <string name="camera_permission_denied">Camera permission denied.</string>
 </resources>

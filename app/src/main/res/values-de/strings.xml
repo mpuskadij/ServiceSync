@@ -71,4 +71,5 @@
     <string name="days">Tage</string>
     <string name="added_review">Bewertung erfolgreich hinzugefügt.</string>
     <string name="added_review_fail">Fehler beim Hinzufügen der Bewertung. Versuchen Sie es erneut!</string>
+    <string name="camera_permission_denied">Kameraberechtigung verweigert.</string>
 </resources>

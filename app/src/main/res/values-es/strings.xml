@@ -70,4 +70,5 @@
     <string name="days">días</string>
     <string name="added_review">Reseña agregada exitosamente.</string>
     <string name="added_review_fail">Error al agregar reseña. ¡Intentar otra vez!</string>
+    <string name="camera_permission_denied">Permiso de cámara denegado.</string>
 </resources>

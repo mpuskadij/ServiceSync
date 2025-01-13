@@ -39,7 +39,7 @@ class CompanyDetailsHandler {
             }
 
             firestoreCompanyDetails.loadCompanyClosingTimeByName(companyName) { closingTime ->
-                companyClosingTime.value = closingTime ?: "0:00"
+                companyClosingTime.value = closingTime ?: "23:59"
             }
 
             firestoreCompanyDetails.loadCompanyGeopointByName(companyName) { geoPoint ->

@@ -159,4 +159,16 @@ class FirestoreCompanyDetails {
                 onResult("23:59")
             }
     }
+    fun loadCompanyServicesByName(companyName: String, onResult: (List<String>?) -> Unit) {
+        db.collection("services")
+            .whereEqualTo("companyName", companyName)
+            .get()
+            .addOnSuccessListener { documents ->
+                val services = documents.documents.mapNotNull { it.getString("serviceName") }
+                onResult(services)
+            }
+            .addOnFailureListener {
+                onResult(null)
+            }
+    }
 }

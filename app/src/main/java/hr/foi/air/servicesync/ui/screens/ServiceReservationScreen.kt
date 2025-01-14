@@ -70,12 +70,13 @@ fun ServiceReservationScreen(serviceName: String, companyId: String, navControll
                 onDismiss = {
                     showDatePicker = false
                 },
-                onConfirm = {selectedDate ->
-                    selectedDate?.let {
-                        selectedDateMillis = it
+                onConfirm = { selectedDate ->
+                    selectedDate?.let { dateMillis ->
+                        selectedDateMillis = dateMillis
                         reservationManager.fetchAvailableSlots(
                             companyId,
-                            it
+                            serviceName,
+                            dateMillis
                         ) { slots ->
                             if (slots.isEmpty()) {
                                 Toast.makeText(context, context.getString(R.string.no_slots), Toast.LENGTH_SHORT).show()

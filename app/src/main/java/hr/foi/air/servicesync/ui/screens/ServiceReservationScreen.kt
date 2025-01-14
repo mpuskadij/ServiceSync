@@ -1,7 +1,6 @@
 package hr.foi.air.servicesync.ui.screens
 
 import android.widget.Toast
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -10,24 +9,12 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import com.example.compose.backgroundDark
-import com.example.compose.backgroundLight
 import com.example.compose.inversePrimaryDarkMediumContrast
 import com.example.compose.inversePrimaryLightMediumContrast
-import com.example.compose.onSurfaceDark
-import com.example.compose.onSurfaceLight
-import com.example.compose.outlineVariantDark
-import com.example.compose.outlineVariantLight
-import com.example.compose.secondaryContainerDarkMediumContrast
-import com.example.compose.secondaryContainerLightMediumContrast
-import com.example.compose.surfaceContainerDark
-import com.example.compose.surfaceContainerLight
 import com.example.compose.surfaceVariantDark
 import com.example.compose.surfaceVariantLight
 import hr.foi.air.servicesync.R

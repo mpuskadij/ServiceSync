@@ -24,10 +24,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import com.example.compose.onSurfaceDark
+import com.example.compose.onSurfaceLight
 import hr.foi.air.servicesync.R
 import hr.foi.air.servicesync.backend.FirestoreReviews
 import hr.foi.air.servicesync.business.ReviewHandler
 import hr.foi.air.servicesync.data.Review
+import hr.foi.air.servicesync.ui.components.isDark
 
 @Composable
 fun AddReviewScreen(
@@ -52,7 +55,8 @@ fun AddReviewScreen(
         Text(
             text = stringResource(R.string.adding_review),
             style = MaterialTheme.typography.headlineMedium,
-            modifier = Modifier.align(Alignment.Start)
+            modifier = Modifier.align(Alignment.Start),
+            color = isDark(onSurfaceDark, onSurfaceLight)
         )
 
         Row(

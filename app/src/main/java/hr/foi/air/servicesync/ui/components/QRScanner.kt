@@ -15,6 +15,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.core.content.ContextCompat
+import hr.foi.air.servicesync.R
 import hr.foi.air.servicesync.business.setupCamera
 
 @Composable
@@ -26,7 +27,7 @@ fun QRScannerContent(modifier: Modifier = Modifier, onCodeScanned: (String) -> U
         contract = ActivityResultContracts.RequestPermission(),
         onResult = { isGranted ->
             if (!isGranted) {
-                Toast.makeText(context, "Camera permission denied", Toast.LENGTH_SHORT).show()
+                Toast.makeText(context, context.getString(R.string.camera_permission_denied), Toast.LENGTH_SHORT).show()
             }
         }
     )

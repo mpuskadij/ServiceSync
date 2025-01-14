@@ -89,13 +89,17 @@ fun ServiceReservationScreen(serviceName: String, companyId: String, navControll
                         reservationManager.fetchAvailableSlots(
                             companyId,
                             it
-                        ) { slots -> availableSlots = slots }
+                        ) { slots ->
+                            if (slots.isEmpty()) {
+                                Toast.makeText(context, context.getString(R.string.no_slots), Toast.LENGTH_SHORT).show()
+                            }
+                            availableSlots = slots
+                        }
                     }
                     showDatePicker = false
                 }
             )
         }
-
         Spacer(modifier = Modifier.height(16.dp))
 
         Text(
@@ -159,6 +163,7 @@ fun ServiceReservationScreen(serviceName: String, companyId: String, navControll
                         userId = userId,
                         onSuccess = {
                             println("Reservation saved successfully.")
+                            println("Spremanje rezervacije: companyId=$companyId, serviceName=$serviceName, reservationDate=$selectedSlot, userId=$userId")
                             availableSlots = availableSlots.filter { it != selectedSlot }
                             Toast.makeText(context, context.getString(R.string.reservation_successful), Toast.LENGTH_SHORT).show()
                             selectedSlot = null

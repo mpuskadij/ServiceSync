@@ -62,6 +62,7 @@ fun CompanyDetailsContent(
     val companyGeoPoint = remember { mutableStateOf<GeoPoint?>(null) }
     val companyImageUrl = remember { mutableStateOf<String?>(null) }
     val reviews = remember { mutableStateOf<List<Review>>(emptyList()) }
+    val services = remember { mutableStateOf<List<String>>(emptyList()) }
     val isLoading = remember { mutableStateOf(true) }
 
     LaunchedEffect(companyName) {
@@ -75,6 +76,7 @@ fun CompanyDetailsContent(
             companyGeoPoint = companyGeoPoint,
             companyImageUrl = companyImageUrl,
             reviews = reviews,
+            services = services,
             isLoading = isLoading,
             firestoreCompanyDetails = firestoreCompanyDetails,
             reviewHandler = reviewHandler
@@ -125,9 +127,13 @@ fun CompanyDetailsContent(
                     )
                 },
                 supportingContent = {
-                    ProvidedServicesListItem(serviceName =  companyCategory.value, onServiceClicked = {
-                        navController.navigate("company/${companyName}/${companyCategory.value}")
-                    })
+                    Column {
+                        services.value.forEach { service ->
+                            ProvidedServicesListItem(serviceName = service, onServiceClicked = {
+                                navController.navigate("company/$companyName/$service")
+                            })
+                        }
+                    }
                 }
             )
 

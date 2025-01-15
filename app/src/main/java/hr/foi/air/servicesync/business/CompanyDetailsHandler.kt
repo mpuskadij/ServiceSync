@@ -16,7 +16,8 @@ class CompanyDetailsHandler {
         companyName: String,
         companyDescription: MutableState<String>,
         companyCategory: MutableState<String>,
-        companyWorkingHours: MutableState<Int>,
+        companyOpeningTime: MutableState<String>,
+        companyClosingTime: MutableState<String>,
         companyGeoPoint: MutableState<GeoPoint?>,
         companyImageUrl: MutableState<String?>,
         reviews: MutableState<List<Review>>,
@@ -34,8 +35,12 @@ class CompanyDetailsHandler {
                 companyCategory.value = category ?: context.getString(R.string.no_category)
             }
 
-            firestoreCompanyDetails.loadCompanyWorkingHoursByName(companyName) { workingHours ->
-                companyWorkingHours.value = workingHours ?: 0
+            firestoreCompanyDetails.loadCompanyOpeningTimeByName(companyName) { openingTime ->
+                companyOpeningTime.value = openingTime ?: "0:00"
+            }
+
+            firestoreCompanyDetails.loadCompanyClosingTimeByName(companyName) { closingTime ->
+                companyClosingTime.value = closingTime ?: "23:59"
             }
 
             firestoreCompanyDetails.loadCompanyGeopointByName(companyName) { geoPoint ->

@@ -270,6 +270,15 @@ fun SearchContent(modifier: Modifier = Modifier, navController: NavController, o
 
         Spacer(modifier = Modifier.padding(bottom = 6.dp, top = 0.dp))
 
+        if (isLoading.value) {
+            Box(
+                modifier = Modifier.fillMaxSize(),
+                contentAlignment = Alignment.Center
+            ) {
+                CircularProgressIndicator()
+            }
+        }
+
         LazyColumn(
             modifier = Modifier
                 .fillMaxSize()
@@ -383,15 +392,6 @@ fun SearchContent(modifier: Modifier = Modifier, navController: NavController, o
                         navController.navigate("company/$companyName")
                     }
                 )
-            }
-        }
-
-        if (isLoading.value) {
-            Box(
-                modifier = Modifier.fillMaxSize(),
-                contentAlignment = Alignment.Center
-            ) {
-                CircularProgressIndicator()
             }
         }
     }

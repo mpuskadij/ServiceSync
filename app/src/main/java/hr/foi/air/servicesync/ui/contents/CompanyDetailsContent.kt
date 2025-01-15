@@ -58,7 +58,8 @@ fun CompanyDetailsContent(
 
     val companyDescription = remember { mutableStateOf(context.getString(R.string.loading)) }
     val companyCategory = remember { mutableStateOf(context.getString(R.string.loading)) }
-    val companyWorkingHours = remember { mutableStateOf(0) }
+    val companyOpeningTime = remember { mutableStateOf("") }
+    val companyClosingTime = remember { mutableStateOf("") }
     val companyGeoPoint = remember { mutableStateOf<GeoPoint?>(null) }
     val companyImageUrl = remember { mutableStateOf<String?>(null) }
     val reviews = remember { mutableStateOf<List<Review>>(emptyList()) }
@@ -72,7 +73,8 @@ fun CompanyDetailsContent(
             companyName = companyName,
             companyDescription = companyDescription,
             companyCategory = companyCategory,
-            companyWorkingHours = companyWorkingHours,
+            companyClosingTime = companyClosingTime,
+            companyOpeningTime = companyOpeningTime,
             companyGeoPoint = companyGeoPoint,
             companyImageUrl = companyImageUrl,
             reviews = reviews,
@@ -148,7 +150,7 @@ fun CompanyDetailsContent(
                     Spacer(modifier = Modifier.height(25.dp))
                 },
                 supportingContent = {
-                    Text("${companyWorkingHours.value}")
+                    Text("${companyOpeningTime.value} - ${companyClosingTime.value}")
                 }
             )
 

@@ -16,6 +16,7 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.NavController
 import com.google.firebase.firestore.FieldPath
 import com.google.firebase.firestore.FirebaseFirestore
+import hr.foi.air.servicesync.business.ReviewHandler
 import hr.foi.air.servicesync.data.UserSession
 import hr.foi.air.servicesync.ui.components.CompanyCard
 
@@ -87,12 +88,22 @@ fun FavoriteContent(
                 val name = company["name"] as? String ?: "No Name"
                 val category = company["category"] as? String ?: "No Category"
                 val imageUrl = company["pictureURL"] as? String
-                val rating = company["rating"]?.toString() ?: "0.0"
+
+                val reviewsHandler = ReviewHandler()
+                val reviewAverages = remember { mutableStateOf(mapOf<String, Double>()) }
+
+                val averageRating = reviewAverages.value[name] ?: "Loading..."
+
+                if (!reviewAverages.value.containsKey(name)) {
+                    reviewsHandler.fetchAndCalculateReviewAverage(name) { average ->
+                        reviewAverages.value += (name to average)
+                    }
+                }
 
                 CompanyCard(
                     companyName = name,
                     companyCategory = category,
-                    companyRating = rating,
+                    companyRating = averageRating.toString(),
                     imageUrl = imageUrl,
                     onCardClick = {
                         navController.navigate("company/$name")

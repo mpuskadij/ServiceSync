@@ -4,7 +4,6 @@ import android.util.Log
 import android.widget.Toast
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
@@ -110,7 +109,7 @@ fun NavGraphBuilder.AppNavHost(navController: NavHostController) {
     }
     composable("favorites")
     {
-        FavoriteScreen()
+        FavoriteScreen(navController = navController)
     }
     composable("profile")
     {

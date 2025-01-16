@@ -15,8 +15,11 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import com.google.common.io.Resources
+import hr.foi.air.servicesync.R
 import hr.foi.air.servicesync.business.FavoritesHandler
 import hr.foi.air.servicesync.business.ReviewHandler
 import hr.foi.air.servicesync.data.UserSession
@@ -59,7 +62,7 @@ fun FavoriteContent(
                     horizontalAlignment = Alignment.CenterHorizontally,
                     verticalArrangement = Arrangement.Center
                 ) {
-                    Text(text = "No favorites", style = MaterialTheme.typography.headlineLarge)
+                    Text(text = stringResource(R.string.no_favorites), style = MaterialTheme.typography.headlineLarge)
                 }
             } else {
                 LazyColumn(modifier = Modifier.fillMaxSize()) {

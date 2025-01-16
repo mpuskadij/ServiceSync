@@ -1,5 +1,6 @@
 package hr.foi.air.servicesync.ui.contents
 
+import android.graphics.ImageDecoder
 import android.provider.MediaStore
 import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
@@ -40,6 +41,7 @@ import com.google.firebase.auth.FirebaseAuth
 import hr.foi.air.servicesync.R
 import hr.foi.air.servicesync.backend.FirestoreUserDetails
 import hr.foi.air.servicesync.business.encodeImageToBase64
+import hr.foi.air.servicesync.business.resizeBitmap
 import hr.foi.air.servicesync.business.uploadImageToImgur
 import hr.foi.air.servicesync.ui.components.isDark
 
@@ -63,22 +65,44 @@ fun ProfileImageChanger() {
 
     val launcher = rememberLauncherForActivityResult(ActivityResultContracts.GetContent()) { uri ->
         uri?.let {
-            val bitmap = MediaStore.Images.Media.getBitmap(context.contentResolver, uri)
-            profileImage = bitmap.asImageBitmap()
+            val mimeType = context.contentResolver.getType(uri)
+            if (mimeType == "image/heic" || mimeType == "image/heif") {
+                val source = ImageDecoder.createSource(context.contentResolver, uri)
+                val bitmap = ImageDecoder.decodeBitmap(source)
+                profileImage = bitmap.asImageBitmap()
 
-            val encodedImage = encodeImageToBase64(bitmap)
+                val resizedImage = resizeBitmap(bitmap, maxWidth = 1024, maxHeight = 1024)
+                val encodedImage = encodeImageToBase64(resizedImage)
 
-            isLoading = true
-            uploadImageToImgur(encodedImage, onSuccess = { imageUrl ->
-                firestoreUserDetails.saveProfileImageUrlToFirestore(userId, imageUrl)
-                profileImageUrl = imageUrl
-                isLoading = false
-            }, onFailure = { error ->
-                errorMessage = error
-                isLoading = false
-            })
+                isLoading = true
+                uploadImageToImgur(encodedImage, onSuccess = { imageUrl ->
+                    firestoreUserDetails.saveProfileImageUrlToFirestore(userId, imageUrl)
+                    profileImageUrl = imageUrl
+                    isLoading = false
+                }, onFailure = { error ->
+                    errorMessage = error
+                    isLoading = false
+                })
+            } else {
+                val bitmap = MediaStore.Images.Media.getBitmap(context.contentResolver, uri)
+                profileImage = bitmap.asImageBitmap()
+
+                val resizedImage = resizeBitmap(bitmap, maxWidth = 1024, maxHeight = 1024)
+                val encodedImage = encodeImageToBase64(resizedImage)
+
+                isLoading = true
+                uploadImageToImgur(encodedImage, onSuccess = { imageUrl ->
+                    firestoreUserDetails.saveProfileImageUrlToFirestore(userId, imageUrl)
+                    profileImageUrl = imageUrl
+                    isLoading = false
+                }, onFailure = { error ->
+                    errorMessage = error
+                    isLoading = false
+                })
+            }
         }
     }
+
 
     Column(horizontalAlignment = Alignment.CenterHorizontally) {
         Row (

@@ -29,9 +29,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -39,11 +37,7 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.compose.onSurfaceDark
 import com.example.compose.onSurfaceLight
-import com.example.compose.onTertiaryDark
-import com.example.compose.onTertiaryLight
 import com.example.compose.tertiaryDark
-import com.example.compose.tertiaryLight
-import com.example.compose.tertiaryLightHighContrast
 import com.google.firebase.firestore.GeoPoint
 import hr.foi.air.servicesync.R
 import hr.foi.air.servicesync.backend.FirestoreCompanyDetails

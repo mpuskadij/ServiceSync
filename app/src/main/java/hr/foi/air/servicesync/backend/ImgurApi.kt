@@ -7,7 +7,7 @@ import retrofit2.http.POST
 
 // DO NOT SAVE CLIENT ID TO REMOTE SOURCES LIKE GIT !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 interface ImgurApi {
-    @Headers("Authorization: Client-ID FAKEKEYREPLACETHIS")
+    @Headers("Authorization: Client-ID ggggggggggggg")
     @POST("3/image")
     fun uploadImage(@Body image: ImageUpload): Call<ImgurResponse>
 }

@@ -1,8 +1,5 @@
 package hr.foi.air.servicesync.ui.contents
 
-import android.graphics.ImageDecoder
-import android.provider.MediaStore
-import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.border
@@ -17,7 +14,6 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -27,9 +23,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.ImageBitmap
-import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
@@ -40,22 +33,20 @@ import com.example.compose.primaryLight
 import com.google.firebase.auth.FirebaseAuth
 import hr.foi.air.servicesync.R
 import hr.foi.air.servicesync.backend.FirestoreUserDetails
-import hr.foi.air.servicesync.business.encodeImageToBase64
-import hr.foi.air.servicesync.business.resizeBitmap
-import hr.foi.air.servicesync.business.uploadImageToImgur
+import hr.foi.air.servicesync.business.ImageProcessor
 import hr.foi.air.servicesync.ui.components.isDark
 
 
 @Composable
 fun ProfileImageChanger() {
-    var profileImage by remember { mutableStateOf<ImageBitmap?>(null) }
+    var profileImageUrl by remember { mutableStateOf<String?>(null) }
     var isLoading by remember { mutableStateOf(false) }
     var errorMessage by remember { mutableStateOf("") }
-    var profileImageUrl by remember { mutableStateOf<String?>(null) }
 
     val context = LocalContext.current
     val userId = FirebaseAuth.getInstance().currentUser?.email ?: return
     val firestoreUserDetails = FirestoreUserDetails()
+    val imageProcessor = ImageProcessor(context)
 
     LaunchedEffect(userId) {
         firestoreUserDetails.getProfileImageUrl(userId) { imageUrl ->
@@ -65,47 +56,24 @@ fun ProfileImageChanger() {
 
     val launcher = rememberLauncherForActivityResult(ActivityResultContracts.GetContent()) { uri ->
         uri?.let {
-            val mimeType = context.contentResolver.getType(uri)
-            if (mimeType == "image/heic" || mimeType == "image/heif") {
-                val source = ImageDecoder.createSource(context.contentResolver, uri)
-                val bitmap = ImageDecoder.decodeBitmap(source)
-                profileImage = bitmap.asImageBitmap()
-
-                val resizedImage = resizeBitmap(bitmap, maxWidth = 1024, maxHeight = 1024)
-                val encodedImage = encodeImageToBase64(resizedImage)
-
-                isLoading = true
-                uploadImageToImgur(encodedImage, onSuccess = { imageUrl ->
+            isLoading = true
+            imageProcessor.processImage(
+                uri = uri,
+                onSuccess = { imageUrl ->
                     firestoreUserDetails.saveProfileImageUrlToFirestore(userId, imageUrl)
                     profileImageUrl = imageUrl
                     isLoading = false
-                }, onFailure = { error ->
+                },
+                onFailure = { error ->
                     errorMessage = error
                     isLoading = false
-                })
-            } else {
-                val bitmap = MediaStore.Images.Media.getBitmap(context.contentResolver, uri)
-                profileImage = bitmap.asImageBitmap()
-
-                val resizedImage = resizeBitmap(bitmap, maxWidth = 1024, maxHeight = 1024)
-                val encodedImage = encodeImageToBase64(resizedImage)
-
-                isLoading = true
-                uploadImageToImgur(encodedImage, onSuccess = { imageUrl ->
-                    firestoreUserDetails.saveProfileImageUrlToFirestore(userId, imageUrl)
-                    profileImageUrl = imageUrl
-                    isLoading = false
-                }, onFailure = { error ->
-                    errorMessage = error
-                    isLoading = false
-                })
-            }
+                }
+            )
         }
     }
 
-
     Column(horizontalAlignment = Alignment.CenterHorizontally) {
-        Row (
+        Row(
             modifier = Modifier
                 .fillMaxWidth(0.85f)
                 .padding(vertical = 10.dp),
@@ -119,12 +87,13 @@ fun ProfileImageChanger() {
                     modifier = Modifier.size(24.dp)
                 )
             }
-            Row (
+            Row(
                 modifier = Modifier
                     .fillMaxWidth(1f)
                     .padding(0.dp, 0.dp, 14.dp, 0.dp),
-            ){
-                Box(modifier = Modifier.fillMaxWidth(),
+            ) {
+                Box(
+                    modifier = Modifier.fillMaxWidth(),
                     contentAlignment = Alignment.Center
                 ) {
                     AsyncImage(
@@ -144,10 +113,6 @@ fun ProfileImageChanger() {
                     }
                 }
             }
-        }
-
-        if (errorMessage.isNotEmpty()) {
-            //Text(text = "Restart", color = Color.Red)
         }
     }
 }

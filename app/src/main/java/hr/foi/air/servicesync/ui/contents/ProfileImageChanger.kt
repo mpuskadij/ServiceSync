@@ -4,6 +4,7 @@ import android.provider.MediaStore
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.border
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -79,33 +80,44 @@ fun ProfileImageChanger() {
     }
 
     Column(horizontalAlignment = Alignment.CenterHorizontally) {
-        Box(modifier = Modifier.fillMaxWidth()) {
-            AsyncImage(
-                model = profileImageUrl ?: R.drawable.profile_image_default,
-                contentDescription = "Profile Image",
-                modifier = Modifier
-                    .size(120.dp)
-                    .clip(CircleShape)
-                    .border(2.dp, isDark(primaryDark, primaryLight), CircleShape)
-                    .align(Alignment.Center)
-                    .padding(0.dp),
-                contentScale = ContentScale.Crop,
-                placeholder = painterResource(id = R.drawable.profile_icon),
-                error = painterResource(id = R.drawable.baseline_access_time_filled_24)
-            )
-
-            if (isLoading) {
-                CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
-            }
-        }
-
-        Button(onClick = { launcher.launch("image/*") }) {
-            Row {
+        Row (
+            modifier = Modifier
+                .fillMaxWidth(0.85f)
+                .padding(vertical = 10.dp),
+            horizontalArrangement = Arrangement.SpaceAround,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Button(onClick = { launcher.launch("image/*") }) {
                 Icon(
                     painter = painterResource(id = R.drawable.baseline_add_photo_alternate_24),
                     contentDescription = "Change photo",
                     modifier = Modifier.size(24.dp)
                 )
+            }
+            Row (
+                modifier = Modifier
+                    .fillMaxWidth(1f)
+                    .padding(0.dp, 0.dp, 14.dp, 0.dp),
+            ){
+                Box(modifier = Modifier.fillMaxWidth(),
+                    contentAlignment = Alignment.Center
+                ) {
+                    AsyncImage(
+                        model = profileImageUrl ?: R.drawable.profile_image_default,
+                        contentDescription = "Profile Image",
+                        modifier = Modifier
+                            .size(140.dp)
+                            .clip(CircleShape)
+                            .border(2.dp, isDark(primaryDark, primaryLight), CircleShape)
+                            .align(Alignment.Center),
+                        contentScale = ContentScale.Crop,
+                        placeholder = painterResource(id = R.drawable.profile_icon),
+                        error = painterResource(id = R.drawable.baseline_access_time_filled_24)
+                    )
+                    if (isLoading) {
+                        CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
+                    }
+                }
             }
         }
 

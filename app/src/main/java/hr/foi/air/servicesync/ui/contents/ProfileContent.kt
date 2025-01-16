@@ -110,7 +110,7 @@ fun ProfileContent(modifier: Modifier = Modifier) {
     Column(
         modifier = modifier
             .fillMaxSize()
-            .padding(16.dp)
+            .padding(16.dp, 6.dp)
             .verticalScroll(rememberScrollState()),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Top
@@ -220,10 +220,11 @@ fun ProfileContent(modifier: Modifier = Modifier) {
                 ) {
                     ProfileImageChanger()
 
-                    TextButton(
+                    Button(
                         modifier = Modifier
                             .align(Alignment.CenterEnd)
-                            .background(Color.Transparent),
+                            .background(Color.Transparent)
+                            .height(42.dp),
                         onClick = {
                             languageSheet = true
                         }

@@ -69,6 +69,7 @@
     <string name="future_appointments">Vaši nadolazeći termini:</string>
     <string name="no_future_appointments">Nema nadolazećih termina.</string>
     <string name="days">dana</string>
+    <string name="no_slots">Nema slobodnih termina!</string>
     <string name="added_review">Recenzija uspješno dodana.</string>
     <string name="added_review_fail">Greška pri dodavanju recenzije. Pokušajte opet!</string>
     <string name="camera_permission_denied">Dopuštenje za kameru odbijeno.</string>

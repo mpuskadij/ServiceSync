@@ -68,6 +68,7 @@
     <string name="future_appointments">Sus próximas citas:</string>
     <string name="no_future_appointments">No hay plazos próximos.</string>
     <string name="days">días</string>
+    <string name="no_slots">¡No hay fechas libres!</string>
     <string name="added_review">Reseña agregada exitosamente.</string>
     <string name="added_review_fail">Error al agregar reseña. ¡Intentar otra vez!</string>
     <string name="camera_permission_denied">Permiso de cámara denegado.</string>

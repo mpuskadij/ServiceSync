@@ -121,8 +121,8 @@ class FirestoreCompanyDetails {
             .document(companyId)
             .get()
             .addOnSuccessListener { document ->
-                val closingTime = document.getString("openingTime")
-                val formattedOpeningTime = closingTime ?: "0:00"
+                val openingTime = document.getString("openingTime")
+                val formattedOpeningTime = openingTime ?: "0:00"
                 onResult(formattedOpeningTime)
             }
             .addOnFailureListener {
@@ -142,4 +142,39 @@ class FirestoreCompanyDetails {
                 onResult("23:59")
             }
     }
+    fun loadCompanyServicesByName(companyName: String, onResult: (List<String>?) -> Unit) {
+        db.collection("services")
+            .whereEqualTo("companyName", companyName)
+            .get()
+            .addOnSuccessListener { documents ->
+                val services = documents.documents.mapNotNull { it.getString("serviceName") }
+                onResult(services)
+            }
+            .addOnFailureListener {
+                onResult(null)
+            }
+    }
+    fun loadServiceDuration(
+        companyName: String,
+        serviceName: String,
+        onResult: (Int?) -> Unit
+    ) {
+        db.collection("services")
+            .whereEqualTo("companyName", companyName)
+            .whereEqualTo("serviceName", serviceName)
+            .get()
+            .addOnSuccessListener { documents ->
+                if (documents.isEmpty) {
+                    Log.d("ServiceDuration", "No service found for $serviceName and $companyName")
+                    onResult(null)
+                } else {
+                    val duration = documents.firstOrNull()?.getLong("duration")?.toInt()
+                    Log.d("ServiceDuration", "Duration for $serviceName: $duration")
+                    onResult(duration)
+                }
+            }
+
+    }
+
+
 }

@@ -68,6 +68,7 @@
     <string name="future_appointments">Your upcoming appointments:</string>
     <string name="no_future_appointments">There is no future appointments.</string>
     <string name="days">days</string>
+    <string name="no_slots">There are no free dates!</string>
     <string name="added_review">Review added successfully.</string>
     <string name="added_review_fail">Error adding review. Try again!</string>
     <string name="camera_permission_denied">Camera permission denied.</string>

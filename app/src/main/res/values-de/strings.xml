@@ -69,6 +69,7 @@
     <string name="future_appointments">Ihre anstehenden Termine:</string>
     <string name="no_future_appointments">Es gibt keine bevorstehenden Fristen.</string>
     <string name="days">Tage</string>
+    <string name="no_slots">Es gibt keine freien Termine!</string>
     <string name="added_review">Bewertung erfolgreich hinzugefügt.</string>
     <string name="added_review_fail">Fehler beim Hinzufügen der Bewertung. Versuchen Sie es erneut!</string>
     <string name="camera_permission_denied">Kameraberechtigung verweigert.</string>

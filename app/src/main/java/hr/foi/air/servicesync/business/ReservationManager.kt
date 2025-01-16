@@ -22,12 +22,14 @@ class ReservationManager(private val firestoreService: FirestoreService) {
 
     fun fetchAvailableSlots(
         companyId: String,
+        serviceName: String,
         dateMillis: Long,
         onSlotsFetched: (List<Long>) -> Unit
     ) {
         firestoreService.getAvailableTimeSlotsAndRange(
-            companyId = companyId,
-            date = dateMillis,
+            companyId,
+            serviceName,
+            dateMillis,
             onSuccess = { slots -> onSlotsFetched(slots) },
             onFailure = { exception ->
                 println("Error fetching available slots: ${exception.message}")

@@ -21,6 +21,7 @@ class CompanyDetailsHandler {
         companyGeoPoint: MutableState<GeoPoint?>,
         companyImageUrl: MutableState<String?>,
         reviews: MutableState<List<Review>>,
+        services: MutableState<List<String>>,
         isLoading: MutableState<Boolean>,
         firestoreCompanyDetails: FirestoreCompanyDetails,
         reviewHandler: ReviewHandler
@@ -52,6 +53,10 @@ class CompanyDetailsHandler {
 
             reviewHandler.fetchReviews(companyName) { fetchedReviews ->
                 reviews.value = fetchedReviews
+            }
+
+            firestoreCompanyDetails.loadCompanyServicesByName(companyName) { fetchedServices ->
+                services.value = fetchedServices ?: emptyList()
             }
 
             isLoading.value = false

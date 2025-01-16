@@ -1,6 +1,7 @@
 package hr.foi.air.servicesync.ui.contents
 
 import android.provider.MediaStore
+import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.border
@@ -122,7 +123,12 @@ fun ProfileImageChanger() {
         }
 
         if (errorMessage.isNotEmpty()) {
-            Text(text = "Restart", color = Color.Red)
+            //Text(text = "Restart", color = Color.Red)
+            Toast.makeText(
+                context,
+                context.getString(R.string.error_saving_data),
+                Toast.LENGTH_LONG
+            ).show()
         }
     }
 }

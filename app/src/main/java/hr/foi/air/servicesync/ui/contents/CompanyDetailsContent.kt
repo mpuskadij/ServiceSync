@@ -14,6 +14,9 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.material.icons.outlined.FavoriteBorder
 import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
 import androidx.compose.material3.ListItem
@@ -36,6 +39,11 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.compose.onSurfaceDark
 import com.example.compose.onSurfaceLight
+import com.example.compose.onTertiaryDark
+import com.example.compose.onTertiaryLight
+import com.example.compose.tertiaryDark
+import com.example.compose.tertiaryLight
+import com.example.compose.tertiaryLightHighContrast
 import com.google.firebase.firestore.GeoPoint
 import hr.foi.air.servicesync.R
 import hr.foi.air.servicesync.backend.FirestoreCompanyDetails
@@ -127,15 +135,15 @@ fun CompanyDetailsContent(
                 )
 
                 Icon(
-                    painter = painterResource(
-                        id = if (isFavorite.value) R.drawable.baseline_add_circle_24 else R.drawable.outline_add_circle_outline_24
-                    ),
+                    imageVector = if (isFavorite.value) Icons.Filled.Favorite else Icons.Outlined.FavoriteBorder,
                     contentDescription = null,
-                    tint = if (isFavorite.value) Color.White else Color.Gray,
+                    //colors are purposely like this because they fit right
+                    tint = if (isFavorite.value) isDark(tertiaryDark, tertiaryDark) else isDark(
+                        tertiaryDark, tertiaryDark),
                     modifier = Modifier
-                        .size(70.dp)
+                        .size(60.dp)
                         .align(Alignment.TopEnd)
-                        .padding(16.dp)
+                        .padding(0.dp, 20.dp, 20.dp, 0.dp)
                         .clickable {
                             coroutineScope.launch {
                                 if (isFavorite.value) {
@@ -147,6 +155,7 @@ fun CompanyDetailsContent(
                             }
                         }
                 )
+
             }
 
             ListItem(

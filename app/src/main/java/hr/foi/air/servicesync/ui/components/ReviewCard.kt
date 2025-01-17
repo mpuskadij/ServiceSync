@@ -81,8 +81,6 @@ fun ReviewCard(
                 fontSize = 16.sp,
                 fontWeight = FontWeight.Normal,
                 softWrap = true,
-                maxLines = 2,
-                overflow = TextOverflow.Ellipsis,
                 color = Color.Black,
                 textAlign = TextAlign.Start,
                 modifier = Modifier.fillMaxWidth()

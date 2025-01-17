@@ -100,4 +100,22 @@ class FirestoreService {
             .addOnFailureListener { onFailure(it) }
     }
 
+    fun checkUserCompanyReservation(
+        userId: String,
+        companyId: String,
+        onSuccess: (Boolean) -> Unit,
+        onFailure: (Exception) -> Unit
+    ) {
+        db.collection("reservations")
+            .whereEqualTo("userId", userId)
+            .whereEqualTo("companyId", companyId)
+            .get()
+            .addOnSuccessListener { documents ->
+                val exists = !documents.isEmpty
+                onSuccess(exists)
+            }
+            .addOnFailureListener { onFailure(it) }
+    }
+
+
 }

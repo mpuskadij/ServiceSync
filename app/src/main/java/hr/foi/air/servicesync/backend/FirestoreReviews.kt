@@ -25,32 +25,41 @@ class FirestoreReviews {
             }
     }
     fun addReview(review: Review, onResult: (Boolean) -> Unit) {
+        val documentId = "${review.companyId}-${review.userId}-${review.rating}"
+
         db.collection("reviews")
-            .add(review)
+            .document(documentId)
+            .set(review)
             .addOnSuccessListener {
-                Log.d("FirestoreReviews", "Review added successfully for company: ${review.companyId}")
+                Log.d("FirestoreReviews", "Review added successfully with ID: $documentId")
                 onResult(true)
             }
             .addOnFailureListener { exception ->
-                Log.e("FirestoreReviews", "Error adding review for company: ${review.companyId}", exception)
+                Log.e("FirestoreReviews", "Error adding review with ID: $documentId", exception)
                 onResult(false)
             }
     }
 
-    fun checkIfUserHasReview (
+    fun checkIfUserHasReview(
         userId: String,
         onResult: (Boolean) -> Unit
-    ){
+    ) {
         db.collection("reviews")
-            .whereEqualTo("uesrId", userId)
+            .whereEqualTo("userId", userId)
             .get()
-            .addOnSuccessListener {
-                Log.d("FirestoreReviews", "Review already exists for user ${userId}!")
-                onResult(false)
+            .addOnSuccessListener { querySnapshot ->
+                if (querySnapshot.isEmpty) {
+                    Log.d("FirestoreReviews", "No reviews exist for user ${userId}!")
+                    onResult(true)
+                } else {
+                    Log.d("FirestoreReviews", "Review already exists for user ${userId}!")
+                    onResult(false)
+                }
             }
             .addOnFailureListener { exception ->
-                Log.e("FirestoreReviews", "${userId} has no reviews with this company!", exception)
-                onResult(true)
+                Log.e("FirestoreReviews", "Error checking reviews for user ${userId}!", exception)
+                onResult(false)
             }
     }
+
 }

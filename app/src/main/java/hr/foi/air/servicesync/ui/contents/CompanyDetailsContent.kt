@@ -67,7 +67,8 @@ fun CompanyDetailsContent(
     val reviews = remember { mutableStateOf<List<Review>>(emptyList()) }
     val services = remember { mutableStateOf<List<String>>(emptyList()) }
     val isLoading = remember { mutableStateOf(true) }
-    var isButtonEnabled = remember { mutableStateOf(false) }
+    var isButtonEnabledReservation = remember { mutableStateOf(false) }
+    var isButtonEnabledReview = remember { mutableStateOf(false) }
 
     LaunchedEffect(companyName) {
         val handler = CompanyDetailsHandler()
@@ -90,11 +91,18 @@ fun CompanyDetailsContent(
             userId = UserSession.username,
             companyId = companyName,
             onSuccess = { exists ->
-                isButtonEnabled.value = exists
+                isButtonEnabledReservation.value = exists
                 isLoading.value = false
             },
             onFailure = { exception ->
-                isButtonEnabled.value = false
+                isButtonEnabledReservation.value = false
+                isLoading.value = false
+            }
+        )
+        reviewHandler.checkIfUserHasReview(
+            userId = UserSession.username,
+            onSucces = { exists ->
+                isButtonEnabledReview.value = exists
                 isLoading.value = false
             }
         )
@@ -213,7 +221,7 @@ fun CompanyDetailsContent(
                             onClick = {
                                 navController.navigate("addReview/$companyName/${UserSession.username}")
                             },
-                            enabled = isButtonEnabled.value,
+                            enabled = isButtonEnabledReview.value && isButtonEnabledReservation.value,
                             modifier = Modifier.padding(start = 16.dp)
                         ) {
                             Text(text = stringResource(R.string.add_review))

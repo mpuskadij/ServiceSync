@@ -36,4 +36,21 @@ class FirestoreReviews {
                 onResult(false)
             }
     }
+
+    fun checkIfUserHasReview (
+        userId: String,
+        onResult: (Boolean) -> Unit
+    ){
+        db.collection("reviews")
+            .whereEqualTo("uesrId", userId)
+            .get()
+            .addOnSuccessListener {
+                Log.d("FirestoreReviews", "Review already exists for user ${userId}!")
+                onResult(false)
+            }
+            .addOnFailureListener { exception ->
+                Log.e("FirestoreReviews", "${userId} has no reviews with this company!", exception)
+                onResult(true)
+            }
+    }
 }

@@ -30,4 +30,11 @@ class ReviewHandler(
             onResult(success)
         }
     }
+
+    fun checkIfUserHasReview (
+        userId: String,
+        onSucces: (Boolean) -> Unit
+    ){
+        firestoreReviews.checkIfUserHasReview(userId, onSucces)
+    }
 }

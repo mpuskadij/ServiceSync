@@ -32,8 +32,10 @@ import com.example.compose.onSurfaceLight
 import com.google.firebase.firestore.GeoPoint
 import hr.foi.air.servicesync.R
 import hr.foi.air.servicesync.backend.FirestoreCompanyDetails
+import hr.foi.air.servicesync.backend.FirestoreService
 import hr.foi.air.servicesync.business.CompanyDetailsHandler
 import hr.foi.air.servicesync.business.MapProviderManager
+import hr.foi.air.servicesync.business.ReservationManager
 import hr.foi.air.servicesync.business.ReviewHandler
 import hr.foi.air.servicesync.data.Review
 import hr.foi.air.servicesync.data.UserSession
@@ -51,10 +53,10 @@ fun CompanyDetailsContent(
     context: Context,
     navController: NavController,
     companyName: String,
-    reviewHandler: ReviewHandler = ReviewHandler()
 ) {
     val firestoreCompanyDetails = FirestoreCompanyDetails()
     val reviewHandler = ReviewHandler()
+    val reservationManager = ReservationManager(FirestoreService())
 
     val companyDescription = remember { mutableStateOf(context.getString(R.string.loading)) }
     val companyCategory = remember { mutableStateOf(context.getString(R.string.loading)) }
@@ -65,6 +67,7 @@ fun CompanyDetailsContent(
     val reviews = remember { mutableStateOf<List<Review>>(emptyList()) }
     val services = remember { mutableStateOf<List<String>>(emptyList()) }
     val isLoading = remember { mutableStateOf(true) }
+    var isButtonEnabled = remember { mutableStateOf(false) }
 
     LaunchedEffect(companyName) {
         val handler = CompanyDetailsHandler()
@@ -82,6 +85,18 @@ fun CompanyDetailsContent(
             isLoading = isLoading,
             firestoreCompanyDetails = firestoreCompanyDetails,
             reviewHandler = reviewHandler
+        )
+        reservationManager.checkUserCompanyReservation(
+            userId = UserSession.username,
+            companyId = companyName,
+            onSuccess = { exists ->
+                isButtonEnabled.value = exists
+                isLoading.value = false
+            },
+            onFailure = { exception ->
+                isButtonEnabled.value = false
+                isLoading.value = false
+            }
         )
     }
 
@@ -110,7 +125,9 @@ fun CompanyDetailsContent(
                         text = stringResource(id = R.string.company_description),
                         color = isDark(onSurfaceDark, onSurfaceLight),
                         style = headlineTextStyle,
-                        modifier = Modifier.fillMaxWidth().padding(vertical = 10.dp)
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(vertical = 10.dp)
                     )
                     Spacer(modifier = Modifier.height(25.dp))
                 },
@@ -125,7 +142,9 @@ fun CompanyDetailsContent(
                         text = stringResource(id = R.string.services),
                         color = isDark(onSurfaceDark, onSurfaceLight),
                         style = headlineTextStyle,
-                        modifier = Modifier.fillMaxWidth().padding(vertical = 10.dp)
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(vertical = 10.dp)
                     )
                 },
                 supportingContent = {
@@ -145,7 +164,9 @@ fun CompanyDetailsContent(
                         text = stringResource(id = R.string.working_hours),
                         color = isDark(onSurfaceDark, onSurfaceLight),
                         style = headlineTextStyle,
-                        modifier = Modifier.fillMaxWidth().padding(vertical = 10.dp)
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(vertical = 10.dp)
                     )
                     Spacer(modifier = Modifier.height(25.dp))
                 },
@@ -161,7 +182,9 @@ fun CompanyDetailsContent(
                             text = stringResource(id = R.string.location),
                             color = isDark(onSurfaceDark, onSurfaceLight),
                             style = headlineTextStyle,
-                            modifier = Modifier.fillMaxWidth().padding(vertical = 10.dp)
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(vertical = 10.dp)
                         )
                     },
                     supportingContent = {
@@ -190,6 +213,7 @@ fun CompanyDetailsContent(
                             onClick = {
                                 navController.navigate("addReview/$companyName/${UserSession.username}")
                             },
+                            enabled = isButtonEnabled.value,
                             modifier = Modifier.padding(start = 16.dp)
                         ) {
                             Text(text = stringResource(R.string.add_review))

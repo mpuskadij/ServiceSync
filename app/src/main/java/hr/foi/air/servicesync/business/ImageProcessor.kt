@@ -33,25 +33,28 @@ class ImageProcessor(
             onFailure("Error processing image: ${e.localizedMessage}")
         }
     }
+
     private fun resizeBitmap(image: Bitmap, maxWidth: Int, maxHeight: Int): Bitmap {
         val aspectRatio = image.width.toFloat() / image.height
         val width = if (aspectRatio > 1) maxWidth else (maxHeight * aspectRatio).toInt()
         val height = if (aspectRatio > 1) (maxWidth / aspectRatio).toInt() else maxHeight
         return Bitmap.createScaledBitmap(image, width, height, true)
     }
+
     private fun encodeImageToBase64(image: Bitmap): String {
         val byteArrayOutputStream = ByteArrayOutputStream()
         image.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream)
         val byteArray = byteArrayOutputStream.toByteArray()
         return Base64.encodeToString(byteArray, Base64.NO_WRAP)
     }
+
     private fun uploadImageToImgur(
         encodedImage: String,
         onSuccess: (String) -> Unit,
         onFailure: (String) -> Unit
     ) {
         val imageUpload = ImageUpload(encodedImage)
-        RetrofitInstance.api.uploadImage(imageUpload).enqueue(object : retrofit2.Callback<ImgurResponse> {
+        RetrofitInstance.getApi(context).uploadImage(imageUpload).enqueue(object : retrofit2.Callback<ImgurResponse> {
             override fun onResponse(call: Call<ImgurResponse>, response: retrofit2.Response<ImgurResponse>) {
                 if (response.isSuccessful && response.body() != null) {
                     val imageUrl = response.body()!!.data.link

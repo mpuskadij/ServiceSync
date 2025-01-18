@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Star
+import androidx.compose.material.icons.outlined.StarOutline
 import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -27,7 +28,6 @@ import androidx.navigation.NavController
 import com.example.compose.onSurfaceDark
 import com.example.compose.onSurfaceLight
 import hr.foi.air.servicesync.R
-import hr.foi.air.servicesync.backend.FirestoreReviews
 import hr.foi.air.servicesync.business.ReviewHandler
 import hr.foi.air.servicesync.data.Review
 import hr.foi.air.servicesync.ui.components.isDark
@@ -41,7 +41,6 @@ fun AddReviewScreen(
     onReviewSubmit: (Boolean) -> Unit,
     reviewHandler: ReviewHandler = ReviewHandler()
 ) {
-    val firestoreReviews = FirestoreReviews()
     val rating = remember { mutableStateOf(0) }
     val reviewText = remember { mutableStateOf("") }
 
@@ -65,7 +64,7 @@ fun AddReviewScreen(
         ) {
             for (i in 1..5) {
                 Icon(
-                    imageVector = if (i <= rating.value) Icons.Default.Star else Icons.Filled.Star,
+                    imageVector = if (i <= rating.value) Icons.Filled.Star else Icons.Outlined.StarOutline,
                     contentDescription = null,
                     modifier = Modifier
                         .size(32.dp)

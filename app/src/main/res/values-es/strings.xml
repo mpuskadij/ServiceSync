@@ -73,4 +73,6 @@
     <string name="added_review_fail">Error al agregar reseña. ¡Intentar otra vez!</string>
     <string name="camera_permission_denied">Permiso de cámara denegado.</string>
     <string name="no_favorites">Sin favoritos :-(</string>
+    <string name="reservation_removed">¡Reserva eliminada con éxito!</string>
+    <string name="reservation_removed_fail">¡La reserva no ha sido eliminada!</string>
 </resources>

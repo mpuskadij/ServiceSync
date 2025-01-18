@@ -74,4 +74,6 @@
     <string name="added_review_fail">Fehler beim Hinzufügen der Bewertung. Versuchen Sie es erneut!</string>
     <string name="camera_permission_denied">Kameraberechtigung verweigert.</string>
     <string name="no_favorites">Keine Favoriten :-(</string>
+    <string name="reservation_removed">Reservierung erfolgreich entfernt!</string>
+    <string name="reservation_removed_fail">Die Reservierung wurde nicht entfernt!</string>
 </resources>

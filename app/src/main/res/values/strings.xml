@@ -74,4 +74,6 @@
     <string name="added_review_fail">Greška pri dodavanju recenzije. Pokušajte opet!</string>
     <string name="camera_permission_denied">Dopuštenje za kameru odbijeno.</string>
     <string name="no_favorites">Nema favorita :-(</string>
+    <string name="reservation_removed">Rezervacija uspješno uklonjena!</string>
+    <string name="reservation_removed_fail">Rezervacija nije uklonjena!</string>
 </resources>

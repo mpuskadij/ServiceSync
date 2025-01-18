@@ -101,6 +101,7 @@ fun CompanyDetailsContent(
         )
         reviewHandler.checkIfUserHasReview(
             userId = UserSession.username,
+            companyId = companyName,
             onSucces = { exists ->
                 isButtonEnabledReview.value = exists
                 isLoading.value = false

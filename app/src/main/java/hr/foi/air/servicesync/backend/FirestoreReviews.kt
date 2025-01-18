@@ -42,10 +42,12 @@ class FirestoreReviews {
 
     fun checkIfUserHasReview(
         userId: String,
+        companyId: String,
         onResult: (Boolean) -> Unit
     ) {
         db.collection("reviews")
             .whereEqualTo("userId", userId)
+            .whereEqualTo("companyId", companyId)
             .get()
             .addOnSuccessListener { querySnapshot ->
                 if (querySnapshot.isEmpty) {

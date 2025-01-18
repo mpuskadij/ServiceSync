@@ -155,6 +155,7 @@ fun ServiceReservationScreen(serviceName: String, companyId: String, navControll
                             availableSlots = availableSlots.filter { it != selectedSlot }
                             Toast.makeText(context, context.getString(R.string.reservation_successful), Toast.LENGTH_SHORT).show()
                             selectedSlot = null
+                            navController.popBackStack()
                         },
                         onFailure = { exception ->
                             println("Error saving reservation: ${exception.message}")

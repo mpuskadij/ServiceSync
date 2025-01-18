@@ -1,7 +1,6 @@
 package hr.foi.air.servicesync.ui.contents
 
 import android.app.Activity
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -12,10 +11,8 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
@@ -36,11 +33,8 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
@@ -89,7 +83,7 @@ fun ProfileContent(modifier: Modifier = Modifier) {
 
     LaunchedEffect(isLoading) {
         if (isLoading) {
-            delay(200L) // Odgoda od 500ms
+            delay(200L) //200 ms
             isLoading = true
         } else {
             isLoading = false
@@ -116,7 +110,7 @@ fun ProfileContent(modifier: Modifier = Modifier) {
     Column(
         modifier = modifier
             .fillMaxSize()
-            .padding(16.dp)
+            .padding(16.dp, 6.dp)
             .verticalScroll(rememberScrollState()),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Top
@@ -224,21 +218,13 @@ fun ProfileContent(modifier: Modifier = Modifier) {
                     modifier = Modifier
                         .fillMaxWidth()
                 ) {
-                    Image(
-                        painter = painterResource(id = R.drawable.profile_image_default),  // Placeholder slika
-                        contentDescription = stringResource(R.string.profile_image),
-                        modifier = Modifier
-                            .size(120.dp)
-                            .padding(8.dp)
-                            .clip(CircleShape)
-                            .align(Alignment.Center),
-                        contentScale = ContentScale.Crop
-                    )
+                    ProfileImageChanger()
 
-                    TextButton(
+                    Button(
                         modifier = Modifier
                             .align(Alignment.CenterEnd)
-                            .background(Color.Transparent),
+                            .background(Color.Transparent)
+                            .height(42.dp),
                         onClick = {
                             languageSheet = true
                         }
@@ -286,7 +272,6 @@ fun ProfileContent(modifier: Modifier = Modifier) {
                         }
                     )
                 }
-
 
                 Spacer(modifier = Modifier.height(16.dp))
 

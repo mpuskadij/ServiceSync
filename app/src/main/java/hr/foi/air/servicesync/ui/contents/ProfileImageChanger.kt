@@ -32,8 +32,8 @@ import com.example.compose.primaryDark
 import com.example.compose.primaryLight
 import com.google.firebase.auth.FirebaseAuth
 import hr.foi.air.servicesync.R
-import hr.foi.air.servicesync.backend.FirestoreUserDetails
 import hr.foi.air.servicesync.business.ImageProcessor
+import hr.foi.air.servicesync.business.UserDataHandler
 import hr.foi.air.servicesync.ui.components.isDark
 
 
@@ -45,11 +45,11 @@ fun ProfileImageChanger() {
 
     val context = LocalContext.current
     val userId = FirebaseAuth.getInstance().currentUser?.email ?: return
-    val firestoreUserDetails = FirestoreUserDetails()
     val imageProcessor = ImageProcessor(context)
+    val userDataHandler = UserDataHandler()
 
     LaunchedEffect(userId) {
-        firestoreUserDetails.getProfileImageUrl(userId) { imageUrl ->
+        userDataHandler.fetchProfileImageUrl { imageUrl ->
             profileImageUrl = imageUrl
         }
     }
@@ -60,8 +60,10 @@ fun ProfileImageChanger() {
             imageProcessor.processImage(
                 uri = uri,
                 onSuccess = { imageUrl ->
-                    firestoreUserDetails.saveProfileImageUrlToFirestore(userId, imageUrl)
-                    profileImageUrl = imageUrl
+                    userDataHandler.saveProfileImage(userId, imageUrl)
+                    userDataHandler.fetchProfileImageUrl { imageUrl ->
+                        profileImageUrl = imageUrl
+                    }
                     isLoading = false
                 },
                 onFailure = { error ->

@@ -99,5 +99,16 @@ class FirestoreService {
             }
             .addOnFailureListener { onFailure(it) }
     }
+    fun deleteReservation(reservationId: String, onSuccess: () -> Unit, onFailure: (Exception) -> Unit) {
+        db.collection("reservations")
+            .document(reservationId)
+            .delete()
+            .addOnSuccessListener {
+                onSuccess()
+            }
+            .addOnFailureListener { exception ->
+                onFailure(exception)
+            }
+    }
 
 }

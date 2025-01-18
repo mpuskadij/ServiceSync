@@ -87,7 +87,9 @@ fun FavoriteContent(
                             companyRating = averageRating.toString(),
                             imageUrl = imageUrl,
                             onCardClick = {
-                                navController.navigate("company/$name")
+                                navController.navigate("company/$name") {
+                                    popUpTo("favorites") { inclusive = false }
+                                }
                             }
                         )
                     }

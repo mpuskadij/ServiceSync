@@ -1,10 +1,9 @@
 package hr.foi.air.servicesync.backend
 
-import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.GeoPoint
-import java.util.Locale
 import android.util.Log
+import com.google.firebase.firestore.FirebaseFirestore
 import java.text.Collator
+import java.util.Locale
 
 class FirestoreCompanyService
 {

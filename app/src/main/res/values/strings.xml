@@ -73,4 +73,7 @@
     <string name="added_review">Recenzija uspješno dodana.</string>
     <string name="added_review_fail">Greška pri dodavanju recenzije. Pokušajte opet!</string>
     <string name="camera_permission_denied">Dopuštenje za kameru odbijeno.</string>
+    <string name="leave_review">Leave review</string>
+    <string name="your_passed_appointments">Your passed appointments:</string>
+    <string name="sve_usluge_su_ocijenjene">Sve usluge su ocijenjene</string>
 </resources>

@@ -78,7 +78,6 @@ fun CompanyDetailsContent(
             companyGeoPoint = companyGeoPoint,
             companyImageUrl = companyImageUrl,
             reviews = reviews,
-            services = services,
             isLoading = isLoading,
             firestoreCompanyDetails = firestoreCompanyDetails,
             reviewHandler = reviewHandler

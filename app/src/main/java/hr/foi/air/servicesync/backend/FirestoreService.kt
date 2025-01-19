@@ -100,6 +100,22 @@ class FirestoreService {
             .addOnFailureListener { onFailure(it) }
     }
 
+    fun fetchDoneUserReservations(
+        userId: String,
+        onSuccess: (List<Map<String, Any>>) -> Unit,
+        onFailure: (Exception) -> Unit
+    ) {
+        db.collection("reservations")
+            .whereEqualTo("userId", userId)
+            .whereLessThan("reservationDate", System.currentTimeMillis())
+            .get()
+            .addOnSuccessListener { documents ->
+                val reservations = documents.map { it.data }
+                onSuccess(reservations)
+            }
+            .addOnFailureListener { onFailure(it) }
+    }
+
     fun checkUserCompanyReservation(
         userId: String,
         companyId: String,

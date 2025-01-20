@@ -72,4 +72,9 @@
     <string name="added_review">Review added successfully.</string>
     <string name="added_review_fail">Error adding review. Try again!</string>
     <string name="camera_permission_denied">Camera permission denied.</string>
+    <string name="leave_review">Leave review</string>
+    <string name="your_passed_appointments">Your passed appointments:</string>
+    <string name="sve_usluge_su_ocijenjene">All services are rated</string>
+    <string name="review_submited">Review Submited</string>
+    <string name="enter_the_star_number_and_review_description">Enter the star number and review description</string>
 </resources>

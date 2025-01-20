@@ -41,9 +41,11 @@ import com.example.compose.tertiaryDark
 import com.google.firebase.firestore.GeoPoint
 import hr.foi.air.servicesync.R
 import hr.foi.air.servicesync.backend.FirestoreCompanyDetails
+import hr.foi.air.servicesync.backend.FirestoreService
 import hr.foi.air.servicesync.business.CompanyDetailsHandler
 import hr.foi.air.servicesync.business.FavoritesHandler
 import hr.foi.air.servicesync.business.MapProviderManager
+import hr.foi.air.servicesync.business.ReservationManager
 import hr.foi.air.servicesync.business.ReviewHandler
 import hr.foi.air.servicesync.data.Review
 import hr.foi.air.servicesync.data.UserSession
@@ -98,7 +100,6 @@ fun CompanyDetailsContent(
             companyGeoPoint = companyGeoPoint,
             companyImageUrl = companyImageUrl,
             reviews = reviews,
-            services = services,
             isLoading = isLoading,
             firestoreCompanyDetails = firestoreCompanyDetails,
             reviewHandler = reviewHandler
@@ -156,7 +157,9 @@ fun CompanyDetailsContent(
                         text = stringResource(id = R.string.company_description),
                         color = isDark(onSurfaceDark, onSurfaceLight),
                         style = headlineTextStyle,
-                        modifier = Modifier.fillMaxWidth().padding(vertical = 10.dp)
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(vertical = 10.dp)
                     )
                     Spacer(modifier = Modifier.height(25.dp))
                 },
@@ -171,7 +174,9 @@ fun CompanyDetailsContent(
                         text = stringResource(id = R.string.services),
                         color = isDark(onSurfaceDark, onSurfaceLight),
                         style = headlineTextStyle,
-                        modifier = Modifier.fillMaxWidth().padding(vertical = 10.dp)
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(vertical = 10.dp)
                     )
                 },
                 supportingContent = {
@@ -191,7 +196,9 @@ fun CompanyDetailsContent(
                         text = stringResource(id = R.string.working_hours),
                         color = isDark(onSurfaceDark, onSurfaceLight),
                         style = headlineTextStyle,
-                        modifier = Modifier.fillMaxWidth().padding(vertical = 10.dp)
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(vertical = 10.dp)
                     )
                     Spacer(modifier = Modifier.height(25.dp))
                 },
@@ -207,7 +214,9 @@ fun CompanyDetailsContent(
                             text = stringResource(id = R.string.location),
                             color = isDark(onSurfaceDark, onSurfaceLight),
                             style = headlineTextStyle,
-                            modifier = Modifier.fillMaxWidth().padding(vertical = 10.dp)
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(vertical = 10.dp)
                         )
                     },
                     supportingContent = {
@@ -232,14 +241,6 @@ fun CompanyDetailsContent(
                             color = isDark(onSurfaceDark, onSurfaceLight),
                             style = MaterialTheme.typography.headlineMedium
                         )
-                        Button(
-                            onClick = {
-                                navController.navigate("addReview/$companyName/${UserSession.username}")
-                            },
-                            modifier = Modifier.padding(start = 16.dp)
-                        ) {
-                            Text(text = stringResource(R.string.add_review))
-                        }
                     }
                 }
             )

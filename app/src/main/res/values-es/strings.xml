@@ -76,4 +76,9 @@
     <string name="reservation_removed">¡Reserva eliminada con éxito!</string>
     <string name="reservation_removed_fail">¡La reserva no ha sido eliminada!</string>
     <string name="hold_for_delete">Mantenga presionado para eliminar.</string>
+    <string name="leave_review">Dejar reseña</string>
+    <string name="your_passed_appointments">Tus citas pasadas:</string>
+    <string name="sve_usluge_su_ocijenjene">Todos los servicios están calificados</string>
+    <string name="review_submited">Reseña enviada</string>
+    <string name="enter_the_star_number_and_review_description">Ingresa el número de estrella y la descripción de la reseña</string>
 </resources>

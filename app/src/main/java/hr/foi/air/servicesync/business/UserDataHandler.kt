@@ -1,6 +1,7 @@
 package hr.foi.air.servicesync.business
 
 import hr.foi.air.servicesync.backend.FirestoreUserDetails
+import hr.foi.air.servicesync.data.UserSession
 
 class UserDataHandler {
 
@@ -49,5 +50,14 @@ class UserDataHandler {
         firestoreUserDetails.updatePassword(newPassword) { success ->
             onResult(success)
         }
+    }
+
+    fun fetchProfileImageUrl(onImageUrlFetched: (String?) -> Unit) {
+        val userId = UserSession.username ?: return
+        firestoreUserDetails.getProfileImageUrl(userId, onImageUrlFetched)
+    }
+
+    fun saveProfileImage(userId: String, imageUrl: String) {
+        firestoreUserDetails.saveProfileImageUrlToFirestore(userId, imageUrl)
     }
 }

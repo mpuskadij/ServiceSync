@@ -23,16 +23,13 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.AbsoluteRoundedCornerShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.AddCircle
 import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.material.icons.filled.Search
-import androidx.compose.material.icons.filled.Warning
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardColors
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -65,19 +62,19 @@ import com.example.compose.surfaceContainerHighDark
 import com.example.compose.surfaceContainerHighLight
 import com.example.compose.surfaceContainerLowDark
 import com.example.compose.surfaceContainerLowLight
-import com.google.firebase.firestore.FirebaseFirestore
 import hr.foi.air.servicesync.R
+import hr.foi.air.servicesync.business.CategoryHandler
+import hr.foi.air.servicesync.business.CompanyDetailsHandler
 import hr.foi.air.servicesync.business.ReviewHandler
 import hr.foi.air.servicesync.ui.components.CompanyCard
 import hr.foi.air.servicesync.ui.components.isDark
-import java.text.Collator
-import java.util.Locale
 
 @Composable
 fun SearchContent(modifier: Modifier = Modifier, navController: NavController, onQRCameraClick: () -> Unit)
 {
-    val db = FirebaseFirestore.getInstance()
     val reviewsHandler = ReviewHandler()
+    val companyService = CompanyDetailsHandler()
+    val getCategoryColor = CategoryHandler()
 
     val companyNames = remember { mutableStateOf<List<Pair<String, String?>>>(emptyList()) }
     val companyCategory = remember { mutableStateOf<List<Pair<String, String>>>(emptyList()) }
@@ -99,48 +96,23 @@ fun SearchContent(modifier: Modifier = Modifier, navController: NavController, o
     val chooseCityText = stringResource(R.string.choose_city)
     val cityTextFieldState = remember { mutableStateOf(TextFieldValue(chooseCityText)) }
 
+
     LaunchedEffect(Unit)
     {
-        db.collection("companies")
-            .get()
-            .addOnSuccessListener { documents ->
-                val companies = documents.mapNotNull { doc ->
-                    val name = doc.getString("name") ?: "Unknown"
-                    val imageUrl = doc.getString("pictureURL")
-                    if (name.isNotEmpty()) name to imageUrl else null
-                }
-
-                val categories = documents.mapNotNull { doc ->
-                    val name = doc.getString("name") ?: "Unknown"
-                    val category = doc.getString("category") ?: "Unknown"
-                    if (name.isNotEmpty() && category.isNotEmpty()) name to category else null
-                }
-
-                val cities = documents.mapNotNull { doc ->
-                    val name = doc.getString("name") ?: "Unknown"
-                    val city = doc.getString("city") ?: "Unknown"
-                    if (name.isNotEmpty() && city.isNotEmpty()) name to city else null
-                }
-
-                val collator = Collator.getInstance(Locale("hr"))
-                val distinctCityList = documents.mapNotNull { doc ->
-                    doc.getString("city")
-                }.distinct().sortedWith(collator)
-
+        companyService.getCompanyData(
+            onSuccess = { companies, categories, cities, distinctCityList ->
                 companyNames.value = companies
                 companyCategory.value = categories
                 companyCities.value = cities
-
                 filteredCompany.value = companies
-
                 distinctCategories.value = categories.map { it.second }.distinct()
                 distinctCities.value = distinctCityList
-
+                isLoading.value = false
+            },
+            onFailure = {
                 isLoading.value = false
             }
-            .addOnFailureListener {
-                isLoading.value = false
-            }
+        )
     }
 
     LaunchedEffect(searchQuery.text, selectedCategory, selectedCity)
@@ -186,7 +158,7 @@ fun SearchContent(modifier: Modifier = Modifier, navController: NavController, o
                         contentDescription = "Search Icon",
                         tint = isDark(onSurfaceVariantDark, onSurfaceVariantLight)
                     )
-                    Spacer(modifier = Modifier.width(8.dp)) // Space between icons
+                    Spacer(modifier = Modifier.width(8.dp))
                     Icon(
                         painter = painterResource(id = R.drawable.qr_code_scanner),
                         contentDescription = "QR Code Scanner Icon",
@@ -233,23 +205,7 @@ fun SearchContent(modifier: Modifier = Modifier, navController: NavController, o
             verticalAlignment = Alignment.CenterVertically
         ) {
             items(distinctCategories.value) { category ->
-                val isSelected = category == selectedCategory
-                val backgroundColor = if (isSelected)
-                {
-                    isDark(onSurfaceVariantDark, onSurfaceVariantLight)
-                }
-                else
-                {
-                    isDark(surfaceContainerHighDark, surfaceContainerHighLight)
-                }
-                val textColor = if (isSelected)
-                {
-                    isDark(onSurfaceLight, onSurfaceDark)
-                }
-                else
-                {
-                    isDark(onSurfaceDark, onSurfaceLight)
-                }
+                val (isSelected, backgroundColor, textColor) = getCategoryColor.getCategoryColor(category, selectedCategory)
 
                 Text(
                     text = category,
@@ -270,15 +226,16 @@ fun SearchContent(modifier: Modifier = Modifier, navController: NavController, o
 
         Spacer(modifier = Modifier.padding(bottom = 6.dp, top = 0.dp))
 
-        if (isLoading.value) {
-            Box(
-                modifier = Modifier.fillMaxSize(),
-                contentAlignment = Alignment.Center
-            ) {
-                CircularProgressIndicator()
+        when {
+            isLoading.value -> {
+                Box(
+                    modifier = Modifier.fillMaxSize(),
+                    contentAlignment = Alignment.Center
+                ) {
+                    CircularProgressIndicator()
+                }
             }
         }
-
         LazyColumn(
             modifier = Modifier
                 .fillMaxSize()
@@ -352,7 +309,7 @@ fun SearchContent(modifier: Modifier = Modifier, navController: NavController, o
                                     .fillParentMaxWidth(),
                                 text = {
                                     Text(city)
-                                    },
+                                },
                                 onClick = {
                                     selectedCity = city
                                     cityTextFieldState.value = TextFieldValue(city)
@@ -398,4 +355,3 @@ fun SearchContent(modifier: Modifier = Modifier, navController: NavController, o
         }
     }
 }
-

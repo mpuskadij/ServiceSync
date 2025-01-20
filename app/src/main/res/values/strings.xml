@@ -76,4 +76,5 @@
     <string name="no_favorites">Nema favorita :-(</string>
     <string name="reservation_removed">Rezervacija uspješno uklonjena!</string>
     <string name="reservation_removed_fail">Rezervacija nije uklonjena!</string>
+    <string name="hold_for_delete">Držite za brisanje.</string>
 </resources>

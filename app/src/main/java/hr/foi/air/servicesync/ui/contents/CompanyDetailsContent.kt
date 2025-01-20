@@ -17,7 +17,6 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.outlined.FavoriteBorder
-import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
 import androidx.compose.material3.ListItem
 import androidx.compose.material3.MaterialTheme
@@ -41,11 +40,9 @@ import com.example.compose.tertiaryDark
 import com.google.firebase.firestore.GeoPoint
 import hr.foi.air.servicesync.R
 import hr.foi.air.servicesync.backend.FirestoreCompanyDetails
-import hr.foi.air.servicesync.backend.FirestoreService
 import hr.foi.air.servicesync.business.CompanyDetailsHandler
 import hr.foi.air.servicesync.business.FavoritesHandler
 import hr.foi.air.servicesync.business.MapProviderManager
-import hr.foi.air.servicesync.business.ReservationManager
 import hr.foi.air.servicesync.business.ReviewHandler
 import hr.foi.air.servicesync.data.Review
 import hr.foi.air.servicesync.data.UserSession

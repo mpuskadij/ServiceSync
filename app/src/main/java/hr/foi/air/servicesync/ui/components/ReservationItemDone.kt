@@ -24,8 +24,6 @@ import com.example.compose.onPrimaryContainerDark
 import com.example.compose.onPrimaryContainerLight
 import com.example.compose.onPrimaryDark
 import com.example.compose.onPrimaryLight
-import com.example.compose.onSecondaryDark
-import com.example.compose.onSecondaryLight
 import com.example.compose.onSurfaceDark
 import com.example.compose.onSurfaceLight
 import com.example.compose.onSurfaceVariantDark
@@ -34,8 +32,6 @@ import com.example.compose.secondaryDark
 import com.example.compose.secondaryLight
 import com.example.compose.surfaceContainerDark
 import com.example.compose.surfaceContainerLight
-import com.example.compose.surfaceContainerLowDark
-import com.example.compose.surfaceContainerLowLight
 import hr.foi.air.servicesync.R
 import hr.foi.air.servicesync.business.formatDate
 import hr.foi.air.servicesync.data.UserSession

@@ -114,42 +114,51 @@ fun CalendarContent(
                 }
             } else {
                 LazyColumn(
-                modifier = Modifier.fillMaxSize(),
-                contentPadding = PaddingValues(top = 2.dp)
-            ) {
-                items(reservations) { reservation ->
-                    val companyName = reservation["companyId"] as String
-                    val serviceName = reservation["serviceName"] as String
-                    val reservationDate = reservation["reservationDate"] as Long
-                    val reservationId = "$companyName-$userId-$reservationDate"
-                    ReservationItem(
-                        companyName = companyName,
-                        serviceName = serviceName,
-                        reservationDate = reservationDate,
-                        onClick = {
-                            navController.navigate(
-                                "companyDetails/$companyName/$serviceName/$reservationDate"
-                            ) {
-                                popUpTo("calendar") { inclusive = false }
-                            }
-                        },
-                        onDeleteClick = {
-                            reservationManager.deleteReservation(
-                                reservationId,
-                                onSuccess = {
-                                    reservationManager.fetchUserReservations(
-                                        userId = userId,
-                                        onReservationsFetched = { reservations = it },
-                                        onFailure = { error = it.message }
-                                    )
-                                    Toast.makeText(context, "Reservation removed successfully!", Toast.LENGTH_SHORT).show()
-                                    reservations = reservations.filterNot { it["id"] == reservationId }
-                                },
-                                onFailure = { exception ->
-                                    Toast.makeText(context, "Failed to remove reservation: ${exception.message}", Toast.LENGTH_SHORT).show()
+                    modifier = Modifier.fillMaxSize(),
+                    contentPadding = PaddingValues(top = 2.dp)
+                ) {
+                    items(reservations) { reservation ->
+                        val companyName = reservation["companyId"] as String
+                        val serviceName = reservation["serviceName"] as String
+                        val reservationDate = reservation["reservationDate"] as Long
+                        val reservationId = "$companyName-$userId-$reservationDate"
+                        ReservationItem(
+                            companyName = companyName,
+                            serviceName = serviceName,
+                            reservationDate = reservationDate,
+                            onClick = {
+                                navController.navigate(
+                                    "companyDetails/$companyName/$serviceName/$reservationDate"
+                                ) {
+                                    popUpTo("calendar") { inclusive = false }
                                 }
-                            )
-                        }
+                            },
+                            onDeleteClick = {
+                                reservationManager.deleteReservation(
+                                    reservationId,
+                                    onSuccess = {
+                                        reservationManager.fetchUserReservations(
+                                            userId = userId,
+                                            onReservationsFetched = { reservations = it },
+                                            onFailure = { error = it.message }
+                                        )
+                                        Toast.makeText(
+                                            context,
+                                            "Reservation removed successfully!",
+                                            Toast.LENGTH_SHORT
+                                        ).show()
+                                        reservations =
+                                            reservations.filterNot { it["id"] == reservationId }
+                                    },
+                                    onFailure = { exception ->
+                                        Toast.makeText(
+                                            context,
+                                            "Failed to remove reservation: ${exception.message}",
+                                            Toast.LENGTH_SHORT
+                                        ).show()
+                                    }
+                                )
+                            }
                         )
                     }
                 }

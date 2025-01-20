@@ -76,4 +76,5 @@
     <string name="no_favorites">Keine Favoriten :-(</string>
     <string name="reservation_removed">Reservierung erfolgreich entfernt!</string>
     <string name="reservation_removed_fail">Die Reservierung wurde nicht entfernt!</string>
+    <string name="hold_for_delete">Zum Löschen gedrückt halten.</string>
 </resources>

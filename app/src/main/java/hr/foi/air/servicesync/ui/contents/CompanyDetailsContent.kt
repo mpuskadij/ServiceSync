@@ -131,9 +131,7 @@ fun CompanyDetailsContent(
                 Icon(
                     imageVector = if (isFavorite.value) Icons.Filled.Favorite else Icons.Outlined.FavoriteBorder,
                     contentDescription = null,
-                    //colors are purposely like this because they fit right
-                    tint = if (isFavorite.value) isDark(tertiaryDark, tertiaryDark) else isDark(
-                        tertiaryDark, tertiaryDark),
+                    tint = tertiaryDark,
                     modifier = Modifier
                         .size(60.dp)
                         .align(Alignment.TopEnd)

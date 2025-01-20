@@ -72,4 +72,9 @@
     <string name="added_review">Reseña agregada exitosamente.</string>
     <string name="added_review_fail">Error al agregar reseña. ¡Intentar otra vez!</string>
     <string name="camera_permission_denied">Permiso de cámara denegado.</string>
+    <string name="leave_review">Dejar reseña</string>
+    <string name="your_passed_appointments">Tus citas pasadas:</string>
+    <string name="sve_usluge_su_ocijenjene">Todos los servicios están calificados</string>
+    <string name="review_submited">Reseña enviada</string>
+    <string name="enter_the_star_number_and_review_description">Ingresa el número de estrella y la descripción de la reseña</string>
 </resources>

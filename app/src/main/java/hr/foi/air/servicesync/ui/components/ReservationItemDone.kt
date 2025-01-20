@@ -30,6 +30,8 @@ import com.example.compose.onSurfaceDark
 import com.example.compose.onSurfaceLight
 import com.example.compose.onSurfaceVariantDark
 import com.example.compose.onSurfaceVariantLight
+import com.example.compose.secondaryDark
+import com.example.compose.secondaryLight
 import com.example.compose.surfaceContainerDark
 import com.example.compose.surfaceContainerLight
 import com.example.compose.surfaceContainerLowDark
@@ -88,7 +90,7 @@ fun ReservationItemDone(
                         navController.navigate("addReview/$companyName/${UserSession.username}")
                     },
                     colors = ButtonDefaults.filledTonalButtonColors(
-                        containerColor = MaterialTheme.colorScheme.secondary,
+                        containerColor = isDark(secondaryDark, secondaryLight),
                         contentColor = isDark(onPrimaryContainerDark, onPrimaryContainerLight)
                     ),
                     enabled = buttonEnabled

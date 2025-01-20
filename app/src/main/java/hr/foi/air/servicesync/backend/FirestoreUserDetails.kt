@@ -153,4 +153,35 @@ class FirestoreUserDetails {
                 }
             }
     }
+    fun saveProfileImageUrlToFirestore(userId: String, imageUrl: String) {
+        val db = FirebaseFirestore.getInstance()
+        val userRef = db.collection("profilePics").document(userId)
+
+        userRef.set(mapOf("photoURL" to imageUrl))
+            .addOnSuccessListener {
+                println("Profile picture URL updated successfully.")
+            }
+            .addOnFailureListener { exception ->
+                println("Error updating profile picture URL: ${exception.message}")
+            }
+    }
+
+    fun getProfileImageUrl(userId: String, onImageUrlFetched: (String?) -> Unit) {
+        val db = FirebaseFirestore.getInstance()
+        val userRef = db.collection("profilePics").document(userId)
+
+        userRef.get()
+            .addOnSuccessListener { documentSnapshot ->
+                if (documentSnapshot.exists()) {
+                    val imageUrl = documentSnapshot.getString("photoURL")
+                    onImageUrlFetched(imageUrl)
+                } else {
+                    onImageUrlFetched(null)
+                }
+            }
+            .addOnFailureListener { exception ->
+                println("Error fetching profile picture URL: ${exception.message}")
+                onImageUrlFetched(null)
+            }
+    }
 }

@@ -15,8 +15,16 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.compose.inversePrimaryDarkMediumContrast
 import com.example.compose.inversePrimaryLightMediumContrast
+import com.example.compose.onSurfaceDark
+import com.example.compose.onSurfaceLight
+import com.example.compose.onTertiaryDark
+import com.example.compose.surfaceDark
+import com.example.compose.surfaceDimLightHighContrast
+import com.example.compose.surfaceLight
 import com.example.compose.surfaceVariantDark
 import com.example.compose.surfaceVariantLight
+import com.example.compose.tertiaryDark
+import com.example.compose.tertiaryLight
 import hr.foi.air.servicesync.R
 import hr.foi.air.servicesync.backend.FirestoreService
 import hr.foi.air.servicesync.business.PresentAndFutureSelectableDates
@@ -41,7 +49,7 @@ fun ServiceReservationScreen(serviceName: String, companyId: String, navControll
     val context = LocalContext.current
 
     Column(modifier = Modifier.padding(16.dp)) {
-        BackButton(onBackPressed = { navController.popBackStack()})
+        BackButton(onBackPressed = { navController.popBackStack()}, color = isDark(onSurfaceDark, onSurfaceLight))
         Text(
             text = serviceName,
             style = MaterialTheme.typography.headlineMedium,
@@ -116,8 +124,8 @@ fun ServiceReservationScreen(serviceName: String, companyId: String, navControll
                         },
                     colors = CardDefaults.cardColors(
                         containerColor = if (selectedSlot == slot) isDark(
-                            inversePrimaryDarkMediumContrast, inversePrimaryLightMediumContrast)
-                        else isDark(surfaceVariantDark, surfaceVariantLight)
+                            tertiaryLight, tertiaryDark)
+                        else isDark(surfaceVariantDark, surfaceDimLightHighContrast)
                     ),
                     elevation = CardDefaults.cardElevation(
                         defaultElevation = if (selectedSlot == slot) 4.dp else 2.dp

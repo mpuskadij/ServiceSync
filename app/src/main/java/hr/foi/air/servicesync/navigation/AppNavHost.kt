@@ -95,14 +95,14 @@ fun NavGraphBuilder.AppNavHost(navController: NavHostController) {
     }
 
 
-    composable("search")
-    {
-        SearchScreen(modifier = Modifier, navController, onQRCameraClick = {
-                navController.navigate("qr_scanner") {
-                }
-            }
-        )
-    }
+//    composable("search")  //commented out because it was used before (main houses search)
+//    {
+//        SearchScreen(modifier = Modifier, navController, onQRCameraClick = {
+//                navController.navigate("qr_scanner") {
+//                }
+//            }
+//        )
+//    }
     composable("calendar")
     {
         CalendarScreen(navController = navController)
@@ -119,7 +119,7 @@ fun NavGraphBuilder.AppNavHost(navController: NavHostController) {
                 FirebaseAuth.getInstance().signOut()
                 navController.navigate("login")
                 {
-                    popUpTo("main") { inclusive = true }
+                    popUpTo("main") { inclusive = false }
                 }
             }
         )

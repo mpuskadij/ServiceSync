@@ -1,6 +1,7 @@
 package hr.foi.air.servicesync.ui.components
 
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -91,12 +92,15 @@ fun ReservationItemDone(
                     ),
                     enabled = buttonEnabled
                 ) {
-                    Text(
-                        text = if (buttonEnabled)
-                        stringResource(R.string.leave_review) else stringResource(
-                        R.string.review_submited),
-                        color = isDark(onPrimaryDark, onPrimaryLight)
-                    )
+                    Box(
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Text(
+                            text = if (buttonEnabled) stringResource(R.string.leave_review) else stringResource(R.string.review_submited),
+                            color = if (buttonEnabled) isDark(onPrimaryDark, onPrimaryLight) else isDark(onPrimaryLight, onPrimaryDark),
+                            style = MaterialTheme.typography.bodyLarge
+                        )
+                    }
                 }
             }
         }

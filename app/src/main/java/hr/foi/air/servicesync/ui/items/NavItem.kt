@@ -19,7 +19,7 @@ data class NavItem(
 @Composable
 fun navItems(): List<NavItem> {
     return listOf(
-        NavItem(stringResource(R.string.search), Icons.Default.Search, route = "search"),
+        NavItem(stringResource(R.string.search), Icons.Default.Search, route = "main"),
         NavItem(stringResource(R.string.calendar), Icons.Default.DateRange, route = "calendar"),
         NavItem(stringResource(R.string.favorites), Icons.Default.FavoriteBorder, route = "favorites"),
         NavItem(stringResource(R.string.profile), Icons.Default.AccountCircle, route = "profile")

@@ -346,7 +346,9 @@ fun SearchContent(modifier: Modifier = Modifier, navController: NavController, o
                     companyCategory = companyCategory,
                     companyRating = averageRating.toString(),
                     onCardClick = {
-                        navController.navigate("company/$companyName")
+                        navController.navigate("company/$companyName") {
+                            popUpTo("search") { inclusive = false }
+                        }
                     }
                 )
             }

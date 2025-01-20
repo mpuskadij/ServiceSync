@@ -44,6 +44,13 @@ class ReservationManager(private val firestoreService: FirestoreService) {
     ) {
         firestoreService.fetchUserReservations(userId, onReservationsFetched, onFailure)
     }
+    fun deleteReservation(
+        reservationId: String,
+        onSuccess: () -> Unit,
+        onFailure: (Exception) -> Unit
+    ) {
+        firestoreService.deleteReservation(reservationId, onSuccess, onFailure)
+    }
 
     fun fetchDoneUserReservations(
         userId: String,

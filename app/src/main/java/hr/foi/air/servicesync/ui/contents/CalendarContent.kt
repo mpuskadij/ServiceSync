@@ -1,5 +1,6 @@
 package hr.foi.air.servicesync.ui.contents
 
+import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.padding
@@ -36,6 +37,7 @@ import hr.foi.air.servicesync.ui.components.ReservationItem
 import hr.foi.air.servicesync.ui.components.ReservationItemDone
 import hr.foi.air.servicesync.ui.components.isDark
 import kotlinx.coroutines.delay
+import androidx.compose.ui.platform.LocalContext
 
 @Composable
 fun CalendarContent(
@@ -48,6 +50,7 @@ fun CalendarContent(
     var reservations by remember { mutableStateOf<List<Map<String, Any>>>(emptyList()) }
     var doneReservations by remember { mutableStateOf<List<Map<String, Any>>>(emptyList()) }
     var error by remember { mutableStateOf<String?>(null) }
+    val context = LocalContext.current
 
     LaunchedEffect(key1 = Unit) {
         reservationManager.fetchUserReservations(
@@ -118,6 +121,7 @@ fun CalendarContent(
                         val companyName = reservation["companyId"] as String
                         val serviceName = reservation["serviceName"] as String
                         val reservationDate = reservation["reservationDate"] as Long
+                        val reservationId = "$companyName-$userId-$reservationDate"
                         ReservationItem(
                             companyName = companyName,
                             serviceName = serviceName,
@@ -126,8 +130,34 @@ fun CalendarContent(
                                 navController.navigate(
                                     "companyDetails/$companyName/$serviceName/$reservationDate"
                                 ) {
-                                    popUpTo("calendar") { inclusive = true }
+                                    popUpTo("calendar") { inclusive = false }
                                 }
+                            },
+                            onDeleteClick = {
+                                reservationManager.deleteReservation(
+                                    reservationId,
+                                    onSuccess = {
+                                        reservationManager.fetchUserReservations(
+                                            userId = userId,
+                                            onReservationsFetched = { reservations = it },
+                                            onFailure = { error = it.message }
+                                        )
+                                        Toast.makeText(
+                                            context,
+                                            "Reservation removed successfully!",
+                                            Toast.LENGTH_SHORT
+                                        ).show()
+                                        reservations =
+                                            reservations.filterNot { it["id"] == reservationId }
+                                    },
+                                    onFailure = { exception ->
+                                        Toast.makeText(
+                                            context,
+                                            "Failed to remove reservation: ${exception.message}",
+                                            Toast.LENGTH_SHORT
+                                        ).show()
+                                    }
+                                )
                             }
                         )
                     }
@@ -150,7 +180,6 @@ fun CalendarContent(
                     .padding(bottom = 1.dp)
                     .background(Color.Transparent),
             )
-
             if (error != null) {
                 Text(
                     text = "Error: $error",
@@ -210,5 +239,8 @@ fun CalendarContent(
         }
     }
 }
+
+
+            
 
 

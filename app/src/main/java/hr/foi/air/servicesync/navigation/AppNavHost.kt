@@ -4,7 +4,6 @@ import android.util.Log
 import android.widget.Toast
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
@@ -96,21 +95,21 @@ fun NavGraphBuilder.AppNavHost(navController: NavHostController) {
     }
 
 
-    composable("search")
-    {
-        SearchScreen(modifier = Modifier, navController, onQRCameraClick = {
-                navController.navigate("qr_scanner") {
-                }
-            }
-        )
-    }
+//    composable("search")  //commented out because it was used before (main houses search)
+//    {
+//        SearchScreen(modifier = Modifier, navController, onQRCameraClick = {
+//                navController.navigate("qr_scanner") {
+//                }
+//            }
+//        )
+//    }
     composable("calendar")
     {
         CalendarScreen(navController = navController)
     }
     composable("favorites")
     {
-        FavoriteScreen()
+        FavoriteScreen(navController = navController)
     }
     composable("profile")
     {
@@ -120,7 +119,7 @@ fun NavGraphBuilder.AppNavHost(navController: NavHostController) {
                 FirebaseAuth.getInstance().signOut()
                 navController.navigate("login")
                 {
-                    popUpTo("main") { inclusive = true }
+                    popUpTo("main") { inclusive = false }
                 }
             }
         )

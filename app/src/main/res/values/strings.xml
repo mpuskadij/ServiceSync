@@ -73,6 +73,10 @@
     <string name="added_review">Recenzija uspješno dodana.</string>
     <string name="added_review_fail">Greška pri dodavanju recenzije. Pokušajte opet!</string>
     <string name="camera_permission_denied">Dopuštenje za kameru odbijeno.</string>
+    <string name="no_favorites">Nema favorita :-(</string>
+    <string name="reservation_removed">Rezervacija uspješno uklonjena!</string>
+    <string name="reservation_removed_fail">Rezervacija nije uklonjena!</string>
+    <string name="hold_for_delete">Držite za brisanje.</string>
     <string name="leave_review">Leave review</string>
     <string name="your_passed_appointments">Your passed appointments:</string>
     <string name="sve_usluge_su_ocijenjene">All services are rated</string>

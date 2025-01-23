@@ -56,7 +56,6 @@ fun CompanyDetailsContent(
 ) {
     val firestoreCompanyDetails = FirestoreCompanyDetails()
     val reviewHandler = ReviewHandler()
-    val reservationManager = ReservationManager(FirestoreService())
 
     val companyDescription = remember { mutableStateOf(context.getString(R.string.loading)) }
     val companyCategory = remember { mutableStateOf(context.getString(R.string.loading)) }
@@ -67,8 +66,6 @@ fun CompanyDetailsContent(
     val reviews = remember { mutableStateOf<List<Review>>(emptyList()) }
     val services = remember { mutableStateOf<List<String>>(emptyList()) }
     val isLoading = remember { mutableStateOf(true) }
-    var isButtonEnabledReservation = remember { mutableStateOf(false) }
-    var isButtonEnabledReview = remember { mutableStateOf(false) }
 
     LaunchedEffect(companyName) {
         val handler = CompanyDetailsHandler()
@@ -86,26 +83,6 @@ fun CompanyDetailsContent(
             isLoading = isLoading,
             firestoreCompanyDetails = firestoreCompanyDetails,
             reviewHandler = reviewHandler
-        )
-        reservationManager.checkUserCompanyReservation(
-            userId = UserSession.username,
-            companyId = companyName,
-            onSuccess = { exists ->
-                isButtonEnabledReservation.value = exists
-                isLoading.value = false
-            },
-            onFailure = { exception ->
-                isButtonEnabledReservation.value = false
-                isLoading.value = false
-            }
-        )
-        reviewHandler.checkIfUserHasReview(
-            userId = UserSession.username,
-            companyId = companyName,
-            onSucces = { exists ->
-                isButtonEnabledReview.value = exists
-                isLoading.value = false
-            }
         )
     }
 
@@ -218,15 +195,6 @@ fun CompanyDetailsContent(
                             color = isDark(onSurfaceDark, onSurfaceLight),
                             style = MaterialTheme.typography.headlineMedium
                         )
-                        Button(
-                            onClick = {
-                                navController.navigate("addReview/$companyName/${UserSession.username}")
-                            },
-                            enabled = isButtonEnabledReview.value && isButtonEnabledReservation.value,
-                            modifier = Modifier.padding(start = 16.dp)
-                        ) {
-                            Text(text = stringResource(R.string.add_review))
-                        }
                     }
                 }
             )

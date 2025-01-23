@@ -1,5 +1,6 @@
 package hr.foi.air.servicesync.ui.screens
 
+import android.widget.Toast
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -22,6 +23,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
@@ -43,6 +45,11 @@ fun AddReviewScreen(
 ) {
     val rating = remember { mutableStateOf(0) }
     val reviewText = remember { mutableStateOf("") }
+    val context = LocalContext.current
+
+    val isFormValid = remember(rating.value, reviewText.value) {
+        rating.value > 0 && reviewText.value.isNotBlank()
+    }
 
     Column(
         modifier = modifier
@@ -89,11 +96,16 @@ fun AddReviewScreen(
                     rating = rating.value,
                     userId = userId
                 )
-
-                reviewHandler.addReview(review) { success ->
-                    onReviewSubmit(success)
+                if (rating.value > 0 && reviewText.value.isNotBlank()){
+                    reviewHandler.addReview(review) { success ->
+                        onReviewSubmit(success)
+                    }
+                    navController.popBackStack()
+                } else {
+                    Toast.makeText(context,
+                        context.getString(R.string.enter_the_star_number_and_review_description), Toast.LENGTH_LONG).show()
                 }
-                navController.popBackStack()
+
             },
             modifier = Modifier.fillMaxWidth()
         ) {

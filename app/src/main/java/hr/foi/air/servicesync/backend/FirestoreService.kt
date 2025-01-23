@@ -109,6 +109,7 @@ class FirestoreService {
         db.collection("reservations")
             .whereEqualTo("userId", userId)
             .whereEqualTo("companyId", companyId)
+            .whereLessThan("reservationDate", System.currentTimeMillis())
             .get()
             .addOnSuccessListener { documents ->
                 val exists = !documents.isEmpty

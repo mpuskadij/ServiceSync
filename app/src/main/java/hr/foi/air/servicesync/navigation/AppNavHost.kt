@@ -11,6 +11,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import com.google.firebase.auth.FirebaseAuth
 import hr.foi.air.servicesync.R
+import hr.foi.air.servicesync.business.CompanyDetailsHandler
 import hr.foi.air.servicesync.ui.components.QRScannerContent
 import hr.foi.air.servicesync.ui.contents.CompanyDetailsContent
 import hr.foi.air.servicesync.ui.screens.AddReviewScreen
@@ -153,7 +154,21 @@ fun NavGraphBuilder.AppNavHost(navController: NavHostController) {
     composable("qr_scanner") {
         QRScannerContent(
             onCodeScanned = { code ->
-                navController.navigate("company/$code")
+                val companyDetailsHandler = CompanyDetailsHandler()
+                companyDetailsHandler.getCompanyData(
+                    onSuccess = { companies, _, _, _ ->
+                        val companyExists = companies.any { it.first == code }
+                        if (companyExists) {
+                            navController.navigate("company/$code")
+                        } else {
+                            navController.navigate("main")
+                        }
+                    },
+                    onFailure = {
+                        Log.e("Nav check", "Failed to fetch company data.")
+                    }
+                )
+
             }
         )
     }

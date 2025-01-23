@@ -1,8 +1,5 @@
 package hr.foi.air.servicesync.ui.components
 
-import androidx.compose.ui.tooling.preview.Preview
-
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -31,6 +28,7 @@ import hr.foi.air.servicesync.data.UserSession
 fun ReservationItemDone(
     companyName: String,
     serviceName: String,
+    buttonEnabled: Boolean = true,
     navController: NavController,
     reservationDate: Long,
 ) {
@@ -78,9 +76,14 @@ fun ReservationItemDone(
                     colors = ButtonDefaults.filledTonalButtonColors(
                         containerColor = MaterialTheme.colorScheme.secondary,
                         contentColor = MaterialTheme.colorScheme.onSecondary
-                    )
+                    ),
+                    enabled = buttonEnabled
                 ) {
-                    Text(text = stringResource(R.string.leave_review))
+                    Text(text = if (buttonEnabled)
+                        stringResource(R.string.leave_review) else stringResource(
+                        R.string.review_submited
+                    )
+                    )
                 }
             }
         }

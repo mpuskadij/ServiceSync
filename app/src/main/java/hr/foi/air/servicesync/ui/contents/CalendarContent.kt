@@ -31,6 +31,7 @@ import com.example.compose.errorLight
 import com.example.compose.primaryDark
 import com.example.compose.primaryLight
 import hr.foi.air.servicesync.R
+import hr.foi.air.servicesync.business.ReviewHandler
 import hr.foi.air.servicesync.ui.components.ReservationItem
 import hr.foi.air.servicesync.ui.components.ReservationItemDone
 import hr.foi.air.servicesync.ui.components.isDark
@@ -42,6 +43,7 @@ fun CalendarContent(
     navController: NavController
 ) {
     val reservationManager = remember { ReservationManager(FirestoreService()) }
+    val reviewHandler = ReviewHandler()
     val userId = UserSession.username
     var reservations by remember { mutableStateOf<List<Map<String, Any>>>(emptyList()) }
     var doneReservations by remember { mutableStateOf<List<Map<String, Any>>>(emptyList()) }
@@ -70,7 +72,7 @@ fun CalendarContent(
             modifier = Modifier
                 .weight(1f)
                 .fillMaxWidth()
-                .padding(bottom = 8.dp), // Razmak između dva Column-a
+                .padding(bottom = 8.dp),
             verticalArrangement = Arrangement.spacedBy(8.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
@@ -182,11 +184,25 @@ fun CalendarContent(
                         val companyName = doneReservation["companyId"] as String
                         val serviceName = doneReservation["serviceName"] as String
                         val reservationDate = doneReservation["reservationDate"] as Long
+
+                        var buttonEnabled by remember { mutableStateOf(true) }
+
+                        LaunchedEffect(doneReservation) {
+                            reviewHandler.checkIfUserHasReview(
+                                userId = userId,
+                                companyId = companyName,
+                                onSucces = { hasReview ->
+                                    buttonEnabled = hasReview
+                                }
+                            )
+                        }
+
                         ReservationItemDone(
                             companyName = companyName,
                             serviceName = serviceName,
                             reservationDate = reservationDate,
-                            navController = navController
+                            navController = navController,
+                            buttonEnabled = buttonEnabled
                         )
                     }
                 }

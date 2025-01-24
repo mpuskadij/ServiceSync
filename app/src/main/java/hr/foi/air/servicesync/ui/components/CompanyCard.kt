@@ -75,7 +75,7 @@ fun CompanyCard(
     Card(
         modifier = Modifier
             .fillMaxSize()
-            .padding(top = 0.dp, bottom = 16.dp, start = 8.dp, end = 8.dp)
+            .padding(top = 0.dp, bottom = 0.dp, start = 8.dp, end = 8.dp)
             .clipToBounds()
             .height(90.dp),
         shape = RoundedCornerShape(topStart = 0.dp, topEnd = 0.dp, bottomStart = 12.dp, bottomEnd = 12.dp),

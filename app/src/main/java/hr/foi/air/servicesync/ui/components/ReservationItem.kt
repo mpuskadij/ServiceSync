@@ -15,7 +15,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.outlined.Delete
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -25,7 +24,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
@@ -35,15 +33,12 @@ import androidx.compose.ui.unit.dp
 import com.example.compose.backgroundDark
 import com.example.compose.backgroundLight
 import com.example.compose.errorLight
-import com.example.compose.onErrorDark
-import com.example.compose.onErrorLight
 import com.example.compose.onSurfaceDark
 import com.example.compose.onSurfaceLight
 import com.example.compose.primaryDark
 import com.example.compose.primaryLight
 import com.example.compose.surfaceContainerDark
 import com.example.compose.surfaceContainerLight
-import com.example.compose.tertiaryContainerDark
 import hr.foi.air.servicesync.R
 import hr.foi.air.servicesync.business.calculateDaysUntilReservation
 import hr.foi.air.servicesync.business.formatDate

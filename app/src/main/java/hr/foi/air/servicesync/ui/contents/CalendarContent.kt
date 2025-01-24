@@ -173,7 +173,7 @@ fun CalendarContent(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Text(
-                text = stringResource(R.string.your_passed_appointments),
+                text = stringResource(R.string.your_past_appointments),
                 style = MaterialTheme.typography.headlineSmall,
                 color = isDark(primaryDark, primaryLight),
                 modifier = Modifier
@@ -198,7 +198,7 @@ fun CalendarContent(
 
                 if (showNoAppointmentsMessage) {
                     Text(
-                        text = stringResource(R.string.sve_usluge_su_ocijenjene),
+                        text = stringResource(R.string.no_past_services),
                         style = MaterialTheme.typography.bodyLarge,
                         color = isDark(errorDark, errorLight),
                         modifier = Modifier.padding(top = 16.dp)

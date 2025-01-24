@@ -5,7 +5,6 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -20,6 +19,10 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
+import com.example.compose.onSurfaceDark
+import com.example.compose.onSurfaceDarkHighContrast
+import com.example.compose.onSurfaceLight
+import com.example.compose.onSurfaceLightHighContrast
 import hr.foi.air.servicesync.R
 import hr.foi.air.servicesync.data.Review
 
@@ -52,7 +55,7 @@ fun ReviewCard(
                     fontSize = 20.sp,
                     fontWeight = FontWeight.Bold,
                     style = MaterialTheme.typography.headlineMedium,
-                    color = MaterialTheme.colorScheme.onSurface,
+                    color = isDark(onSurfaceDark, onSurfaceLight),
                     modifier = Modifier.weight(1f),
                     overflow = TextOverflow.Ellipsis
                 )
@@ -67,7 +70,7 @@ fun ReviewCard(
                         Icon(
                             imageVector = Icons.Filled.Star,
                             contentDescription = stringResource(R.string.star),
-                            tint = Color.Black,
+                            tint = isDark(onSurfaceDark, onSurfaceLight),
                             modifier = Modifier.size(20.dp)
                         )
                     }
@@ -81,7 +84,7 @@ fun ReviewCard(
                 fontSize = 16.sp,
                 fontWeight = FontWeight.Normal,
                 softWrap = true,
-                color = Color.Black,
+                color = isDark(onSurfaceDarkHighContrast, onSurfaceLightHighContrast),
                 textAlign = TextAlign.Start,
                 modifier = Modifier.fillMaxWidth()
             )

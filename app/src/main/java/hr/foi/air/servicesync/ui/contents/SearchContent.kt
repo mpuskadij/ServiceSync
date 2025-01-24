@@ -7,6 +7,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -43,6 +44,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clipToBounds
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.res.painterResource
@@ -90,7 +92,7 @@ fun SearchContent(modifier: Modifier = Modifier, navController: NavController, o
     var selectedCity by remember { mutableStateOf<String?>(null) }
 
     val isLoading = remember { mutableStateOf(true) }
-    var searchQuery by remember { mutableStateOf(TextFieldValue(""))}
+    var searchQuery by remember { mutableStateOf(TextFieldValue("")) }
     var showCityDropdown by remember { mutableStateOf(false) }
     val scrollState = rememberScrollState()
     val chooseCityText = stringResource(R.string.choose_city)
@@ -137,7 +139,6 @@ fun SearchContent(modifier: Modifier = Modifier, navController: NavController, o
     Column(
         modifier = modifier
             .fillMaxSize()
-            .padding(16.dp)
     ) {
         TextField(
             value = searchQuery.text,
@@ -171,6 +172,7 @@ fun SearchContent(modifier: Modifier = Modifier, navController: NavController, o
             },
             textStyle = TextStyle(color = isDark(onSurfaceVariantDark, onSurfaceVariantLight)),
             modifier = Modifier
+                .padding(16.dp, 16.dp, 16.dp, 0.dp)
                 .fillMaxWidth(0.95f)
                 .align(Alignment.CenterHorizontally)
                 .height(56.dp)
@@ -191,7 +193,7 @@ fun SearchContent(modifier: Modifier = Modifier, navController: NavController, o
         )
 
         Text(
-            modifier = Modifier.padding(start = 8.dp, top = 12.dp),
+            modifier = Modifier.padding(20.dp, 16.dp, 20.dp, 0.dp),
             text = stringResource(R.string.services),
             style = MaterialTheme.typography.headlineMedium,
             color = isDark(onSurfaceDark, onSurfaceLight)
@@ -200,23 +202,28 @@ fun SearchContent(modifier: Modifier = Modifier, navController: NavController, o
         LazyRow(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(bottom = 0.dp, top = 8.dp),
-            horizontalArrangement = Arrangement.spacedBy(4.dp),
+                .clipToBounds()
+                .padding(0.dp, 12.dp, 0.dp, 8.dp),
+            contentPadding = PaddingValues(start = 16.dp, end = 16.dp),
+            horizontalArrangement = Arrangement.spacedBy(16.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
             items(distinctCategories.value) { category ->
-                val (isSelected, backgroundColor, textColor) = getCategoryColor.getCategoryColor(category, selectedCategory)
+                val (isSelected, backgroundColor, textColor) = getCategoryColor.getCategoryColor(
+                    category,
+                    selectedCategory
+                )
 
                 Text(
                     text = category,
                     color = textColor,
                     modifier = Modifier
-                        .padding(4.dp)
+                        .padding(0.dp)
                         .background(
                             color = backgroundColor,
                             shape = RoundedCornerShape(16.dp)
                         )
-                        .padding(horizontal = 12.dp, vertical = 6.dp)
+                        .padding(horizontal = 10.dp, vertical = 6.dp)
                         .clickable {
                             selectedCategory = if (isSelected) null else category
                         }
@@ -239,9 +246,10 @@ fun SearchContent(modifier: Modifier = Modifier, navController: NavController, o
         LazyColumn(
             modifier = Modifier
                 .fillMaxSize()
+                .clipToBounds()
                 .heightIn(300.dp)
                 .pointerInput(Unit) {}
-                .padding(top = 5.dp),
+                .padding(16.dp, 5.dp, 16.dp, 0.dp),
             verticalArrangement = Arrangement.spacedBy(5.dp)
         ) {
             item {

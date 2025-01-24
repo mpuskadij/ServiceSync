@@ -67,6 +67,19 @@
     <string name="no_available_maps">Keine verfügbaren Karten</string>
     <string name="select_language">Sprache wählen</string>
     <string name="future_appointments">Ihre anstehenden Termine:</string>
-    <string name="no_future_appointments">Es gibt keine bevorstehenden Fristen.</string>
+    <string name="no_future_appointments">Es gibt keine bevorstehenden Terminen.</string>
     <string name="days">Tage</string>
+    <string name="no_slots">Es gibt keine freien Termine!</string>
+    <string name="added_review">Bewertung erfolgreich hinzugefügt.</string>
+    <string name="added_review_fail">Fehler beim Hinzufügen der Bewertung. Versuchen Sie es erneut!</string>
+    <string name="camera_permission_denied">Kameraberechtigung verweigert.</string>
+    <string name="no_favorites">Keine Favoriten :-(</string>
+    <string name="reservation_removed">Reservierung erfolgreich entfernt!</string>
+    <string name="reservation_removed_fail">Die Reservierung wurde nicht entfernt!</string>
+    <string name="hold_for_delete">Zum Löschen gedrückt halten.</string>
+    <string name="leave_review">Bewertung abgeben</string>
+    <string name="your_passed_appointments">Ihre vergangenen Termine:</string>
+    <string name="sve_usluge_su_ocijenjene">Alle Dienste werden bewertet</string>
+    <string name="review_submited">Bewertung eingereicht</string>
+    <string name="enter_the_star_number_and_review_description">Geben Sie die Sternezahl und die Bewertungsbeschreibung ein</string>
 </resources>

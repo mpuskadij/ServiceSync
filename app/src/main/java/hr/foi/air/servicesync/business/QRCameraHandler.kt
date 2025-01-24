@@ -19,6 +19,7 @@ fun setupCamera(
 ) {
     val cameraProviderFuture = ProcessCameraProvider.getInstance(context)
     val barcodeScanner = BarcodeScanning.getClient()
+    var scanOccoured = false
 
     cameraProviderFuture.addListener({
         val cameraProvider = cameraProviderFuture.get()
@@ -28,6 +29,10 @@ fun setupCamera(
 
         val imageAnalyzer = ImageAnalysis.Builder().build().also { imageAnalysis ->
             imageAnalysis.setAnalyzer(ContextCompat.getMainExecutor(context)) { imageProxy ->
+                if (scanOccoured) {
+                    imageProxy.close()
+                    return@setAnalyzer
+                }
                 val mediaImage = imageProxy.image
                 if (mediaImage != null) {
                     val image = InputImage.fromMediaImage(mediaImage, imageProxy.imageInfo.rotationDegrees)
@@ -37,6 +42,7 @@ fun setupCamera(
                                 barcode.rawValue?.let { rawValue ->
                                     if (rawValue.startsWith("ServiceSync::")) {
                                         val remainingCode = rawValue.removePrefix("ServiceSync::")
+                                        scanOccoured=true
                                         imageProxy.close()
                                         onCodeScanned(remainingCode)
                                         return@addOnSuccessListener

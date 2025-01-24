@@ -10,6 +10,8 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import com.google.firebase.auth.FirebaseAuth
+import hr.foi.air.servicesync.R
+import hr.foi.air.servicesync.business.CompanyDetailsHandler
 import hr.foi.air.servicesync.ui.components.QRScannerContent
 import hr.foi.air.servicesync.ui.contents.CompanyDetailsContent
 import hr.foi.air.servicesync.ui.screens.AddReviewScreen
@@ -68,8 +70,8 @@ fun NavGraphBuilder.AppNavHost(navController: NavHostController) {
     composable("company/{companyName}/{serviceName}") {
         backStackEntry ->
         val companyName = backStackEntry.arguments?.getString("companyName") ?: "Unknown"
-        val serviceName = backStackEntry.arguments?.getString("companyName") ?: "Unknown"
-        ServiceReservationScreen(serviceName, companyName, navController)
+        val serviceName = backStackEntry.arguments?.getString("serviceName") ?: "Unknown"
+        ServiceReservationScreen(serviceName = serviceName, companyName, navController)
 
     }
 
@@ -94,21 +96,21 @@ fun NavGraphBuilder.AppNavHost(navController: NavHostController) {
     }
 
 
-    composable("search")
-    {
-        SearchScreen(modifier = Modifier, navController, onQRCameraClick = {
-                navController.navigate("qr_scanner") {
-                }
-            }
-        )
-    }
+//    composable("search")  //commented out because it was used before (main houses search)
+//    {
+//        SearchScreen(modifier = Modifier, navController, onQRCameraClick = {
+//                navController.navigate("qr_scanner") {
+//                }
+//            }
+//        )
+//    }
     composable("calendar")
     {
         CalendarScreen(navController = navController)
     }
     composable("favorites")
     {
-        FavoriteScreen()
+        FavoriteScreen(navController = navController)
     }
     composable("profile")
     {
@@ -118,7 +120,7 @@ fun NavGraphBuilder.AppNavHost(navController: NavHostController) {
                 FirebaseAuth.getInstance().signOut()
                 navController.navigate("login")
                 {
-                    popUpTo("main") { inclusive = true }
+                    popUpTo("main") { inclusive = false }
                 }
             }
         )
@@ -136,7 +138,7 @@ fun NavGraphBuilder.AppNavHost(navController: NavHostController) {
                 if (success) {
                     Toast.makeText(
                         context,
-                        "Review added successfully.",
+                        context.getString(R.string.adding_review),
                         Toast.LENGTH_SHORT
                     ).show()
                 } else {
@@ -152,7 +154,21 @@ fun NavGraphBuilder.AppNavHost(navController: NavHostController) {
     composable("qr_scanner") {
         QRScannerContent(
             onCodeScanned = { code ->
-                navController.navigate("company/$code")
+                val companyDetailsHandler = CompanyDetailsHandler()
+                companyDetailsHandler.getCompanyData(
+                    onSuccess = { companies, _, _, _ ->
+                        val companyExists = companies.any { it.first == code }
+                        if (companyExists) {
+                            navController.navigate("company/$code")
+                        } else {
+                            navController.navigate("main")
+                        }
+                    },
+                    onFailure = {
+                        Log.e("Nav check", "Failed to fetch company data.")
+                    }
+                )
+
             }
         )
     }

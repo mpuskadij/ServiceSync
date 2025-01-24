@@ -1,5 +1,6 @@
 package hr.foi.air.servicesync.ui.screens
 
+import android.widget.Toast
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -11,6 +12,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Star
+import androidx.compose.material.icons.outlined.StarOutline
 import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -21,13 +23,16 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import com.example.compose.onSurfaceDark
+import com.example.compose.onSurfaceLight
 import hr.foi.air.servicesync.R
-import hr.foi.air.servicesync.backend.FirestoreReviews
 import hr.foi.air.servicesync.business.ReviewHandler
 import hr.foi.air.servicesync.data.Review
+import hr.foi.air.servicesync.ui.components.isDark
 
 @Composable
 fun AddReviewScreen(
@@ -38,9 +43,13 @@ fun AddReviewScreen(
     onReviewSubmit: (Boolean) -> Unit,
     reviewHandler: ReviewHandler = ReviewHandler()
 ) {
-    val firestoreReviews = FirestoreReviews()
     val rating = remember { mutableStateOf(0) }
     val reviewText = remember { mutableStateOf("") }
+    val context = LocalContext.current
+
+    val isFormValid = remember(rating.value, reviewText.value) {
+        rating.value > 0 && reviewText.value.isNotBlank()
+    }
 
     Column(
         modifier = modifier
@@ -52,7 +61,8 @@ fun AddReviewScreen(
         Text(
             text = stringResource(R.string.adding_review),
             style = MaterialTheme.typography.headlineMedium,
-            modifier = Modifier.align(Alignment.Start)
+            modifier = Modifier.align(Alignment.Start),
+            color = isDark(onSurfaceDark, onSurfaceLight)
         )
 
         Row(
@@ -61,7 +71,7 @@ fun AddReviewScreen(
         ) {
             for (i in 1..5) {
                 Icon(
-                    imageVector = if (i <= rating.value) Icons.Default.Star else Icons.Filled.Star,
+                    imageVector = if (i <= rating.value) Icons.Filled.Star else Icons.Outlined.StarOutline,
                     contentDescription = null,
                     modifier = Modifier
                         .size(32.dp)
@@ -86,11 +96,16 @@ fun AddReviewScreen(
                     rating = rating.value,
                     userId = userId
                 )
-
-                reviewHandler.addReview(review) { success ->
-                    onReviewSubmit(success)
+                if (rating.value > 0 && reviewText.value.isNotBlank()){
+                    reviewHandler.addReview(review) { success ->
+                        onReviewSubmit(success)
+                    }
+                    navController.popBackStack()
+                } else {
+                    Toast.makeText(context,
+                        context.getString(R.string.enter_the_star_number_and_review_description), Toast.LENGTH_LONG).show()
                 }
-                navController.popBackStack()
+
             },
             modifier = Modifier.fillMaxWidth()
         ) {

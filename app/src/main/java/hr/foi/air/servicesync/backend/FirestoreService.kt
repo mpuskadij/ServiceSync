@@ -1,6 +1,5 @@
 package hr.foi.air.servicesync.backend
 
-import android.util.Log
 import com.google.firebase.firestore.FirebaseFirestore
 import java.time.LocalTime
 
@@ -40,39 +39,47 @@ class FirestoreService {
 
     fun getAvailableTimeSlotsAndRange(
         companyId: String,
+        serviceName: String,
         date: Long,
         onSuccess: (List<Long>) -> Unit,
         onFailure: (Exception) -> Unit
     ) {
-        val startOfDay = date - (date % (24 * 60 * 60 * 1000)) // Početak dana
-        val endOfDay = startOfDay + (24 * 60 * 60 * 1000) - 1 // Kraj dana
-        Log.d("start of day", "start: $startOfDay")
-        Log.d("end of day", "end: $endOfDay")
-        val firestoreCompanyDetails = FirestoreCompanyDetails()
+        val startOfDay = date - (date % (24 * 60 * 60 * 1000))
+        val endOfDay = startOfDay + (24 * 60 * 60 * 1000) - 1
 
+        val firestoreCompanyDetails = FirestoreCompanyDetails()
         firestoreCompanyDetails.loadCompanyOpeningTimeById(companyId) { openingTime ->
             firestoreCompanyDetails.loadCompanyClosingTimeById(companyId) { closingTime ->
+                firestoreCompanyDetails.loadServiceDuration(
+                    companyId,
+                    serviceName
+                ) { duration ->
+                    val openingMillis = timeToMillis(openingTime ?: "00:00", startOfDay)
+                    val closingMillis = timeToMillis(closingTime ?: "23:59", startOfDay)
 
-                var openingMillis = timeToMillis(openingTime ?: "00:00", startOfDay)
-                var closingMillis = timeToMillis(closingTime ?: "23:59", startOfDay)
+                    val step = (duration?.toLong() ?: 30L) * 60 * 1000 // default time slot of 30 minutes
+                    val allSlots = (openingMillis - (60 * 60 * 1000) until closingMillis - (60 * 60 * 1000) step step).toList()
 
-                val allSlots = ((openingMillis - (60 * 60 * 1000)) until (closingMillis - (60 * 60 * 1000)) step 30 * 60 * 1000).toList()
-                Log.d("AvailableTimeSlots", "All slots: $allSlots")
+                    db.collection("reservations")
+                        .whereEqualTo("companyId", companyId)
+                        .whereGreaterThanOrEqualTo("reservationDate", startOfDay)
+                        .whereLessThanOrEqualTo("reservationDate", endOfDay)
+                        .get()
+                        .addOnSuccessListener { documents ->
+                            val occupiedSlots = documents.map { it["reservationDate"] as Long }
+                            val availableSlots = allSlots.filter { slotStart ->
+                                occupiedSlots.none { occupied ->
+                                    val slotEnd = slotStart + step
+                                    occupied in slotStart until slotEnd
+                                }
+                            }
 
-                db.collection("reservations")
-                    .whereEqualTo("companyId", companyId)
-                    .whereGreaterThanOrEqualTo("reservationDate", startOfDay)
-                    .whereLessThanOrEqualTo("reservationDate", endOfDay)
-                    .get()
-                    .addOnSuccessListener { documents ->
-                        val occupiedSlots = documents.map { it["reservationDate"] as Long }
-                        val availableSlots = allSlots.filter { it !in occupiedSlots }
-
-                        onSuccess(availableSlots)
-                    }
-                    .addOnFailureListener { exception ->
-                        onFailure(exception)
-                    }
+                            onSuccess(availableSlots)
+                        }
+                        .addOnFailureListener { exception ->
+                            onFailure(exception)
+                        }
+                }
             }
         }
     }
@@ -92,5 +99,31 @@ class FirestoreService {
             }
             .addOnFailureListener { onFailure(it) }
     }
+    fun deleteReservation(reservationId: String, onSuccess: () -> Unit, onFailure: (Exception) -> Unit) {
+        db.collection("reservations")
+            .document(reservationId)
+            .delete()
+            .addOnSuccessListener {
+                onSuccess()
+            }
+            .addOnFailureListener { exception ->
+                onFailure(exception)
+            }
+    }
 
+    fun fetchDoneUserReservations(
+        userId: String,
+        onSuccess: (List<Map<String, Any>>) -> Unit,
+        onFailure: (Exception) -> Unit
+    ) {
+        db.collection("reservations")
+            .whereEqualTo("userId", userId)
+            .whereLessThan("reservationDate", System.currentTimeMillis())
+            .get()
+            .addOnSuccessListener { documents ->
+                val reservations = documents.map { it.data }
+                onSuccess(reservations)
+            }
+            .addOnFailureListener { onFailure(it) }
+    }
 }

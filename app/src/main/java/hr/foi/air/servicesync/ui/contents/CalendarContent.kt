@@ -1,5 +1,6 @@
 package hr.foi.air.servicesync.ui.contents
 
+import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.padding
@@ -19,6 +20,7 @@ import hr.foi.air.servicesync.data.UserSession
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.ui.Alignment
@@ -30,9 +32,12 @@ import com.example.compose.errorLight
 import com.example.compose.primaryDark
 import com.example.compose.primaryLight
 import hr.foi.air.servicesync.R
+import hr.foi.air.servicesync.business.ReviewHandler
 import hr.foi.air.servicesync.ui.components.ReservationItem
+import hr.foi.air.servicesync.ui.components.ReservationItemDone
 import hr.foi.air.servicesync.ui.components.isDark
 import kotlinx.coroutines.delay
+import androidx.compose.ui.platform.LocalContext
 
 @Composable
 fun CalendarContent(
@@ -40,9 +45,12 @@ fun CalendarContent(
     navController: NavController
 ) {
     val reservationManager = remember { ReservationManager(FirestoreService()) }
+    val reviewHandler = ReviewHandler()
     val userId = UserSession.username
     var reservations by remember { mutableStateOf<List<Map<String, Any>>>(emptyList()) }
+    var doneReservations by remember { mutableStateOf<List<Map<String, Any>>>(emptyList()) }
     var error by remember { mutableStateOf<String?>(null) }
+    val context = LocalContext.current
 
     LaunchedEffect(key1 = Unit) {
         reservationManager.fetchUserReservations(
@@ -50,69 +58,189 @@ fun CalendarContent(
             onReservationsFetched = { reservations = it },
             onFailure = { error = it.message }
         )
+        reservationManager.fetchDoneUserReservations(
+            userId = userId,
+            onReservationsFetched = { doneReservations = it },
+            onFailure = { error = it.message }
+        )
     }
 
     Column(
         modifier = modifier
             .fillMaxSize()
-            .padding(16.dp, 0.dp, 16.dp, 0.dp),
-        verticalArrangement = Arrangement.spacedBy(8.dp),
-        horizontalAlignment = Alignment.CenterHorizontally
+            .padding(horizontal = 16.dp),
+        verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
-        if (error != null) {
-            Text(
-                text = "Error: $error",
-                color = MaterialTheme.colorScheme.error,
-                style = MaterialTheme.typography.bodyLarge
-            )
-        } else if (reservations.isEmpty()) {
-            var showNoAppointmentsMessage by remember { mutableStateOf(false) }
-
-            LaunchedEffect(reservations) {
-                delay(1000L)
-                if (reservations.isEmpty()) {
-                    showNoAppointmentsMessage = true
-                }
-            }
-
-            if (showNoAppointmentsMessage) {
-                Text(
-                    text = stringResource(R.string.no_future_appointments),
-                    style = MaterialTheme.typography.bodyLarge,
-                    color = isDark(errorDark, errorLight),
-                    modifier = Modifier.padding(top = 16.dp)
-                )
-            }
-        }else {
+        Column(
+            modifier = Modifier
+                .weight(1f)
+                .fillMaxWidth()
+                .padding(bottom = 8.dp),
+            verticalArrangement = Arrangement.spacedBy(8.dp),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
             Text(
                 text = stringResource(R.string.future_appointments),
                 style = MaterialTheme.typography.headlineSmall,
                 color = isDark(primaryDark, primaryLight),
-                modifier = Modifier.padding(bottom = 1.dp).background(Color.Transparent),
+                modifier = Modifier
+                    .padding(bottom = 1.dp)
+                    .background(Color.Transparent),
             )
-            LazyColumn(
-                modifier = Modifier.fillMaxSize(),
-                contentPadding = PaddingValues(top = 2.dp)
-            ) {
-                items(reservations) { reservation ->
-                    val companyName = reservation["companyId"] as String
-                    val serviceName = reservation["serviceName"] as String
-                    val reservationDate = reservation["reservationDate"] as Long
-                    ReservationItem(
-                        companyName = companyName,
-                        serviceName = serviceName,
-                        reservationDate = reservationDate,
-                        onClick = {
-                            navController.navigate(
-                                "companyDetails/$companyName/$serviceName/$reservationDate"
-                            ) {
-                                popUpTo("calendar") { inclusive = true }
-                            }
-                        }
+
+            if (error != null) {
+                Text(
+                    text = "Error: $error",
+                    color = MaterialTheme.colorScheme.error,
+                    style = MaterialTheme.typography.bodyLarge
+                )
+            } else if (reservations.isEmpty()) {
+                var showNoAppointmentsMessage by remember { mutableStateOf(false) }
+
+                LaunchedEffect(reservations) {
+                    delay(1000L)
+                    if (reservations.isEmpty()) {
+                        showNoAppointmentsMessage = true
+                    }
+                }
+
+                if (showNoAppointmentsMessage) {
+                    Text(
+                        text = stringResource(R.string.no_future_appointments),
+                        style = MaterialTheme.typography.bodyLarge,
+                        color = isDark(errorDark, errorLight),
+                        modifier = Modifier.padding(top = 16.dp)
                     )
+                }
+            } else {
+                LazyColumn(
+                    modifier = Modifier.fillMaxSize(),
+                    contentPadding = PaddingValues(top = 2.dp)
+                ) {
+                    items(reservations) { reservation ->
+                        val companyName = reservation["companyId"] as String
+                        val serviceName = reservation["serviceName"] as String
+                        val reservationDate = reservation["reservationDate"] as Long
+                        val reservationId = "$companyName-$userId-$reservationDate"
+                        ReservationItem(
+                            companyName = companyName,
+                            serviceName = serviceName,
+                            reservationDate = reservationDate,
+                            onClick = {
+                                navController.navigate(
+                                    "companyDetails/$companyName/$serviceName/$reservationDate"
+                                ) {
+                                    popUpTo("calendar") { inclusive = false }
+                                }
+                            },
+                            onDeleteClick = {
+                                reservationManager.deleteReservation(
+                                    reservationId,
+                                    onSuccess = {
+                                        reservationManager.fetchUserReservations(
+                                            userId = userId,
+                                            onReservationsFetched = { reservations = it },
+                                            onFailure = { error = it.message }
+                                        )
+                                        Toast.makeText(
+                                            context,
+                                            "Reservation removed successfully!",
+                                            Toast.LENGTH_SHORT
+                                        ).show()
+                                        reservations =
+                                            reservations.filterNot { it["id"] == reservationId }
+                                    },
+                                    onFailure = { exception ->
+                                        Toast.makeText(
+                                            context,
+                                            "Failed to remove reservation: ${exception.message}",
+                                            Toast.LENGTH_SHORT
+                                        ).show()
+                                    }
+                                )
+                            }
+                        )
+                    }
+                }
+            }
+        }
+
+        Column(
+            modifier = Modifier
+                .weight(1f)
+                .fillMaxWidth(),
+            verticalArrangement = Arrangement.spacedBy(8.dp),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Text(
+                text = stringResource(R.string.your_passed_appointments),
+                style = MaterialTheme.typography.headlineSmall,
+                color = isDark(primaryDark, primaryLight),
+                modifier = Modifier
+                    .padding(bottom = 1.dp)
+                    .background(Color.Transparent),
+            )
+            if (error != null) {
+                Text(
+                    text = "Error: $error",
+                    color = MaterialTheme.colorScheme.error,
+                    style = MaterialTheme.typography.bodyLarge
+                )
+            } else if (doneReservations.isEmpty()) {
+                var showNoAppointmentsMessage by remember { mutableStateOf(false) }
+
+                LaunchedEffect(doneReservations) {
+                    delay(1000L)
+                    if (doneReservations.isEmpty()) {
+                        showNoAppointmentsMessage = true
+                    }
+                }
+
+                if (showNoAppointmentsMessage) {
+                    Text(
+                        text = stringResource(R.string.sve_usluge_su_ocijenjene),
+                        style = MaterialTheme.typography.bodyLarge,
+                        color = isDark(errorDark, errorLight),
+                        modifier = Modifier.padding(top = 16.dp)
+                    )
+                }
+            } else {
+                LazyColumn(
+                    modifier = Modifier.fillMaxSize(),
+                    contentPadding = PaddingValues(top = 2.dp)
+                ) {
+                    items(doneReservations) { doneReservation ->
+                        val companyName = doneReservation["companyId"] as String
+                        val serviceName = doneReservation["serviceName"] as String
+                        val reservationDate = doneReservation["reservationDate"] as Long
+
+                        var buttonEnabled by remember { mutableStateOf(true) }
+
+                        LaunchedEffect(doneReservation) {
+                            reviewHandler.checkIfUserHasReview(
+                                userId = userId,
+                                companyId = companyName,
+                                onSucces = { hasReview ->
+                                    buttonEnabled = hasReview
+                                }
+                            )
+                        }
+
+                        ReservationItemDone(
+                            companyName = companyName,
+                            serviceName = serviceName,
+                            reservationDate = reservationDate,
+                            navController = navController,
+                            buttonEnabled = buttonEnabled
+                        )
+                    }
                 }
             }
         }
     }
 }
+
+
+            
+
 

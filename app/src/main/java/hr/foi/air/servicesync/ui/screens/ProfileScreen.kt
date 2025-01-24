@@ -2,6 +2,7 @@ package hr.foi.air.servicesync.ui.screens
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -29,11 +30,8 @@ import com.example.compose.primaryDark
 import com.example.compose.primaryLight
 import com.example.compose.secondaryDark
 import com.example.compose.secondaryLight
-import com.example.compose.surfaceContainerDark
-import com.example.compose.surfaceContainerLight
-import com.example.compose.surfaceDark
-import com.example.compose.surfaceLight
 import hr.foi.air.servicesync.R
+import hr.foi.air.servicesync.ui.components.FloatingCard
 import hr.foi.air.servicesync.ui.components.isDark
 import hr.foi.air.servicesync.ui.contents.ProfileContent
 
@@ -83,17 +81,10 @@ fun ProfileScreen(modifier: Modifier = Modifier, onLogoutClick: () -> Unit) {
 
 @Composable
 fun ProfileInfoBox(label: String, value: String) {
-    Card(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(vertical = 8.dp, horizontal = 16.dp),
-        colors = CardDefaults.cardColors(
-            containerColor = isDark(surfaceContainerDark, surfaceContainerLight)
-        ),
-        shape = MaterialTheme.shapes.medium,
-        elevation = CardDefaults.cardElevation(
-            defaultElevation = 6.dp
-        )
+    FloatingCard(
+        Modifier.padding(vertical = 6.dp, horizontal = 16.dp),
+        elevation = 6.dp,
+        innerPadding = PaddingValues(start = 12.dp, end = 12.dp, top = 2.dp, bottom = 2.dp)
     ) {
         Column(
             modifier = Modifier

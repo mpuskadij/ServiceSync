@@ -49,6 +49,7 @@ import hr.foi.air.servicesync.data.UserSession
 import hr.foi.air.servicesync.ui.components.CompanyDescription
 import hr.foi.air.servicesync.ui.components.CompanyImage
 import hr.foi.air.servicesync.ui.components.CompanyLocation
+import hr.foi.air.servicesync.ui.components.FloatingCard
 import hr.foi.air.servicesync.ui.components.ReviewList
 import hr.foi.air.servicesync.ui.components.isDark
 import hr.foi.air.servicesync.ui.items.ProvidedServicesListItem
@@ -180,9 +181,9 @@ fun CompanyDetailsContent(
                 supportingContent = {
                     Column {
                         services.value.forEach { service ->
-                            ProvidedServicesListItem(serviceName = service, onServiceClicked = {
+                            FloatingCard { ProvidedServicesListItem(serviceName = service, onServiceClicked = {
                                 navController.navigate("company/$companyName/$service")
-                            })
+                            }) }
                         }
                     }
                 }
@@ -201,7 +202,10 @@ fun CompanyDetailsContent(
                     Spacer(modifier = Modifier.height(25.dp))
                 },
                 supportingContent = {
-                    Text("${companyOpeningTime.value} - ${companyClosingTime.value}")
+                    Text(
+                        text = "${companyOpeningTime.value} - ${companyClosingTime.value}",
+                        style = MaterialTheme.typography.bodyLarge
+                    )
                 }
             )
 

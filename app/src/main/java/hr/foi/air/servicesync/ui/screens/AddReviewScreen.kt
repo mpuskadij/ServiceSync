@@ -29,6 +29,8 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.compose.onSurfaceDark
 import com.example.compose.onSurfaceLight
+import com.example.compose.tertiaryDark
+import com.example.compose.tertiaryLight
 import hr.foi.air.servicesync.R
 import hr.foi.air.servicesync.business.ReviewHandler
 import hr.foi.air.servicesync.data.Review
@@ -75,7 +77,8 @@ fun AddReviewScreen(
                     contentDescription = null,
                     modifier = Modifier
                         .size(32.dp)
-                        .clickable { rating.value = i }
+                        .clickable { rating.value = i },
+                    tint = isDark(tertiaryDark, tertiaryLight)
                 )
             }
         }

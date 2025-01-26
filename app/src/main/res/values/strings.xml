@@ -77,9 +77,9 @@
     <string name="reservation_removed">Rezervacija uspješno uklonjena!</string>
     <string name="reservation_removed_fail">Rezervacija nije uklonjena!</string>
     <string name="hold_for_delete">Držite za brisanje.</string>
-    <string name="leave_review">Leave review</string>
-    <string name="your_passed_appointments">Your passed appointments:</string>
-    <string name="sve_usluge_su_ocijenjene">All services are rated</string>
-    <string name="review_submited">Review Submited</string>
-    <string name="enter_the_star_number_and_review_description">Enter the star number and review description</string>
+    <string name="leave_review">Ostavite recenziju</string>
+    <string name="your_past_appointments">Vaši prošli termini:</string>
+    <string name="no_past_services">Nema prošlih termina.</string>
+    <string name="review_submited">Recenzija podnesena</string>
+    <string name="enter_the_star_number_and_review_description">Unesite broj zvjezdica i recenziju</string>
 </resources>

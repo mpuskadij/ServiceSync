@@ -3,6 +3,7 @@ package hr.foi.air.servicesync.ui.contents
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -11,9 +12,11 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -42,6 +45,7 @@ fun ProfileImageChanger() {
     var profileImageUrl by remember { mutableStateOf<String?>(null) }
     var isLoading by remember { mutableStateOf(false) }
     var errorMessage by remember { mutableStateOf("") }
+    var showDialog by remember { mutableStateOf(false) }
 
     val context = LocalContext.current
     val userId = FirebaseAuth.getInstance().currentUser?.email ?: return
@@ -102,10 +106,11 @@ fun ProfileImageChanger() {
                         model = profileImageUrl ?: R.drawable.profile_image_default,
                         contentDescription = "Profile Image",
                         modifier = Modifier
-                            .size(140.dp)
+                            .size(170.dp)
                             .clip(CircleShape)
                             .border(2.dp, isDark(primaryDark, primaryLight), CircleShape)
-                            .align(Alignment.Center),
+                            .align(Alignment.Center)
+                            .clickable { showDialog = true },
                         contentScale = ContentScale.Crop,
                         placeholder = painterResource(id = R.drawable.profile_icon),
                         error = painterResource(id = R.drawable.baseline_access_time_filled_24)
@@ -116,5 +121,33 @@ fun ProfileImageChanger() {
                 }
             }
         }
+    }
+    if (showDialog) {
+        AlertDialog(
+            onDismissRequest = { showDialog = false },
+            title = { (R.string.profile_image) },
+            text = {
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(6.dp),
+                    contentAlignment = Alignment.Center
+                ) {
+                    AsyncImage(
+                        model = profileImageUrl ?: R.drawable.profile_image_default,
+                        contentDescription = "Larger Profile Image",
+                        modifier = Modifier.size(300.dp),
+                        contentScale = ContentScale.Crop,
+                        placeholder = painterResource(id = R.drawable.profile_icon),
+                        error = painterResource(id = R.drawable.baseline_access_time_filled_24)
+                    )
+                }
+            },
+            confirmButton = {
+                Button(onClick = { showDialog = false }) {
+                    Text("Close")
+                }
+            }
+        )
     }
 }

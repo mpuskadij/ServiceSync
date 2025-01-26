@@ -15,14 +15,19 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clipToBounds
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import com.example.compose.errorDark
+import com.example.compose.errorLight
 import hr.foi.air.servicesync.R
 import hr.foi.air.servicesync.business.FavoritesHandler
 import hr.foi.air.servicesync.business.ReviewHandler
 import hr.foi.air.servicesync.data.UserSession
 import hr.foi.air.servicesync.ui.components.CompanyCard
+import hr.foi.air.servicesync.ui.components.isDark
 
 @Composable
 fun FavoriteContent(
@@ -61,10 +66,14 @@ fun FavoriteContent(
                     horizontalAlignment = Alignment.CenterHorizontally,
                     verticalArrangement = Arrangement.Center
                 ) {
-                    Text(text = stringResource(R.string.no_favorites), style = MaterialTheme.typography.headlineLarge)
+                    Text(
+                        color = isDark(errorDark, errorLight),
+                        text = stringResource(R.string.no_favorites),
+                        style = MaterialTheme.typography.headlineSmall, fontWeight = FontWeight.SemiBold
+                    )
                 }
             } else {
-                LazyColumn(modifier = Modifier.fillMaxSize()) {
+                LazyColumn(modifier = Modifier.fillMaxSize().clipToBounds()) {
                     items(companies.value) { company ->
                         val name = company["name"] as? String ?: "No Name"
                         val category = company["category"] as? String ?: "No Category"

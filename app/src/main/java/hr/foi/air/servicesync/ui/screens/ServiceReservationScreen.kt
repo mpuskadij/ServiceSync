@@ -95,10 +95,11 @@ fun ServiceReservationScreen(serviceName: String, companyId: String, navControll
                             serviceName,
                             dateMillis
                         ) { slots ->
-                            if (slots.isEmpty()) {
+                            val currentTime = System.currentTimeMillis()
+                            availableSlots = slots.filter { it > currentTime }
+                            if (availableSlots.isEmpty()) {
                                 Toast.makeText(context, context.getString(R.string.no_slots), Toast.LENGTH_SHORT).show()
                             }
-                            availableSlots = slots
                         }
                     }
                     showDatePicker = false

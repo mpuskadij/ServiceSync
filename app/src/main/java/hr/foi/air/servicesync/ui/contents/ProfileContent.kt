@@ -5,6 +5,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -46,6 +47,7 @@ import hr.foi.air.servicesync.R
 import hr.foi.air.servicesync.business.LanguageChangeHelper
 import hr.foi.air.servicesync.business.MapProviderManager
 import hr.foi.air.servicesync.business.UserDataHandler
+import hr.foi.air.servicesync.ui.components.FloatingCard
 import hr.foi.air.servicesync.ui.components.MapDropdown
 import hr.foi.air.servicesync.ui.components.isDark
 import hr.foi.air.servicesync.ui.screens.ProfileInfoBox
@@ -61,8 +63,8 @@ fun ProfileContent(modifier: Modifier = Modifier) {
     var isEditing by remember { mutableStateOf(false) }
     var name by remember { mutableStateOf("") }
     var surname by remember { mutableStateOf("") }
-    var username by remember { mutableStateOf("")}
-    var email by remember { mutableStateOf("")}
+    var username by remember { mutableStateOf("") }
+    var email by remember { mutableStateOf("") }
     var description by remember { mutableStateOf("") }
     var newPassword by remember { mutableStateOf("") }
     var showSuccessDialog by remember { mutableStateOf(false) }
@@ -119,43 +121,78 @@ fun ProfileContent(modifier: Modifier = Modifier) {
             CircularProgressIndicator()
         } else {
             if (isEditing) {
-                TextField(
-                    value = name,
-                    onValueChange = { name = it },
-                    label = { Text(stringResource(R.string.first_name)) },
-                    modifier = Modifier.fillMaxWidth()
-                )
-                TextField(
-                    value = surname,
-                    onValueChange = { surname = it },
-                    label = { Text(stringResource(R.string.last_name)) },
-                    modifier = Modifier.fillMaxWidth()
-                )
-                TextField(
-                    value = username,
-                    onValueChange = { username = it },
-                    label = { Text(stringResource(R.string.username)) },
-                    modifier = Modifier.fillMaxWidth()
-                )
-                TextField(
-                    value = description,
-                    onValueChange = { description = it },
-                    label = { Text(stringResource(R.string.profile_description)) },
-                    modifier = Modifier.fillMaxWidth()
-                )
-                TextField(
-                    value = newPassword,
-                    onValueChange = { newPassword = it },
-                    label = { Text(stringResource(R.string.new_password)) },
-                    visualTransformation = PasswordVisualTransformation(),
-                    modifier = Modifier.fillMaxWidth()
-                )
-                MapDropdown(
-                    mapProviderName = mapProvider,
-                    onMapProviderChange = { newName ->
-                        mapProvider = newName
-                    }
-                )
+                FloatingCard(
+                    innerPadding = PaddingValues(0.dp),
+                    elevation = 2.dp
+                ) {
+                    TextField(
+                        value = name,
+                        onValueChange = { name = it },
+                        label = { Text(stringResource(R.string.first_name)) },
+                        modifier = Modifier.fillMaxWidth(),
+                        shape = MaterialTheme.shapes.small,
+                    )
+                }
+                FloatingCard(
+                    innerPadding = PaddingValues(0.dp),
+                    elevation = 2.dp
+                ) {
+                    TextField(
+                        value = surname,
+                        onValueChange = { surname = it },
+                        label = { Text(stringResource(R.string.last_name)) },
+                        modifier = Modifier.fillMaxWidth(),
+                        shape = MaterialTheme.shapes.small,
+                    )
+                }
+                FloatingCard(
+                    innerPadding = PaddingValues(0.dp),
+                    elevation = 2.dp
+                ) {
+                    TextField(
+                        value = username,
+                        onValueChange = { username = it },
+                        label = { Text(stringResource(R.string.username)) },
+                        modifier = Modifier.fillMaxWidth(),
+                        shape = MaterialTheme.shapes.small,
+                    )
+                }
+                FloatingCard(
+                    innerPadding = PaddingValues(0.dp),
+                    elevation = 2.dp
+                ) {
+                    TextField(
+                        value = description,
+                        onValueChange = { description = it },
+                        label = { Text(stringResource(R.string.profile_description)) },
+                        modifier = Modifier.fillMaxWidth(),
+                        shape = MaterialTheme.shapes.small,
+                    )
+                }
+                FloatingCard(
+                    innerPadding = PaddingValues(0.dp),
+                    elevation = 2.dp
+                ) {
+                    TextField(
+                        value = newPassword,
+                        onValueChange = { newPassword = it },
+                        label = { Text(stringResource(R.string.new_password)) },
+                        visualTransformation = PasswordVisualTransformation(),
+                        modifier = Modifier.fillMaxWidth(),
+                        shape = MaterialTheme.shapes.small,
+                    )
+                }
+                FloatingCard(
+                    innerPadding = PaddingValues(0.dp),
+                    elevation = 2.dp
+                ) {
+                    MapDropdown(
+                        mapProviderName = mapProvider,
+                        onMapProviderChange = { newName ->
+                            mapProvider = newName
+                        }
+                    )
+                }
 
                 Button(
                     onClick = {
@@ -290,7 +327,7 @@ fun ProfileContent(modifier: Modifier = Modifier) {
                 ProfileInfoBox(stringResource(R.string.username), "$username")
                 ProfileInfoBox(stringResource(R.string.email), "$email")
                 ProfileInfoBox(stringResource(R.string.profile_description), description)
-                
+
                 ProfileInfoBox(stringResource(R.string.map_type), mapProvider)
             }
         }

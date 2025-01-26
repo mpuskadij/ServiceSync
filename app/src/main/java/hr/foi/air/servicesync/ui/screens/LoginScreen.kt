@@ -3,10 +3,8 @@ package hr.foi.air.servicesync.ui.screens
 import android.Manifest
 import android.content.pm.PackageManager
 import android.os.Build
-import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
@@ -43,8 +41,6 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.core.app.ActivityCompat
-import com.example.compose.primaryDark
-import com.example.compose.primaryLight
 import hr.foi.air.servicesync.R
 import hr.foi.air.servicesync.business.loginRegisterHandler
 import hr.foi.air.servicesync.ui.components.isDark

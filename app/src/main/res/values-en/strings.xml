@@ -77,8 +77,8 @@
     <string name="reservation_removed_fail">The reservation has not been removed!</string>
     <string name="hold_for_delete">Hold to delete.</string>
     <string name="leave_review">Leave review</string>
-    <string name="your_passed_appointments">Your passed appointments:</string>
-    <string name="sve_usluge_su_ocijenjene">All services are rated</string>
-    <string name="review_submited">Review Submited</string>
+    <string name="your_past_appointments">Your past appointments:</string>
+    <string name="no_past_services">There are no past appointments.</string>
+    <string name="review_submited">Review Submitted</string>
     <string name="enter_the_star_number_and_review_description">Enter the star number and review description</string>
 </resources>
